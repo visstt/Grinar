@@ -1,11 +1,18 @@
 .registration_wrapper {
+  width: 600px;
+  background-color: #141414;
+  padding: 40px;
+
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background-color: #141414;
-  padding: 40px;
-}
 
+  position: fixed;
+  z-index: 1000;
+  top: 90px;
+  right: 0;
+  transition: right 0.3s ease-in-out;
+}
 .registration_wrapper h3 {
   color: #fff;
   font-family: Unbounded;
@@ -14,7 +21,6 @@
   line-height: 24.8px;
   letter-spacing: 0%;
 }
-
 .registration_wrapper p {
   color: #767575;
   font-family: Manrope;
@@ -23,13 +29,11 @@
   line-height: 19.12px;
   letter-spacing: 0%;
 }
-
 .btn_wrapper {
   display: flex;
   flex-direction: row;
   gap: 10px;
 }
-
 .active {
   width: 100px;
   height: 44px;
@@ -44,7 +48,6 @@
   border-radius: 8px;
   cursor: pointer;
 }
-
 .disactive {
   width: 100px;
   height: 44px;
@@ -71,15 +74,12 @@
   flex-wrap: wrap;
   gap: 20px;
 }
-
 .block {
   display: flex;
   flex-direction: column;
-  width: 100%;
   max-width: 290px;
   color: #767575;
 }
-
 .block label {
   font-family: Manrope;
   font-weight: 500;
@@ -87,11 +87,10 @@
   line-height: 16px;
   letter-spacing: 0%;
 }
-
 .block input {
   margin-top: 8px;
   margin-bottom: 20px;
-  width: 100%;
+  width: 290px;
   padding-left: 15px;
   height: 48px;
   border: none;
@@ -100,7 +99,6 @@
   border-radius: 8px;
   outline: none;
 }
-
 .password_input_wrapper {
   display: flex;
   align-items: center;
@@ -109,7 +107,7 @@
 
 .password_input_wrapper input {
   flex: 1;
-  padding-right: 40px;
+  padding-right: 137px;
 }
 
 .eye_button {
@@ -120,39 +118,34 @@
   cursor: pointer;
   color: #fff;
 }
-
 .policy_block {
   display: flex;
   flex-direction: row;
   gap: 10px;
   margin-bottom: 30px;
 }
-
 .policy_block p {
   font-family: Manrope;
   font-weight: 400;
   font-size: 14px;
   line-height: 19.12px;
   letter-spacing: 0%;
-  text-align: left;
+  text-align: right;
 }
-
 .policy_block a {
   font-family: Manrope;
   font-weight: 400;
   font-size: 14px;
   line-height: 19.12px;
   letter-spacing: 0%;
-  text-align: left;
+  text-align: right;
   color: #195ee6;
 }
-
 .submit_btn {
   margin-top: 20px;
   margin-bottom: 20px;
   cursor: pointer;
-  width: 100%;
-  max-width: 169px;
+  width: 169px;
   height: 48px;
   color: #fff;
   border: none;
@@ -160,77 +153,4 @@
   font-size: 14px;
   background-color: #195ee6;
   transition: 0.3s ease-in-out;
-}
-
-@media (max-width: 950px) {
-  .registration_wrapper {
-    width: 90%;
-    padding: 15px;
-  }
-
-  .input_wrapper {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .block {
-    max-width: none;
-  }
-
-  .block input {
-    width: 100%;
-    max-width: none;
-  }
-
-  .submit_btn {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .registration_wrapper {
-    padding: 10px;
-  }
-
-  .registration_wrapper h3 {
-    font-size: 18px;
-    line-height: 22px;
-  }
-
-  .registration_wrapper p {
-    font-size: 13px;
-    line-height: 18px;
-  }
-
-  .btn_wrapper {
-    gap: 8px;
-  }
-
-  .active, .disactive {
-    width: 90px;
-    height: 40px;
-    font-size: 13px;
-    line-height: 18px;
-  }
-
-  .block label {
-    font-size: 11px;
-    line-height: 15px;
-  }
-
-  .block input {
-    height: 44px;
-    font-size: 14px;
-  }
-
-  .submit_btn {
-    height: 44px;
-    font-size: 13px;
-  }
-
-  .policy_block p, .policy_block a {
-    font-size: 13px;
-    line-height: 18px;
-  }
 }

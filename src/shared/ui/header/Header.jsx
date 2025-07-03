@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import mainLogo from '/icons/mainLogo.svg';
 import Login from '../../../features/auth/login/Login';
-import Registration from '../../../features/auth/registration/Registration';
+import Registration from '../../../features/auth/registration/Registration'
 import { Link } from "react-router-dom";
+
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function Header() {
       document.body.classList.remove(styles.noScroll);
     };
   }, [loginOpen, registrationOpen]);
+
 
   return (
     <>
@@ -88,6 +90,7 @@ export default function Header() {
         </div>
       )}
 
+      {/* Registration Modal */}
       {registrationOpen && (
         <div
           className={`${styles.loginBackdrop} ${
