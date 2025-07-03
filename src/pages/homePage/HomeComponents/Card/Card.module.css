@@ -1,0 +1,51 @@
+.card {
+  display: flex;
+  flex-direction: column;
+
+  width: 270px;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.card h3 {
+  font-family: Manrope;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 21.86px;
+  letter-spacing: 0px;
+}
+
+.author {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.author img {
+  width: 40px;
+  height: 40px;
+}
+.author__text h3 {
+  font-family: Manrope;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19.12px;
+  letter-spacing: 0px;
+}
+.author__text p {
+  font-family: Manrope;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16.39px;
+  letter-spacing: 0px;
+}
+@media (max-width: 600px) {
+  .card {
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+}

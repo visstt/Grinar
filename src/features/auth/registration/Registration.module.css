@@ -1,0 +1,156 @@
+.registration_wrapper {
+  width: 600px;
+  background-color: #141414;
+  padding: 40px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  position: fixed;
+  z-index: 1000;
+  top: 90px;
+  right: 0;
+  transition: right 0.3s ease-in-out;
+}
+.registration_wrapper h3 {
+  color: #fff;
+  font-family: Unbounded;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24.8px;
+  letter-spacing: 0%;
+}
+.registration_wrapper p {
+  color: #767575;
+  font-family: Manrope;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 19.12px;
+  letter-spacing: 0%;
+}
+.btn_wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.active {
+  width: 100px;
+  height: 44px;
+  background-color: #195ee6;
+  border: none;
+  color: #fff;
+  font-family: Manrope;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 19.12px;
+  letter-spacing: 0px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.disactive {
+  width: 100px;
+  height: 44px;
+  background-color: #202020;
+  border: none;
+  color: #fff;
+  font-family: Manrope;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 19.12px;
+  letter-spacing: 0px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input_wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.block {
+  display: flex;
+  flex-direction: column;
+  max-width: 290px;
+  color: #767575;
+}
+.block label {
+  font-family: Manrope;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0%;
+}
+.block input {
+  margin-top: 8px;
+  margin-bottom: 20px;
+  width: 290px;
+  padding-left: 15px;
+  height: 48px;
+  border: none;
+  color: #fff;
+  background-color: #202020;
+  border-radius: 8px;
+  outline: none;
+}
+.password_input_wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password_input_wrapper input {
+  flex: 1;
+  padding-right: 137px;
+}
+
+.eye_button {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+}
+.policy_block {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+.policy_block p {
+  font-family: Manrope;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19.12px;
+  letter-spacing: 0%;
+  text-align: right;
+}
+.policy_block a {
+  font-family: Manrope;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19.12px;
+  letter-spacing: 0%;
+  text-align: right;
+  color: #195ee6;
+}
+.submit_btn {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  width: 169px;
+  height: 48px;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #195ee6;
+  transition: 0.3s ease-in-out;
+}
