@@ -1,22 +1,22 @@
 .login_wrapper {
-  position: fixed;
-  top: 90px;
-  right: 0;
-  width: 400px;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: #141414;
-  z-index: 1000;
-  transition: right 0.3s ease-in-out;
 }
+
 .login_wrapper img {
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: cover;
 }
 
 .form {
-  padding: 40px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
+
 .form h3 {
   color: #fff;
   font-family: Unbounded;
@@ -26,6 +26,7 @@
   letter-spacing: 0%;
   margin-bottom: 20px;
 }
+
 .form label {
   color: #767575;
   font-family: Manrope;
@@ -34,6 +35,7 @@
   line-height: 16px;
   letter-spacing: 0%;
 }
+
 .form input {
   margin-top: 8px;
   margin-bottom: 20px;
@@ -46,6 +48,7 @@
   border-radius: 8px;
   outline: none;
 }
+
 .form p {
   color: #fff;
   font-family: Manrope;
@@ -55,11 +58,13 @@
   letter-spacing: 0%;
   text-align: right;
 }
+
 .submit_btn {
   margin-top: 20px;
   margin-bottom: 20px;
   cursor: pointer;
-  width: 320px;
+  width: 100%;
+  max-width: 320px;
   height: 48px;
   color: #fff;
   border: none;
@@ -68,6 +73,7 @@
   background-color: #195ee6;
   transition: 0.3s ease-in-out;
 }
+
 .password_input_wrapper {
   display: flex;
   align-items: center;
@@ -88,7 +94,6 @@
   color: #fff;
 }
 
-
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -97,4 +102,45 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: #fff !important;
   background-color: #202020 !important;
   color: #fff !important;
+}
+
+@media (max-width: 950px) {
+  .login_wrapper {
+    width: 100%;
+  }
+
+  .form {
+    padding: 15px;
+  }
+
+  .submit_btn {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .form {
+    padding: 10px;
+  }
+
+  .form h3 {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .form label {
+    font-size: 11px;
+    line-height: 15px;
+  }
+
+  .form input {
+    height: 44px;
+    font-size: 14px;
+  }
+
+  .submit_btn {
+    height: 44px;
+    font-size: 13px;
+  }
 }

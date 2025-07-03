@@ -27,7 +27,6 @@ export default function Registration() {
           </div>
           <div className={styles.block}>
             <label>Пароль</label>
-
             <div className={styles.password_input_wrapper}>
               <input
                 type={passwordVisible ? "text" : "password"}
@@ -72,7 +71,6 @@ export default function Registration() {
             <Link>Политикой конфиденциальности</Link>
           </p>
         </div>
-
         <button className={styles.submit_btn}>Создать профиль</button>
       </form>
     </div>

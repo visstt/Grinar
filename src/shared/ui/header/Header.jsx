@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import mainLogo from '/icons/mainLogo.svg';
 import Login from '../../../features/auth/login/Login';
-import Registration from '../../../features/auth/registration/Registration'
+import Registration from '../../../features/auth/registration/Registration';
+import { Link } from "react-router-dom";
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -19,12 +21,13 @@ export default function Header() {
       document.body.classList.remove(styles.noScroll);
     };
   }, [loginOpen, registrationOpen]);
+
   return (
     <>
       <div className="container">
         <div className={styles.header_wrapper}>
           <div className={styles.header_wrapper__logo}>
-            <img src={mainLogo} alt="mainLogo" />
+            <Link to='/'><img src={mainLogo} alt="mainLogo" /></Link>
           </div>
 
           <div
@@ -71,7 +74,6 @@ export default function Header() {
       </div>
       <div className={styles.stripe}></div>
 
-      {/* Login Modal */}
       {loginOpen && (
         <div
           className={`${styles.loginBackdrop} ${loginOpen ? styles.open : ""}`}
@@ -86,7 +88,6 @@ export default function Header() {
         </div>
       )}
 
-      {/* Registration Modal */}
       {registrationOpen && (
         <div
           className={`${styles.loginBackdrop} ${
