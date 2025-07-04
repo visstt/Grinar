@@ -76,13 +76,19 @@ export default function Header() {
             <div className={styles.header_wrapper__buttons}>
               <button
                 className={styles.header_wrapper__login}
-                onClick={() => setLoginOpen(true)}
+                onClick={() => {
+                  setLoginOpen(true);
+                  setMenuOpen(false);
+                }}
               >
                 Войти
               </button>
               <button
                 className={styles.header_wrapper__registration}
-                onClick={() => setRegistrationOpen(true)}
+                onClick={() => {
+                  setRegistrationOpen(true);
+                  setMenuOpen(false);
+                }}
               >
                 Зарегистрироваться
               </button>

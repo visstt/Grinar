@@ -2,16 +2,17 @@
   width: 600px;
   background-color: #141414;
   padding: 40px;
-
   display: flex;
   flex-direction: column;
   gap: 20px;
-
   position: fixed;
   z-index: 1000;
   top: 90px;
   right: 0;
   transition: right 0.3s ease-in-out;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
 }
 .registration_wrapper h3 {
   color: #fff;
@@ -62,12 +63,13 @@
   border-radius: 8px;
   cursor: pointer;
 }
-
 .form {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
-
 .input_wrapper {
   display: flex;
   flex-direction: row;
@@ -104,12 +106,10 @@
   align-items: center;
   position: relative;
 }
-
 .password_input_wrapper input {
   flex: 1;
   padding-right: 137px;
 }
-
 .eye_button {
   position: absolute;
   right: 10px;
@@ -123,6 +123,8 @@
   flex-direction: row;
   gap: 10px;
   margin-bottom: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 .policy_block p {
   font-family: Manrope;
@@ -153,6 +155,7 @@
   font-size: 14px;
   background-color: #195ee6;
   transition: 0.3s ease-in-out;
+  align-self: flex-start;
 }
 .submit_btn_disabled {
   background-color: #202020;
@@ -164,6 +167,9 @@
   flex-direction: column;
   max-width: 500px;
   gap: 30px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .gap {
   display: flex;
@@ -199,4 +205,66 @@
 }
 .codeInput:focus {
   box-shadow: 0 0 0 2px #195ee6;
+}
+@media (max-width: 600px) {
+  .registration_wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    width: 95vw;
+    max-width: 400px;
+    height: auto;
+    max-height: 90vh;
+    transform: translate(-50%, -50%);
+    border-radius: 16px;
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+  .form {
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .text_wrapper {
+    padding: 0 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .input_wrapper {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .registration_wrapper,
+  .form,
+  .text_wrapper,
+  .gap,
+  .policy_block {
+    align-items: center;
+    text-align: center;
+  }
+  .submit_btn {
+    align-self: center;
+  }
+}
+.form h3,
+.form p,
+.form label,
+.form .error {
+  text-align: center;
+  width: 100%;
+}
+.error {
+  color: #ff3b3b;
+  font-weight: 400;
+  font-size: 14px;
+  margin: 8px 0;
+  text-align: center;
 }

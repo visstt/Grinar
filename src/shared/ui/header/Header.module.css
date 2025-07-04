@@ -307,3 +307,39 @@
 .noScroll {
   overflow: hidden;
 }
+
+@media (max-width: 600px) {
+  .login_wrapper,
+  .registrationWrapper {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    width: 90vw;
+    max-width: 400px;
+    height: auto;
+    max-height: 90vh;
+    transform: translate(-50%, -50%);
+    border-radius: 16px;
+    padding: 24px 0 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .registrationWrapper {
+    max-width: 680px;
+  }
+  .login_wrapper img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  .form {
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

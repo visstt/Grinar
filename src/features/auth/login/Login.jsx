@@ -42,6 +42,7 @@ export default function Login({ onSuccess }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className={styles.input}
         />
 
         <label>Пароль</label>
@@ -52,6 +53,7 @@ export default function Login({ onSuccess }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className={styles.input}
           />
           <button
             type="button"
