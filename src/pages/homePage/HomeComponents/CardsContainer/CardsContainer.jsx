@@ -1,25 +1,25 @@
-import styles from "./CardsContainer.module.css";
+import useProjects from "../../hooks/useProjects";
 import Card from "../Card/Card";
+import styles from "./CardsContainer.module.css";
 
 export default function CardsContainer() {
+  const { projects, loading, error } = useProjects();
+
+  if (loading) return <div>Загрузка...</div>;
+  if (error) return <div>Ошибка: {error.message}</div>;
+
   return (
     <div className="container">
       <div className={styles.cardContainer}>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {projects.slice(0, 8).map((project) => (
+          <Card key={project.id} project={project} />
+        ))}
       </div>
       <h2 className={styles.title}>Популярное</h2>
       <div className={styles.cardContainer__popular}>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {projects.slice(0, 4).map((project) => (
+          <Card key={project.id} project={project} />
+        ))}
       </div>
     </div>
   );
