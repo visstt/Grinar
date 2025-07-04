@@ -85,3 +85,11 @@
 .info_wrapper_text a {
   color: #195ee6;
 }
+@media (max-width: 405px) {
+  .info_wrapper_text h2 {
+    font-size: 26px;
+  }
+  .info_wrapper_text p {
+    font-size: 14px;
+  }
+}

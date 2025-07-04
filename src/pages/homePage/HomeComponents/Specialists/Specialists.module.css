@@ -191,4 +191,7 @@
   .rating_wrapper p {
     flex-direction: column;
   }
+  .info__text h3 {
+    font-size: 16px;
+  }
 }
