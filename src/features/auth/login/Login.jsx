@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
 
+import ForgotPassword from "./ForgotPassword";
 import styles from "./Login.module.css";
 import { useLogin } from "./hooks/useLogin";
 import loginBg from "/images/loginBg.png";
@@ -12,6 +13,11 @@ export default function Login({ onSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, loading, error } = useLogin();
+  const [forgot, setForgot] = useState(false);
+
+  if (forgot) {
+    return <ForgotPassword onSuccess={() => setForgot(false)} />;
+  }
 
   return (
     <div className={styles.login_wrapper}>
@@ -58,7 +64,13 @@ export default function Login({ onSuccess }) {
         </div>
 
         {error && <div className={styles.error}>{error}</div>}
-        <p>Забыли пароль?</p>
+        <p
+          style={{ cursor: "pointer", color: "#195ee6", marginBottom: 16 }}
+          onClick={() => setForgot(true)}
+        >
+          Забыли пароль?
+        </p>
+
         <button className={styles.submit_btn} disabled={loading}>
           {loading ? "Входим..." : "Войти"}
         </button>

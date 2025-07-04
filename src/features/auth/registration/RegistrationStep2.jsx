@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import styles from "./Registration.module.css";
 import { useVerifyEmail } from "./hooks/useVerifyEmail";
 
-export default function RegistrationStep2({ email }) {
+export default function RegistrationStep2({ email, onSuccess }) {
   const inputs = Array.from({ length: 6 }, () => useRef(null));
   const [code, setCode] = useState(Array(6).fill(""));
   const { verifyEmail, loading, error } = useVerifyEmail();
@@ -44,7 +44,7 @@ export default function RegistrationStep2({ email }) {
       inputs[0].current?.focus();
     } else {
       toast.success("Почта успешно подтверждена!");
-      // Здесь можно добавить переход или другое действие
+      if (onSuccess) onSuccess();
     }
   };
 

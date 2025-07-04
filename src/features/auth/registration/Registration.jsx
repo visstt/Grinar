@@ -139,7 +139,11 @@ export default function Registration() {
         </div>
         {error && <div className={styles.error}>{error}</div>}
         <button
-          className={styles.submit_btn}
+          className={
+            !policyChecked || loading
+              ? `${styles.submit_btn} ${styles.submit_btn_disabled}`
+              : styles.submit_btn
+          }
           disabled={!policyChecked || loading}
           type="submit"
         >

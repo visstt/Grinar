@@ -154,6 +154,11 @@
   background-color: #195ee6;
   transition: 0.3s ease-in-out;
 }
+.submit_btn_disabled {
+  background-color: #202020;
+  color: #bdbdbd;
+  cursor: not-allowed;
+}
 .text_wrapper {
   display: flex;
   flex-direction: column;

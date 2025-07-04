@@ -13,17 +13,30 @@ export default function Header() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registrationOpen, setRegistrationOpen] = useState(false);
 
+  const [registrationStep, setRegistrationStep] = useState(1);
+  const [registrationEmail, setRegistrationEmail] = useState("");
+
   useEffect(() => {
     if (loginOpen || registrationOpen) {
       document.body.classList.add(styles.noScroll);
     } else {
       document.body.classList.remove(styles.noScroll);
     }
-
     return () => {
       document.body.classList.remove(styles.noScroll);
     };
   }, [loginOpen, registrationOpen]);
+
+  const handleRegistrationSuccess = (email) => {
+    setRegistrationEmail(email);
+    setRegistrationStep(2);
+  };
+
+  const handleCloseRegistration = () => {
+    setRegistrationOpen(false);
+    setRegistrationStep(1);
+    setRegistrationEmail("");
+  };
 
   return (
     <>
@@ -93,13 +106,12 @@ export default function Header() {
         </div>
       )}
 
-      {/* Registration Modal */}
       {registrationOpen && (
         <div
           className={`${styles.loginBackdrop} ${
             registrationOpen ? styles.open : ""
           }`}
-          onClick={() => setRegistrationOpen(false)}
+          onClick={handleCloseRegistration}
         ></div>
       )}
       {registrationOpen && (
@@ -108,7 +120,21 @@ export default function Header() {
             registrationOpen ? styles.open : ""
           }`}
         >
-          <Registration />
+          {registrationStep === 1 ? (
+            <Registration
+              onSuccess={handleRegistrationSuccess}
+              onClose={handleCloseRegistration}
+            />
+          ) : (
+            <RegistrationStep2
+              email={registrationEmail}
+              onSuccess={() => {
+                handleCloseRegistration();
+                setRegistrationStep(1); 
+                setRegistrationEmail("");
+              }}
+            />
+          )}
         </div>
       )}
     </>
