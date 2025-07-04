@@ -154,3 +154,44 @@
   background-color: #195ee6;
   transition: 0.3s ease-in-out;
 }
+.text_wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  gap: 30px;
+}
+.gap {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.blue {
+  color: #195ee6;
+}
+.white {
+  color: #fff;
+}
+.line {
+  display: flex;
+  gap: 5px;
+}
+.text_wrapper h1 {
+  font-family: Unbounded;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-transform: uppercase;
+}
+.text_wrapper p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0%;
+}
+.codeInput {
+  transition: box-shadow 0.2s;
+}
+.codeInput:focus {
+  box-shadow: 0 0 0 2px #195ee6;
+}

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
+import { Link } from "react-router-dom";
+
 import styles from "./Specialists.module.css";
-import heroAvatar from "/images/heroAvatar.png";
 import location from "/icons/location.svg";
 import starBtn from "/icons/starBtn.svg";
+import heroAvatar from "/images/heroAvatar.png";
 import specImage from "/images/specImage.png";
-import { Link } from "react-router-dom";
 
 const images = [
   { src: specImage, alt: "specImage", text: "Брендинг Monly" },
@@ -20,7 +22,7 @@ export default function Specialists() {
     const handleResize = () => {
       const containerWidth =
         document.querySelector(`.${styles.photo_wrapper}`)?.clientWidth || 0;
-      const cardWidth = 270; 
+      const cardWidth = 270;
       const maxCards = Math.floor(containerWidth / cardWidth);
       setVisibleCount(Math.min(maxCards, images.length));
     };
@@ -64,12 +66,12 @@ export default function Specialists() {
           <p>IT-разработка</p>
         </div>
         <div className={styles.rating_wrapper}>
-          <p>
-            Рейтинг:<h3>15 069</h3>
-          </p>
-          <p>
-            Подписчики:<h3>389</h3>
-          </p>
+          <p>Рейтинг:</p>
+          <h3>15 069</h3>
+
+          <p>Подписчики:</p>
+          <h3>389</h3>
+
           <p>
             Веб-сайт:<Link to="/">alex-smm.com</Link>
           </p>

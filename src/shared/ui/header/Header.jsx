@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import styles from "./Header.module.css";
-import mainLogo from '/icons/mainLogo.svg';
-import Login from '../../../features/auth/login/Login';
-import Registration from '../../../features/auth/registration/Registration'
+
 import { Link } from "react-router-dom";
 
+import Login from "../../../features/auth/login/Login";
+import Registration from "../../../features/auth/registration/Registration";
+import RegistrationStep2 from "../../../features/auth/registration/RegistrationStep2";
+import styles from "./Header.module.css";
+import mainLogo from "/icons/mainLogo.svg";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
-  const [registrationOpen, setRegistrationOpen] = useState(false); 
+  const [registrationOpen, setRegistrationOpen] = useState(false);
 
   useEffect(() => {
     if (loginOpen || registrationOpen) {
@@ -23,13 +25,14 @@ export default function Header() {
     };
   }, [loginOpen, registrationOpen]);
 
-
   return (
     <>
       <div className="container">
         <div className={styles.header_wrapper}>
           <div className={styles.header_wrapper__logo}>
-            <Link to='/'><img src={mainLogo} alt="mainLogo" /></Link>
+            <Link to="/">
+              <img src={mainLogo} alt="mainLogo" />
+            </Link>
           </div>
 
           <div
@@ -66,7 +69,7 @@ export default function Header() {
               </button>
               <button
                 className={styles.header_wrapper__registration}
-                onClick={() => setRegistrationOpen(true)} 
+                onClick={() => setRegistrationOpen(true)}
               >
                 Зарегистрироваться
               </button>
@@ -86,7 +89,7 @@ export default function Header() {
         <div
           className={`${styles.loginWrapper} ${loginOpen ? styles.open : ""}`}
         >
-          <Login />
+          <Login onSuccess={() => setLoginOpen(false)} />
         </div>
       )}
 

@@ -1,37 +1,67 @@
 import React, { useState } from "react";
-import styles from "./Login.module.css";
-import loginBg from "/images/loginBg.png";
-import { Eye, EyeOff } from "lucide-react";
 
-export default function Login() {
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "react-toastify";
+
+import styles from "./Login.module.css";
+import { useLogin } from "./hooks/useLogin";
+import loginBg from "/images/loginBg.png";
+
+export default function Login({ onSuccess }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, loading, error } = useLogin();
 
   return (
     <div className={styles.login_wrapper}>
       <img src={loginBg} alt="loginBg" />
-      <form className={styles.form}>
+      <form
+        className={styles.form}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const res = await login(email, password);
+          if (res) {
+            toast.success("Успешная авторизация!");
+            if (onSuccess) onSuccess();
+          }
+        }}
+      >
         <h3>Войти в аккаунт</h3>
 
         <label>Email</label>
-        <input type="email" placeholder="Введите email" />
+        <input
+          type="email"
+          placeholder="Введите email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
         <label>Пароль</label>
         <div className={styles.password_input_wrapper}>
           <input
             type={passwordVisible ? "text" : "password"}
             placeholder="Введите пароль"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <button
             type="button"
             className={styles.eye_button}
             onClick={() => setPasswordVisible(!passwordVisible)}
+            tabIndex={-1}
           >
             {passwordVisible ? <Eye size={20} /> : <EyeOff size={20} />}
           </button>
         </div>
 
+        {error && <div className={styles.error}>{error}</div>}
         <p>Забыли пароль?</p>
-        <button className={styles.submit_btn}>Войти</button>
+        <button className={styles.submit_btn} disabled={loading}>
+          {loading ? "Входим..." : "Войти"}
+        </button>
       </form>
     </div>
   );

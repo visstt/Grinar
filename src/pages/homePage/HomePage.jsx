@@ -1,9 +1,10 @@
-import styles from "./HomePage.module.css";
-import HomeTitle from "./HomeComponents/HomeTitle/HomeTitle";
 import CardsContainer from "./HomeComponents/CardsContainer/CardsContainer";
-import Specialists from "./HomeComponents/Specialists/Specialists";
 import HomeInfo from "./HomeComponents/HomeInfo/HomeInfo";
-export default function HomeLayout() {
+import HomeTitle from "./HomeComponents/HomeTitle/HomeTitle";
+import Specialists from "./HomeComponents/Specialists/Specialists";
+import styles from "./HomePage.module.css";
+
+export default function HomePage() {
   return (
     <div>
       <HomeTitle />
