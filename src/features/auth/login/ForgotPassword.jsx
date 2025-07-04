@@ -41,11 +41,9 @@ export default function ForgotPassword({ onSuccess }) {
   // Handlers
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    console.log("STEP 1: Отправка email", emailInput);
     await sendForgotPassword(emailInput);
     setEmail(emailInput);
     setStep(2);
-    console.log("STEP 1: Переход на шаг 2 (код)");
   };
 
   const handleCodeChange = (e, idx) => {
@@ -76,24 +74,18 @@ export default function ForgotPassword({ onSuccess }) {
 
   const handleCodeSubmit = async (e) => {
     e.preventDefault();
-    console.log("STEP 2: Проверка кода", code.join(""), "для email", email);
     const userIdRes = await verifyPasswordCode(email, code.join(""));
-    console.log("STEP 2: Ответ userId =", userIdRes);
     if (userIdRes) {
       setUserId(userIdRes);
       setStep(3);
-      console.log("STEP 2: Переход на шаг 3 (новый пароль)");
     } else {
       setCode(Array(6).fill(""));
-      console.log("STEP 2: Код неверный, сброс ввода");
     }
   };
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    console.log("STEP 3: Смена пароля для userId", userId, "пароль:", password);
     const ok = await changePassword(userId, password);
-    console.log("STEP 3: Результат смены пароля:", ok);
     if (ok && onSuccess) onSuccess();
   };
 

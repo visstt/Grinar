@@ -10,18 +10,14 @@ export function useVerifyPasswordCode() {
     setLoading(true);
     setError(null);
     try {
-      console.log("Запрос на /auth/verify-password-code", { email, code });
       const response = await api.get("/auth/verify-password-code", {
         params: { email, code },
       });
-      console.log("Ответ сервера:", response.data);
       setLoading(false);
-      // Если сервер возвращает просто число:
       return typeof response.data === "number"
         ? response.data
         : response.data?.userId || null;
     } catch (err) {
-      console.log("Ошибка при подтверждении кода:", err);
       setError(err.response?.data?.message || "Ошибка подтверждения кода");
       setLoading(false);
       return null;
