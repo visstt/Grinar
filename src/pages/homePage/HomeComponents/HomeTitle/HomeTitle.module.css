@@ -2,8 +2,9 @@
   z-index: 1;
   height: 650px;
   width: 100%;
-  background: linear-gradient(180deg, #141414 23%, rgba(20, 20, 20, 0) 100%),
-    url("/images/background.png");
+  background:
+    linear-gradient(180deg, #141414 23%, rgba(20, 20, 20, 0) 100%),
+    url("/images/homeBackground.png");
   background-repeat: no-repeat;
   background-size: cover;
 }

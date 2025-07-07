@@ -1,0 +1,90 @@
+.background {
+  z-index: 1;
+  height: 650px;
+  width: 100%;
+
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 70%),
+    linear-gradient(150deg, #141414 23%, rgba(20, 20, 20, 0) 100%),
+    url("/images/profileBackground.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.user_info {
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+.user_info__details {
+  display: flex;
+  gap: 30px;
+}
+.user_info h1 {
+  font-family: Unbounded;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 100%;
+}
+.user_info p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+}
+.user_logo {
+  display: flex;
+  justify-content: center;
+  margin-top: 150px;
+}
+.user_logo img {
+  width: 150px;
+  height: 150px;
+  border-radius: 20px;
+}
+.user_stats {
+  margin-top: 140px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+.stats {
+  display: flex;
+  gap: 20px;
+}
+.inf {
+  display: flex;
+  gap: 10px;
+  width: 75px;
+}
+.inf img {
+  width: 25px;
+  height: 25px;
+}
+.inf p {
+  font-weight: 400;
+  font-size: 16px;
+}
+.settingsBtn {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+
+  background-color: #202020;
+  backdrop-filter: blur(16px);
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #fff;
+}
+.settingsBtn:hover {
+  background-color: #353535;
+  transition: 0.3s ease-in-out;
+}
+.settingsBtn p {
+  font-weight: 600;
+  font-size: 14px;
+}

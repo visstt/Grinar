@@ -1,5 +1,5 @@
+import Header from "../../../../shared/ui/components/header/Header";
 import styles from "./HomeTitle.module.css";
-import Header from "../../../../shared/ui/header/Header";
 
 export default function HomeTitle() {
   return (
@@ -7,7 +7,7 @@ export default function HomeTitle() {
       <Header />
       <div className="container">
         <div className={styles.wrapper}>
-          <h1>Лучшее на GRINAR</h1>
+          <h1>Лучшее на GRINAR</h1>
           <p>16 октября</p>
           <button>Найти специалиста</button>
         </div>
