@@ -44,7 +44,7 @@ export default function Header() {
         <div className={styles.header_wrapper}>
           <div className={styles.header_wrapper__logo}>
             <Link to="/">
-              <img src={mainLogo} alt="mainLogo" />
+              <img src={mainLogo} alt="mainLogo" className={styles.logo}/>
             </Link>
           </div>
 
