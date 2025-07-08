@@ -1,7 +1,7 @@
 import {
   getProjectPhotoUrl,
   getUserLogoUrl,
-} from "../../../../shared/utils/getProjectImageUrl";
+} from "../../../utils/getProjectImageUrl";
 import styles from "./Card.module.css";
 
 export default function Card({ project }) {

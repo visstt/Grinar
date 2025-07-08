@@ -2,14 +2,20 @@ import api from "../api/api";
 
 const API_URL = api.defaults.baseURL?.replace(/\/$/, "") || "";
 
+export function getPhotoUrl(type, filename) {
+  if (!filename) {
+    if (type === "avatar") return "/icons/Sample_User_Icon.png";
+    if (type === "project") return "/images/cardImage.png";
+    if (type === "cover") return "/images/defaultCover.png";
+    return "";
+  }
+  return `${API_URL}/photo/photo/${type}/${filename}`;
+}
+
 export function getProjectPhotoUrl(filename) {
-  return filename
-    ? `${API_URL}/project/photo/${filename}`
-    : "/images/cardImage.png";
+  return getPhotoUrl("project", filename);
 }
 
 export function getUserLogoUrl(filename) {
-  return filename
-    ? `${API_URL}/user/photo/${filename}`
-    : "/images/authorImage.svg";
+  return getPhotoUrl("avatar", filename);
 }

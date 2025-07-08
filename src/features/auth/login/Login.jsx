@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
 
+import { useUserStore } from "../../../shared/store/userStore";
 import ForgotPassword from "./ForgotPassword";
 import styles from "./Login.module.css";
 import { useLogin } from "./hooks/useLogin";
@@ -14,6 +15,7 @@ export default function Login({ onSuccess }) {
   const [password, setPassword] = useState("");
   const { login, loading, error } = useLogin();
   const [forgot, setForgot] = useState(false);
+  const setUser = useUserStore((state) => state.setUser);
 
   if (forgot) {
     return <ForgotPassword onSuccess={() => setForgot(false)} />;
@@ -28,6 +30,7 @@ export default function Login({ onSuccess }) {
           e.preventDefault();
           const res = await login(email, password);
           if (res) {
+            setUser({ logoFileName: res.logoFileName });
             toast.success("Успешная авторизация!");
             if (onSuccess) onSuccess();
           }

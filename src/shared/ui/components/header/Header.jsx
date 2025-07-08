@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import Login from "../../../../features/auth/login/Login";
 import Registration from "../../../../features/auth/registration/Registration";
 import RegistrationStep2 from "../../../../features/auth/registration/RegistrationStep2";
+import { useUserStore } from "../../../store/userStore";
+import { getUserLogoUrl } from "../../../utils/getProjectImageUrl";
+import Button from "../button/Button";
 import styles from "./Header.module.css";
 import mainLogo from "/icons/mainLogo.svg";
 
@@ -12,9 +15,17 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [registrationOpen, setRegistrationOpen] = useState(false);
-
   const [registrationStep, setRegistrationStep] = useState(1);
   const [registrationEmail, setRegistrationEmail] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
+  const user = useUserStore((state) => state.user);
+  const logout = useUserStore((state) => state.logout);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 950);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     if (loginOpen || registrationOpen) {
@@ -44,56 +55,160 @@ export default function Header() {
         <div className={styles.header_wrapper}>
           <div className={styles.header_wrapper__logo}>
             <Link to="/">
-              <img src={mainLogo} alt="mainLogo" className={styles.logo}/>
+              <img src={mainLogo} alt="mainLogo" className={styles.logo} />
             </Link>
           </div>
 
           <div
             className={`${styles.burger} ${menuOpen ? styles.open : ""}`}
             onClick={() => setMenuOpen(!menuOpen)}
+            style={{ display: isMobile ? "block" : "none" }}
           >
             <span></span>
           </div>
 
+          {/* Desktop: nav и кнопки */}
+          {!isMobile && (
+            <>
+              <nav
+                className={`${styles.header_wrapper__nav} ${user ? styles.centeredNav : ""}`}
+              >
+                <div className={styles.navContentWrapper}>
+                  <ul>
+                    <li>Главная</li>
+                    <li>Проекты</li>
+                    <li>Специалисты</li>
+                    <li>Работа</li>
+                  </ul>
+                </div>
+              </nav>
+              <div className={styles.header_wrapper__buttons}>
+                {user ? (
+                  <>
+                    <Button
+                      variant="secondary"
+                      className={styles.header_wrapper__addProject}
+                    >
+                      Добавить проект
+                    </Button>
+                    <img
+                      src={getUserLogoUrl(user.logoFileName)}
+                      alt="user"
+                      className={styles.userLogo}
+                      style={{
+                        width: 50,
+                        height: 50,
+                        borderRadius: "20%",
+                        marginLeft: 16,
+                        objectFit: "cover",
+                        cursor: "pointer",
+                      }}
+                      onClick={logout}
+                      title="Выйти"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="primary"
+                      className={styles.header_wrapper__login}
+                      onClick={() => {
+                        setLoginOpen(true);
+                        setMenuOpen(false);
+                      }}
+                    >
+                      Войти
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      className={styles.header_wrapper__registration}
+                      onClick={() => {
+                        setRegistrationOpen(true);
+                        setMenuOpen(false);
+                      }}
+                    >
+                      Зарегистрироваться
+                    </Button>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Мобильное меню: только при menuOpen */}
+          {isMobile && menuOpen && (
+            <nav className={`${styles.header_wrapper__nav} ${styles.open}`}>
+              <div className={styles.navContentWrapper}>
+                <ul>
+                  <li>Главная</li>
+                  <li>Проекты</li>
+                  <li>Специалисты</li>
+                  <li>Работа</li>
+                </ul>
+                <div
+                  className={styles.header_wrapper__buttons}
+                  style={{ marginTop: 32 }}
+                >
+                  {user ? (
+                    <>
+                      <Button
+                        variant="secondary"
+                        className={styles.header_wrapper__addProject}
+                      >
+                        Добавить проект
+                      </Button>
+                      <img
+                        src={getUserLogoUrl(user.logoFileName)}
+                        alt="user"
+                        className={styles.userLogo}
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: "50%",
+                          marginLeft: 16,
+                          objectFit: "cover",
+                          cursor: "pointer",
+                        }}
+                        onClick={logout}
+                        title="Выйти"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        variant="primary"
+                        className={styles.header_wrapper__login}
+                        onClick={() => {
+                          setLoginOpen(true);
+                          setMenuOpen(false);
+                        }}
+                      >
+                        Войти
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        className={styles.header_wrapper__registration}
+                        onClick={() => {
+                          setRegistrationOpen(true);
+                          setMenuOpen(false);
+                        }}
+                      >
+                        Зарегистрироваться
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </nav>
+          )}
+
+          {/* Overlay для мобильного меню */}
           {menuOpen && (
             <div
               className={`${styles.backdrop} ${menuOpen ? styles.open : ""}`}
               onClick={() => setMenuOpen(false)}
             ></div>
           )}
-
-          <nav
-            className={`${styles.header_wrapper__nav} ${
-              menuOpen ? styles.open : ""
-            }`}
-          >
-            <ul>
-              <li>Главная</li>
-              <li>Проекты</li>
-              <li>Специалисты</li>
-              <li>Работа</li>
-            </ul>
-            <div className={styles.header_wrapper__buttons}>
-              <button
-                className={styles.header_wrapper__login}
-                onClick={() => {
-                  setLoginOpen(true);
-                  setMenuOpen(false);
-                }}
-              >
-                Войти
-              </button>
-              <button
-                className={styles.header_wrapper__registration}
-                onClick={() => {
-                  setRegistrationOpen(true);
-                  setMenuOpen(false);
-                }}
-              >
-                Зарегистрироваться
-              </button>
-            </div>
-          </nav>
         </div>
       </div>
       <div className={styles.stripe}></div>
@@ -136,7 +251,7 @@ export default function Header() {
               email={registrationEmail}
               onSuccess={() => {
                 handleCloseRegistration();
-                setRegistrationStep(1); 
+                setRegistrationStep(1);
                 setRegistrationEmail("");
               }}
             />

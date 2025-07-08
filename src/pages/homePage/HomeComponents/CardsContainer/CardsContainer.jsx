@@ -1,5 +1,5 @@
+import Card from "../../../../shared/ui/components/Card/Card";
 import useProjects from "../../hooks/useProjects";
-import Card from "../Card/Card";
 import styles from "./CardsContainer.module.css";
 
 export default function CardsContainer() {

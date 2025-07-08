@@ -11,7 +11,7 @@ function App() {
     <>
       <ToastContainer />
       <RouterProvider router={router} />
-      {/* <Footer/> */}
+      <Footer />
     </>
   );
 }

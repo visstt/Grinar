@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import { useUserStore } from "../../../shared/store/userStore";
 import styles from "./Registration.module.css";
 import RegistrationStep2 from "./RegistrationStep2";
 import { useRegistration } from "./hooks/useRegistration";
@@ -17,8 +18,8 @@ export default function Registration() {
   const [repassword, setRepassword] = useState("");
   const [policyChecked, setPolicyChecked] = useState(false);
   const [step, setStep] = useState(1);
-
   const { register, loading, error } = useRegistration();
+  const setUser = useUserStore((state) => state.setUser);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +31,7 @@ export default function Registration() {
       repassword,
     });
     if (res) {
+      setUser({ logoFileName: res.logoFileName });
       setStep(2);
     }
   };

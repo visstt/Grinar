@@ -1,0 +1,48 @@
+.form_group {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+.form_group label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 5px;
+}
+.form_group input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+}
+.form_group select {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 9px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+}
+
+.form_group select option {
+  background-color: #232323;
+  color: #fff;
+}
+
+.form_group textarea {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  resize: none;
+  min-height: unset;
+  width: 560px;
+  height: 250px;
+  box-sizing: border-box;
+}

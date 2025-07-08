@@ -1,9 +1,13 @@
 import React from "react";
 
+import { useNavigate } from "react-router-dom";
+
+import Button from "../../../../shared/ui/components/button/Button";
 import Header from "../../../../shared/ui/components/header/Header";
 import styles from "./ProfileTtile.module.css";
 
 export default function ProfileTitle() {
+  const navigate = useNavigate();
   return (
     <div className={styles.background}>
       <Header />
@@ -37,10 +41,13 @@ export default function ProfileTitle() {
             </div>
 
             <div className={styles.settings}>
-              <button className={styles.settingsBtn}>
+              <Button
+                variant="secondary"
+                onClick={() => navigate("/profile-info")}
+              >
                 <img src="/icons/setting.svg" alt="settings" />
                 <p>Настройки</p>
-              </button>
+              </Button>
             </div>
           </div>
         </div>

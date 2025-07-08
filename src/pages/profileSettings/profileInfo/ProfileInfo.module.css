@@ -1,0 +1,53 @@
+.profile_info {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(20, 20, 20, 1);
+  color: #fff;
+  padding-bottom: 50px;
+}
+.wrapper h2 {
+  font-family: Unbounded;
+  font-weight: 800;
+  font-size: 24px;
+  padding: 40px 40px 20px 40px;
+}
+.form {
+  display: flex;
+  padding: 20px 40px;
+  gap: 20px;
+}
+.form_group {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+.form_group label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 5px;
+}
+.form_group input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+}
+.group {
+  max-width: 300px;
+}
+.label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 5px;
+}
+.wrapper h3 {
+  font-family: Manrope;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.5);
+
+  padding: 10px 10px 10px 40px;
+}
