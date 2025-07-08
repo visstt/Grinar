@@ -9,7 +9,7 @@ export const useUserStore = create(
       logout: () => set({ user: null }),
     }),
     {
-      name: "user-storage", // ключ в localStorage
+      name: "user-storage", 
     },
   ),
 );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Login from "../../../../features/auth/login/Login";
 import Registration from "../../../../features/auth/registration/Registration";
@@ -20,6 +20,7 @@ export default function Header() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
   const user = useUserStore((state) => state.user);
   const logout = useUserStore((state) => state.logout);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 950);
@@ -67,7 +68,6 @@ export default function Header() {
             <span></span>
           </div>
 
-          {/* Desktop: nav и кнопки */}
           {!isMobile && (
             <>
               <nav
@@ -103,8 +103,8 @@ export default function Header() {
                         objectFit: "cover",
                         cursor: "pointer",
                       }}
-                      onClick={logout}
-                      title="Выйти"
+                      onClick={() => navigate("/profile")}
+                      title="Профиль"
                     />
                   </>
                 ) : (
@@ -135,7 +135,6 @@ export default function Header() {
             </>
           )}
 
-          {/* Мобильное меню: только при menuOpen */}
           {isMobile && menuOpen && (
             <nav className={`${styles.header_wrapper__nav} ${styles.open}`}>
               <div className={styles.navContentWrapper}>
@@ -169,8 +168,8 @@ export default function Header() {
                           objectFit: "cover",
                           cursor: "pointer",
                         }}
-                        onClick={logout}
-                        title="Выйти"
+                        onClick={() => navigate("/profile")}
+                        title="Профиль"
                       />
                     </>
                   ) : (
@@ -202,7 +201,6 @@ export default function Header() {
             </nav>
           )}
 
-          {/* Overlay для мобильного меню */}
           {menuOpen && (
             <div
               className={`${styles.backdrop} ${menuOpen ? styles.open : ""}`}

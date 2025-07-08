@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
     element: <ProfilePage />,
   },
   {
-    path: "/profile-info",
+    path: "/profile/profile-info",
     element: <ProfileInfo />,
   },
 ]);
