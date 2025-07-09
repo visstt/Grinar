@@ -19,7 +19,6 @@ export default function Header() {
   const [registrationEmail, setRegistrationEmail] = useState("");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
   const user = useUserStore((state) => state.user);
-  const logout = useUserStore((state) => state.logout);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -215,11 +214,32 @@ export default function Header() {
         <div
           className={`${styles.loginBackdrop} ${loginOpen ? styles.open : ""}`}
           onClick={() => setLoginOpen(false)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(20,20,20,0.4)",
+            backdropFilter: "blur(8px)",
+            zIndex: 2000,
+            transition: "opacity 0.3s ease-in-out",
+          }}
         ></div>
       )}
       {loginOpen && (
         <div
           className={`${styles.loginWrapper} ${loginOpen ? styles.open : ""}`}
+          style={{
+            position: "fixed",
+            top: 0,
+            right: 32,
+            left: "auto",
+            transform: "none",
+            zIndex: 2001,
+            maxWidth: 400,
+            width: "90vw",
+          }}
         >
           <Login onSuccess={() => setLoginOpen(false)} />
         </div>
@@ -227,17 +247,34 @@ export default function Header() {
 
       {registrationOpen && (
         <div
-          className={`${styles.loginBackdrop} ${
-            registrationOpen ? styles.open : ""
-          }`}
+          className={`${styles.loginBackdrop} ${registrationOpen ? styles.open : ""}`}
           onClick={handleCloseRegistration}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(20,20,20,0.4)",
+            backdropFilter: "blur(8px)",
+            zIndex: 2000,
+            transition: "opacity 0.3s ease-in-out",
+          }}
         ></div>
       )}
       {registrationOpen && (
         <div
-          className={`${styles.registrationWrapper} ${
-            registrationOpen ? styles.open : ""
-          }`}
+          className={`${styles.registrationWrapper} ${registrationOpen ? styles.open : ""}`}
+          style={{
+            position: "fixed",
+            top: 0,
+            right: 32,
+            left: "auto",
+            transform: "none",
+            zIndex: 2001,
+            maxWidth: 400,
+            width: "90vw",
+          }}
         >
           {registrationStep === 1 ? (
             <Registration

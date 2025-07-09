@@ -1,5 +1,6 @@
 .registration_wrapper {
   width: 600px;
+  height: 100vh;
   background-color: #141414;
   padding: 40px;
   display: flex;
@@ -7,11 +8,10 @@
   gap: 20px;
   position: fixed;
   z-index: 1000;
-  top: 90px;
   right: 0;
   transition: right 0.3s ease-in-out;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: start;
   text-align: left;
 }
 .registration_wrapper h3 {

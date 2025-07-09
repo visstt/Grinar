@@ -1,0 +1,35 @@
+.profile_notifications {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(20, 20, 20, 1);
+  color: #fff;
+  padding-bottom: 50px;
+}
+.wrapper h2 {
+  font-family: Unbounded;
+  font-weight: 800;
+  font-size: 24px;
+  padding: 40px 40px 20px 40px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  gap: 20px;
+
+  height: 35vh;
+}
+.form_group {
+  display: flex;
+  gap: 10px;
+}
+.form_group label {
+  font-weight: 400;
+  font-size: 16px;
+}
+
+@media (min-height: 854px) {
+  .form {
+    height: 50vh;
+  }
+}

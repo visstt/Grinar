@@ -1,0 +1,72 @@
+.profile_decor {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(20, 20, 20, 1);
+  color: #fff;
+  padding-bottom: 50px;
+}
+.wrapper h2 {
+  font-family: Unbounded;
+  font-weight: 800;
+  font-size: 24px;
+  padding: 40px 40px 20px 40px;
+}
+.form {
+  display: flex;
+  padding: 20px 40px;
+  gap: 20px;
+}
+.form_group {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+.form label {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.form {
+  display: flex;
+  justify-content: space-between;
+}
+.img_form {
+  display: flex;
+}
+.img_form2 {
+  display: flex;
+  flex-direction: column;
+}
+.btn_container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.btn {
+  width: 120px;
+  height: 40px;
+}
+
+.fileInput {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #195ee6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease-in-out;
+  width: 120px;
+  height: 40px;
+}
+.fileInput:hover {
+  background: #336ad8;
+}
+.fileInput:disabled {
+  background: #b3c6e6;
+  cursor: not-allowed;
+}

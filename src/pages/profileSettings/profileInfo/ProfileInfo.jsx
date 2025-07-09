@@ -2,7 +2,7 @@ import Input from "../../../shared/ui/components/input/Input";
 import Select from "../../../shared/ui/components/input/Select";
 import Textarea from "../../../shared/ui/components/input/Textarea";
 import useProfileInfoAutoSave from "../../profilePage/hooks/useProfileInfoAutoSave";
-import ProfileSettingsHeader from "../ProfileSettingsHeader";
+import ProfileSettingsHeader from "../../profilePage/profileComponents/profileSettingsHeader/ProfileSettingsHeader";
 import styles from "./ProfileInfo.module.css";
 
 export default function ProfileInfo() {
@@ -32,7 +32,6 @@ export default function ProfileInfo() {
               <Input
                 label="Имя"
                 id="name"
-                placeholder="Имя"
                 value={form.name || ""}
                 onChange={handleChange}
                 autoComplete="off"
@@ -40,7 +39,6 @@ export default function ProfileInfo() {
               <Input
                 label="Фамилия"
                 id="surname"
-                placeholder="Фамилия"
                 value={form.surname || ""}
                 onChange={handleChange}
                 autoComplete="off"
@@ -48,7 +46,6 @@ export default function ProfileInfo() {
               <Input
                 label="Город"
                 id="city"
-                placeholder="Город"
                 value={form.city || ""}
                 onChange={handleChange}
                 autoComplete="off"
@@ -83,7 +80,6 @@ export default function ProfileInfo() {
               <Input
                 label="Текущий уровень"
                 id="level"
-                placeholder="Текущий уровень"
                 value={form.level || ""}
                 onChange={handleChange}
                 autoComplete="off"
@@ -124,7 +120,6 @@ export default function ProfileInfo() {
               <Input
                 label="Сайт"
                 id="website"
-                placeholder="Ссылка на сайт"
                 value={form.website || ""}
                 onChange={handleChange}
                 autoComplete="off"
@@ -133,7 +128,6 @@ export default function ProfileInfo() {
                 <Input
                   label="Телефон"
                   id="phoneNumber"
-                  placeholder="+7 000 000 00 00"
                   value={form.phoneNumber || ""}
                   onChange={handleChange}
                   autoComplete="off"
@@ -147,7 +141,6 @@ export default function ProfileInfo() {
                 <Input
                   label="Электронная почта"
                   id="email"
-                  placeholder="example@info.com"
                   value={form.email || ""}
                   onChange={handleChange}
                   autoComplete="off"
@@ -163,7 +156,6 @@ export default function ProfileInfo() {
               <Input
                 label="Вконтакте"
                 id="vk"
-                placeholder="https://vk.com/your_account"
                 value={form.vk || ""}
                 onChange={handleChange}
                 autoComplete="off"
@@ -171,7 +163,6 @@ export default function ProfileInfo() {
               <Input
                 label="Телеграм"
                 id="telegram"
-                placeholder="https://t.me/your_account"
                 value={form.telegram || ""}
                 onChange={handleChange}
                 autoComplete="off"

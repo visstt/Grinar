@@ -1,16 +1,10 @@
-import React from "react";
-
-import { useNavigate } from "react-router-dom";
-
 import Button from "../../../../shared/ui/components/button/Button";
 import Header from "../../../../shared/ui/components/header/Header";
-import { getUserLogoUrl } from "../../../../shared/utils/getProjectImageUrl";
 import useMainSettings from "../../hooks/useMainSettings";
 import useSpecializations from "../../hooks/useSpecializations";
-import styles from "./ProfileTtile.module.css";
+import styles from "./ProfileSettingsHeader.module.css";
 
-export default function ProfileTitle() {
-  const navigate = useNavigate();
+export default function ProfileSettingsHeader() {
   const { settings, loading, error } = useMainSettings();
   const { specializations, loading: specLoading } = useSpecializations();
 
@@ -48,39 +42,11 @@ export default function ProfileTitle() {
               </>
             )}
           </div>
-          <div className={styles.user_logo}>
-            {settings ? (
-              <img src={getUserLogoUrl(settings.logoFileName)} alt="userLogo" />
-            ) : (
-              <img src="/icons/userLogo.png" alt="userLogo" />
-            )}
-          </div>
-
-          <div className={styles.user_stats}>
-            <div className={styles.stats}>
-              <div className={styles.inf}>
-                <img src="/icons/star.svg" alt="star" />
-                <p>1 296</p>
-              </div>
-              <div className={styles.inf}>
-                <img src="/icons/like.svg" alt="like" />
-                <p>138</p>
-              </div>
-              <div className={styles.inf}>
-                <img src="/icons/profile-2user.svg" alt="user" />
-                <p>24</p>
-              </div>
-            </div>
-
-            <div className={styles.settings}>
-              <Button
-                variant="secondary"
-                onClick={() => navigate("/profile/profile-info")}
-              >
-                <img src="/icons/setting.svg" alt="settings" />
-                <p>Настройки</p>
-              </Button>
-            </div>
+          <div className={styles.btn_wrapper}>
+            <Button variant="primary">Информация</Button>
+            <Button variant="secondary">Оформление</Button>
+            <Button variant="secondary">Уведомления</Button>
+            <Button variant="secondary">Аккаунт</Button>
           </div>
         </div>
       </div>
