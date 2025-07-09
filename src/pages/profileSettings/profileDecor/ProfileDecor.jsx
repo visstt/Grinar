@@ -81,6 +81,7 @@ export default function ProfileDecor() {
                   objectFit: "cover",
                   borderRadius: 20,
                 }}
+                className={styles.coverImage}
               />
               <label style={{ color: "rgba(255, 255, 255, 0.5)" }}>
                 Рекомендуемый размер 3200x840 px

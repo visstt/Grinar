@@ -51,3 +51,31 @@
 
   padding: 10px 10px 10px 40px;
 }
+@media (max-width: 600px) {
+  .wrapper h2 {
+    font-size: 18px;
+    padding: 24px 16px 12px 16px;
+  }
+  .form {
+    flex-direction: column;
+    padding: 12px 8px;
+    gap: 12px;
+    align-items: center;
+  }
+  .form_group {
+    width: 100%;
+  }
+  .profile_account {
+    align-items: center;
+    text-align: center;
+  }
+}
+@media (max-width: 400px) {
+  .wrapper h2 {
+    font-size: 15px;
+    padding: 12px 4px 8px 4px;
+  }
+  .form {
+    padding: 6px 2px;
+  }
+}

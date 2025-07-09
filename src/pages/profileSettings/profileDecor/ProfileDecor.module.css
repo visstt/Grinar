@@ -70,3 +70,39 @@
   background: #b3c6e6;
   cursor: not-allowed;
 }
+.coverImage {
+  max-width: 90%;
+}
+
+@media (max-width: 600px) {
+  .wrapper h2 {
+    font-size: 18px;
+    padding: 24px 16px 12px 16px;
+  }
+  .form {
+    flex-direction: column;
+    padding: 12px 8px;
+    gap: 12px;
+  }
+  .form_group {
+    width: 100%;
+  }
+  .btn {
+    width: 100%;
+    min-width: 100px;
+    height: 36px;
+  }
+  .coverImage {
+    max-width: 100%;
+    height: auto;
+  }
+}
+@media (max-width: 400px) {
+  .wrapper h2 {
+    font-size: 15px;
+    padding: 12px 4px 8px 4px;
+  }
+  .form {
+    padding: 6px 2px;
+  }
+}

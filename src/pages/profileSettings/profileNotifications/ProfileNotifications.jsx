@@ -12,7 +12,7 @@ export default function ProfileNotifications() {
       <div className={styles.profile_notifications}>
         <div className={styles.wrapper}>
           <h2>Уведомления</h2>
-          <div className="stripe"></div>
+          <div className={styles.stripe}></div>
           {loading ? (
             <div className={styles.form}>Загрузка...</div>
           ) : error ? (
