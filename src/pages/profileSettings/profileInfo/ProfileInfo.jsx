@@ -13,8 +13,6 @@ export default function ProfileInfo() {
     specializations,
     loading,
     error,
-    updateError,
-    success,
   } = useProfileInfoAutoSave();
 
   if (loading || !form) return <div>Загрузка...</div>;
@@ -169,8 +167,6 @@ export default function ProfileInfo() {
               />
             </div>
           </div>
-          {updateError && <div className={styles.error}>{updateError}</div>}
-          {success && <div className={styles.success}>Сохранено!</div>}
         </form>
       </div>
     </>

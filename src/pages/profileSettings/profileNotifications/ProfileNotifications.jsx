@@ -11,7 +11,7 @@ export default function ProfileNotifications() {
       <ProfileSettingsHeader />
       <div className={styles.profile_notifications}>
         <div className={styles.wrapper}>
-          <h2>Профиль</h2>
+          <h2>Уведомления</h2>
           <div className="stripe"></div>
           {loading ? (
             <div className={styles.form}>Загрузка...</div>

@@ -1,12 +1,19 @@
+import { useLocation, useNavigate } from "react-router-dom";
+
 import Button from "../../../../shared/ui/components/button/Button";
 import Header from "../../../../shared/ui/components/header/Header";
+import { getPhotoUrl } from "../../../../shared/utils/getProjectImageUrl";
 import useMainSettings from "../../hooks/useMainSettings";
+import useProfileDecorSettings from "../../hooks/useProfileDecorSettings";
 import useSpecializations from "../../hooks/useSpecializations";
 import styles from "./ProfileSettingsHeader.module.css";
 
 export default function ProfileSettingsHeader() {
   const { settings, loading, error } = useMainSettings();
   const { specializations, loading: specLoading } = useSpecializations();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { coverFileName } = useProfileDecorSettings();
 
   let specializationNames = [];
   if (settings && specializations.length > 0 && settings.specializations) {
@@ -18,8 +25,25 @@ export default function ProfileSettingsHeader() {
       .filter(Boolean);
   }
 
+  // Определяем активную страницу
+  const currentPath = location.pathname;
+
+  // Формируем url для cover
+  const coverUrl = coverFileName
+    ? getPhotoUrl("cover", coverFileName)
+    : undefined;
+
   return (
-    <div className={styles.background}>
+    <div
+      className={styles.background}
+      style={
+        coverUrl
+          ? {
+              backgroundImage: `url(${coverUrl}), radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 70%), linear-gradient(150deg, #141414 23%, rgba(20, 20, 20, 0) 100%)`,
+            }
+          : {}
+      }
+    >
       <Header />
       <div className="container">
         <div className={styles.wrapper}>
@@ -43,10 +67,46 @@ export default function ProfileSettingsHeader() {
             )}
           </div>
           <div className={styles.btn_wrapper}>
-            <Button variant="primary">Информация</Button>
-            <Button variant="secondary">Оформление</Button>
-            <Button variant="secondary">Уведомления</Button>
-            <Button variant="secondary">Аккаунт</Button>
+            <Button
+              variant={
+                currentPath === "/profile/profile-info"
+                  ? "primary"
+                  : "secondary"
+              }
+              onClick={() => navigate("/profile/profile-info")}
+            >
+              Информация
+            </Button>
+            <Button
+              variant={
+                currentPath === "/profile/profile-decor"
+                  ? "primary"
+                  : "secondary"
+              }
+              onClick={() => navigate("/profile/profile-decor")}
+            >
+              Оформление
+            </Button>
+            <Button
+              variant={
+                currentPath === "/profile/profile-notifications"
+                  ? "primary"
+                  : "secondary"
+              }
+              onClick={() => navigate("/profile/profile-notifications")}
+            >
+              Уведомления
+            </Button>
+            <Button
+              variant={
+                currentPath === "/profile/profile-account"
+                  ? "primary"
+                  : "secondary"
+              }
+              onClick={() => navigate("/profile/profile-account")}
+            >
+              Аккаунт
+            </Button>
           </div>
         </div>
       </div>

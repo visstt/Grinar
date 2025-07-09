@@ -7,7 +7,7 @@ export default function HomeTitle() {
       <Header />
       <div className="container">
         <div className={styles.wrapper}>
-          <h1>Лучшее на GRINAR</h1>
+          <h1>Лучшее на BENTY</h1>
           <p>16 октября</p>
           <button>Найти специалиста</button>
         </div>
