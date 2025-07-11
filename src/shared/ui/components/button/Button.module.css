@@ -31,3 +31,10 @@
 .secondary:hover {
   background-color: #353535;
 }
+.default {
+  background-color: #d2dfff80;
+  color: #195ee680;
+}
+.default:hover {
+  background-color: #d2dfff;
+}

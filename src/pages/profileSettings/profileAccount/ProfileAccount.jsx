@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import Button from "../../../shared/ui/components/button/Button";
 import Input from "../../../shared/ui/components/input/Input";
 import ProfileSettingsHeader from "../../profilePage/profileComponents/profileSettingsHeader/ProfileSettingsHeader";
 import ChangeLoginModal from "./ChangeLoginModal";
@@ -13,11 +14,10 @@ export default function ProfileAccount() {
     loading,
     error,
     success,
-    step,
     code,
     setCode,
     sendLogin,
-    verifyCode,
+    verifyLoginCode,
     setStep,
     setSuccess,
   } = useChangeLogin();
@@ -25,7 +25,7 @@ export default function ProfileAccount() {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     await sendLogin(loginInput);
-    setShowModal(true); // Открываем модалку только после успешной отправки
+    setShowModal(true);
   };
 
   const handleModalClose = () => {
@@ -37,7 +37,7 @@ export default function ProfileAccount() {
 
   const handleCodeSubmit = async (e) => {
     e.preventDefault();
-    await verifyCode(code);
+    await verifyLoginCode(code);
     if (success) {
       setShowModal(false);
       setLoginInput("");
@@ -55,35 +55,37 @@ export default function ProfileAccount() {
                 <h2>Учетная запись</h2>
                 <div className="stripe"></div>
                 <div className={styles.form}>
-                  <div className={styles.group}>
-                    <Input
-                      label="Логин"
-                      id="login"
-                      autoComplete="off"
-                      value={loginInput}
-                      onChange={(e) => setLoginInput(e.target.value)}
-                    />
-                    <button
+                  <div className={styles.btn_container}>
+                    <div className={styles.group}>
+                      <Input
+                        label="Логин"
+                        id="login"
+                        autoComplete="off"
+                        value={loginInput}
+                        onChange={(e) => setLoginInput(e.target.value)}
+                      />
+                      {error && (
+                        <div className={styles.error}>
+                          {typeof error === "string"
+                            ? error
+                            : error?.message ||
+                              error?.error ||
+                              JSON.stringify(error)}
+                        </div>
+                      )}
+                      <label className={styles.label}>
+                        Логин можно менять не чаще одного раза в месяц.
+                        Потребуется ввод кода с почты.
+                      </label>
+                    </div>
+                    <Button
                       type="button"
                       className={styles.submit_btn}
                       disabled={loading || !loginInput}
                       onClick={handleLoginSubmit}
                     >
                       {loading ? "Отправляем..." : "Сменить логин"}
-                    </button>
-                    {error && (
-                      <div className={styles.error}>
-                        {typeof error === "string"
-                          ? error
-                          : error?.message ||
-                            error?.error ||
-                            JSON.stringify(error)}
-                      </div>
-                    )}
-                    <label className={styles.label}>
-                      Логин можно менять не чаще одного раза в месяц.
-                      Потребуется ввод кода с почты.
-                    </label>
+                    </Button>
                   </div>
                   <div className={styles.group}>
                     <Input

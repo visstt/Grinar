@@ -62,8 +62,8 @@ export default function ProfileTitle() {
           </div>
           <div className={styles.btn_container}>
             <Button variant="primary">Проекты</Button>
-            <Button variant="secondary">Информация</Button>
-            <Button variant="secondary">Подписки</Button>
+            <Button variant="default">Информация</Button>
+            <Button variant="default">Подписки</Button>
           </div>
         </div>
       </div>

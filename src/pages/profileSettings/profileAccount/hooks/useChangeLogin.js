@@ -25,18 +25,24 @@ export default function useChangeLogin() {
     }
   };
 
-  // Подтверждение кода
-  const verifyCode = async (codeValue) => {
+  // Подтверждение кода через GET-запрос
+  const verifyLoginCode = async (codeValue) => {
     setLoading(true);
     setError(null);
     try {
-      await api.post("/user/verify-login-code", { login, code: codeValue });
+      await api.get("/user/verify-login-code", { params: { code: codeValue } });
       setSuccess(true);
       setStep(1);
       setLogin("");
       setCode("");
     } catch (err) {
-      setError(err?.response?.data || err.message || err);
+      // Проверяем наличие специфического сообщения
+      const msg = err?.response?.data?.message || err?.message || err;
+      if (msg === "Логин можно менять только раз в месяц") {
+        setError(msg);
+      } else {
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }
@@ -51,7 +57,7 @@ export default function useChangeLogin() {
     code,
     setCode,
     sendLogin,
-    verifyCode,
+    verifyLoginCode,
     setStep,
     setSuccess,
   };
