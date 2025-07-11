@@ -24,9 +24,11 @@ export default function useProfileDecor() {
     }
     setUploading(true);
     const formData = new FormData();
-    formData.append("photo", file);
+    formData.append("photo", file, file.name); 
     try {
-      await api.put("/user/update-avatar", formData);
+      await api.put("/user/update-avatar", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       // Обновить данные после загрузки
       const res = await api.get("/user/get-decor-settings");
       setDecor(res.data);
@@ -44,10 +46,12 @@ export default function useProfileDecor() {
     }
     setUploading(true);
     const formData = new FormData();
-    formData.append("photo", file);
+    formData.append("photo", file, file.name);
     try {
-      await api.put("/user/update-cover", formData);
-      // Обновить данные после загрузки
+      await api.put("/user/update-cover", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      
       const res = await api.get("/user/get-decor-settings");
       setDecor(res.data);
     } catch (err) {

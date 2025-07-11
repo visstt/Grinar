@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import {
   getProjectPhotoUrl,
   getUserLogoUrl,
-} from "../../../../shared/utils/getProjectImageUrl";
+} from "../../../utils/getProjectImageUrl";
 import styles from "./Specialists.module.css";
 import location from "/icons/location.svg";
 import starBtn from "/icons/starBtn.svg";

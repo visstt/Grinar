@@ -7,58 +7,62 @@ export default function ProfileNotifications() {
     useNotificationSettings();
 
   return (
-    <div className={styles.profile_notifications_container}>
+    <>
       <ProfileSettingsHeader />
-      <div className={styles.profile_notifications}>
-        <div className={styles.wrapper}>
-          <h2>Уведомления</h2>
-          <div className={styles.stripe}></div>
-          {loading ? (
-            <div className={styles.form}>Загрузка...</div>
-          ) : error ? (
-            <div className={styles.form} style={{ color: "red" }}>
-              Ошибка загрузки
+      <div className={styles.main_container}>
+        <div className={styles.settings_container}>
+          <div className={styles.profile_notifications}>
+            <div className={styles.wrapper}>
+              <h2>Уведомления</h2>
+              <div className={styles.stripe}></div>
+              {loading ? (
+                <div className={styles.form}>Загрузка...</div>
+              ) : error ? (
+                <div className={styles.form} style={{ color: "red" }}>
+                  Ошибка загрузки
+                </div>
+              ) : (
+                <form className={styles.form}>
+                  <div className={styles.form_group}>
+                    <input
+                      type="checkbox"
+                      id="rewardNotifications"
+                      checked={!!settings?.rewardNotifications}
+                      onChange={handleChange("rewardNotifications")}
+                      disabled={saving}
+                    />
+                    <label htmlFor="rewardNotifications">Награды</label>
+                  </div>
+                  <div className={styles.form_group}>
+                    <input
+                      type="checkbox"
+                      id="weeklySummaryNotifications"
+                      checked={!!settings?.weeklySummaryNotifications}
+                      onChange={handleChange("weeklySummaryNotifications")}
+                      disabled={saving}
+                    />
+                    <label htmlFor="weeklySummaryNotifications">
+                      Сводка за неделю
+                    </label>
+                  </div>
+                  <div className={styles.form_group}>
+                    <input
+                      type="checkbox"
+                      id="joinAuthorsNotifications"
+                      checked={!!settings?.joinAuthorsNotifications}
+                      onChange={handleChange("joinAuthorsNotifications")}
+                      disabled={saving}
+                    />
+                    <label htmlFor="joinAuthorsNotifications">
+                      Добавление в соавторы
+                    </label>
+                  </div>
+                </form>
+              )}
             </div>
-          ) : (
-            <form className={styles.form}>
-              <div className={styles.form_group}>
-                <input
-                  type="checkbox"
-                  id="rewardNotifications"
-                  checked={!!settings?.rewardNotifications}
-                  onChange={handleChange("rewardNotifications")}
-                  disabled={saving}
-                />
-                <label htmlFor="rewardNotifications">Награды</label>
-              </div>
-              <div className={styles.form_group}>
-                <input
-                  type="checkbox"
-                  id="weeklySummaryNotifications"
-                  checked={!!settings?.weeklySummaryNotifications}
-                  onChange={handleChange("weeklySummaryNotifications")}
-                  disabled={saving}
-                />
-                <label htmlFor="weeklySummaryNotifications">
-                  Сводка за неделю
-                </label>
-              </div>
-              <div className={styles.form_group}>
-                <input
-                  type="checkbox"
-                  id="joinAuthorsNotifications"
-                  checked={!!settings?.joinAuthorsNotifications}
-                  onChange={handleChange("joinAuthorsNotifications")}
-                  disabled={saving}
-                />
-                <label htmlFor="joinAuthorsNotifications">
-                  Добавление в соавторы
-                </label>
-              </div>
-            </form>
-          )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

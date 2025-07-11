@@ -9,11 +9,12 @@
   font-family: Unbounded;
   font-weight: 800;
   font-size: 24px;
-  padding: 40px 40px 20px 40px;
+  padding: 40px 0px 20px 0px;
 }
 .form {
   display: flex;
-  padding: 20px 40px;
+  flex-wrap: wrap;
+  padding: 20px 0px;
   gap: 20px;
 }
 .form_group {
@@ -51,6 +52,11 @@
 
   padding: 10px 10px 10px 40px;
 }
+@media (min-height: 930px) {
+  .form {
+    height: 15vh;
+  }
+}
 @media (max-width: 600px) {
   .wrapper h2 {
     font-size: 18px;
@@ -78,4 +84,15 @@
   .form {
     padding: 6px 2px;
   }
+}
+.settings_container {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+.main_container {
+  width: 100%;
+  background-color: rgba(20, 20, 20, 1);
 }

@@ -9,15 +9,15 @@
   font-family: Unbounded;
   font-weight: 800;
   font-size: 24px;
-  padding: 40px 40px 20px 40px;
+  padding: 40px 0 20px 0;
 }
 .form {
   display: flex;
   flex-direction: column;
-  padding: 20px 40px;
+  padding: 20px 0;
   gap: 20px;
 
-  height: 35vh;
+  height: 37vh;
 }
 .form_group {
   display: flex;
@@ -36,6 +36,11 @@
 @media (min-height: 854px) {
   .form {
     height: 50vh;
+  }
+}
+@media (min-height: 1060px) {
+  .form {
+    height: 55vh;
   }
 }
 @media (max-width: 600px) {
@@ -62,4 +67,15 @@
   .form {
     padding: 6px 2px;
   }
+}
+.settings_container {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+.main_container {
+  width: 100%;
+  background-color: rgba(20, 20, 20, 1);
 }

@@ -1,0 +1,124 @@
+.wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.block h1 {
+  font-family: Unbounded;
+  font-weight: 800;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.line_city {
+  display: flex;
+  justify-content: space-between;
+}
+.line_city h4 {
+  font-family: Manrope;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #14141480;
+}
+.line_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.block_wrapper {
+  min-width: 250px;
+  max-width: 100%;
+  width: auto;
+  padding: 40px;
+  border: 1px solid #195ee61a;
+  box-shadow: 0px 1px 1px 0px #1e3c720d;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  display: inline-block;
+}
+.big_wrapper {
+  min-width: 350px;
+  max-width: 100%;
+  width: 100%;
+  flex: 1 1 0;
+  padding: 40px;
+  border: 1px solid #195ee61a;
+  box-shadow: 0px 1px 1px 0px #1e3c720d;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  display: inline-block;
+}
+.social {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+.social p {
+  font-family: Manrope;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: #14141480;
+}
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.icons img {
+  width: 35px;
+}
+
+@media (max-width: 900px) {
+  .wrapper {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .block_wrapper,
+  .big_wrapper {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    display: block;
+    flex: unset;
+  }
+}
+@media (max-width: 600px) {
+  .block h1 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .block_wrapper,
+  .big_wrapper {
+    padding: 12px;
+    border-radius: 12px;
+  }
+  .line_city h4,
+  .social p {
+    font-size: 13px;
+  }
+  .icons img {
+    width: 28px;
+  }
+}
+@media (max-width: 400px) {
+  .block_wrapper,
+  .big_wrapper {
+    padding: 6px;
+    border-radius: 8px;
+  }
+  .block h1 {
+    font-size: 13px;
+  }
+}

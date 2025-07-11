@@ -1,7 +1,7 @@
+import Specialists from "../../shared/ui/components/specialists/Specialists";
 import CardsContainer from "./HomeComponents/CardsContainer/CardsContainer";
 import HomeInfo from "./HomeComponents/HomeInfo/HomeInfo";
 import HomeTitle from "./HomeComponents/HomeTitle/HomeTitle";
-import Specialists from "./HomeComponents/Specialists/Specialists";
 import styles from "./HomePage.module.css";
 import { useBestSpecialists } from "./hooks/useBestSpecialists";
 
