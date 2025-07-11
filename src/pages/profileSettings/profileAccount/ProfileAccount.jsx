@@ -9,6 +9,7 @@ import ChangeLoginModal from "./ChangeLoginModal";
 import styles from "./ProfileAccount.module.css";
 import useChangeEmail from "./hooks/useChangeEmail";
 import useChangeLogin from "./hooks/useChangeLogin";
+import useChangePassword from "./hooks/useChangePassword";
 import useChangePhone from "./hooks/useChangePhone";
 
 export default function ProfileAccount() {
@@ -18,6 +19,7 @@ export default function ProfileAccount() {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [phoneInput, setPhoneInput] = useState("");
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const {
     loading,
     error,
@@ -58,6 +60,25 @@ export default function ProfileAccount() {
     setStep: setPhoneStep,
     setSuccess: setPhoneSuccess,
   } = useChangePhone();
+
+  const {
+    loading: passwordLoading,
+    error: passwordError,
+    success: passwordSuccess,
+    step: passwordStep,
+    currentPassword,
+    newPassword,
+    newRepassword,
+    code: passwordCode,
+    setCurrentPassword,
+    setNewPassword,
+    setNewRepassword,
+    setCode: setPasswordCode,
+    sendPassword,
+    verifyPasswordCode,
+    setStep: setPasswordStep,
+    setSuccess: setPasswordSuccess,
+  } = useChangePassword();
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -133,6 +154,31 @@ export default function ProfileAccount() {
       setShowPhoneModal(false);
       setPhoneInput("");
       toast.success("Телефон успешно изменён!");
+    }
+  };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    await sendPassword(currentPassword, newPassword, newRepassword);
+    setShowPasswordModal(true);
+  };
+
+  const handlePasswordModalClose = () => {
+    setShowPasswordModal(false);
+    setCurrentPassword("");
+    setNewPassword("");
+    setNewRepassword("");
+    setPasswordCode("");
+    setPasswordStep(1);
+    setPasswordSuccess(false);
+  };
+
+  const handlePasswordCodeSubmit = async (e) => {
+    e.preventDefault();
+    const wasSuccess = await verifyPasswordCode(passwordCode);
+    if (wasSuccess) {
+      setShowPasswordModal(false);
+      toast.success("Пароль успешно изменён!");
     }
   };
 
@@ -220,22 +266,44 @@ export default function ProfileAccount() {
                 <div className={styles.form}>
                   <Input
                     label="Пароль"
-                    id="Пароль"
+                    id="currentPassword"
                     placeholder="Введите текущий пароль"
                     autoComplete="off"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
                   />
                   <Input
                     label="Новый пароль"
-                    id="Новый пароль"
+                    id="newPassword"
                     placeholder="Введите Новый пароль"
                     autoComplete="off"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
                   />
                   <Input
                     label="Пароль"
-                    id="Повтор"
+                    id="newRepassword"
                     placeholder="Повторите новый пароль"
                     autoComplete="off"
+                    value={newRepassword}
+                    onChange={(e) => setNewRepassword(e.target.value)}
                   />
+                  {passwordError && (
+                    <div className={styles.error}>{passwordError}</div>
+                  )}
+                  <Button
+                    type="button"
+                    className={styles.submit_btn}
+                    disabled={
+                      passwordLoading ||
+                      !currentPassword ||
+                      !newPassword ||
+                      !newRepassword
+                    }
+                    onClick={handlePasswordSubmit}
+                  >
+                    {passwordLoading ? "Отправляем..." : "Сменить пароль"}
+                  </Button>
                 </div>
               </div>
             </form>
@@ -272,6 +340,17 @@ export default function ProfileAccount() {
             error={phoneError}
             code={phoneCode}
             setCode={setPhoneCode}
+          />
+        )}
+        {showPasswordModal && (
+          <ChangeLoginModal
+            open={showPasswordModal}
+            onClose={handlePasswordModalClose}
+            onSubmit={handlePasswordCodeSubmit}
+            loading={passwordLoading}
+            error={passwordError}
+            code={passwordCode}
+            setCode={setPasswordCode}
           />
         )}
       </div>

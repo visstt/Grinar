@@ -1,0 +1,67 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.card {
+  background: #181818;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 24px;
+  min-width: 320px;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+.city {
+  font-size: 14px;
+  color: #aaa;
+}
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.project {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #222;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.projectImg {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.projectInfo {
+  display: flex;
+  flex-direction: column;
+}
+.projectName {
+  font-size: 15px;
+  color: #fff;
+}
+.projectCategory {
+  font-size: 13px;
+  color: #aaa;
+}

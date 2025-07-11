@@ -17,6 +17,18 @@ export const router = createBrowserRouter([
     element: <ProfilePage />,
   },
   {
+    path: "/profile/projects",
+    element: <ProfilePage tab="projects" />,
+  },
+  {
+    path: "/profile/main",
+    element: <ProfilePage tab="main" />,
+  },
+  {
+    path: "/profile/subscriptions",
+    element: <ProfilePage tab="subscriptions" />,
+  },
+  {
     path: "/profile/profile-info",
     element: <ProfileInfo />,
   },

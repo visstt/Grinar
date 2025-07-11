@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Button from "../../../../shared/ui/components/button/Button";
 import Header from "../../../../shared/ui/components/header/Header";
@@ -10,6 +10,7 @@ import styles from "./ProfileTtile.module.css";
 
 export default function ProfileTitle() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { profile, loading, error } = useMyProfile();
 
   if (loading) return <div>Загрузка...</div>;
@@ -19,6 +20,17 @@ export default function ProfileTitle() {
         Ошибка: {typeof error === "string" ? error : error?.message || "Ошибка"}
       </div>
     );
+
+  // Определяем активную вкладку по pathname
+  let activeTab = "main";
+  if (location.pathname === "/profile/projects") activeTab = "projects";
+  else if (location.pathname === "/profile/subscriptions")
+    activeTab = "subscriptions";
+  else if (
+    location.pathname === "/profile/main" ||
+    location.pathname === "/profile"
+  )
+    activeTab = "main";
 
   return (
     <div className={styles.background}>
@@ -61,9 +73,24 @@ export default function ProfileTitle() {
             </div>
           </div>
           <div className={styles.btn_container}>
-            <Button variant="primary">Проекты</Button>
-            <Button variant="default">Информация</Button>
-            <Button variant="default">Подписки</Button>
+            <Button
+              variant={activeTab === "projects" ? "primary" : "default"}
+              onClick={() => navigate("/profile/projects")}
+            >
+              Проекты
+            </Button>
+            <Button
+              variant={activeTab === "main" ? "primary" : "default"}
+              onClick={() => navigate("/profile/main")}
+            >
+              Информация
+            </Button>
+            <Button
+              variant={activeTab === "subscriptions" ? "primary" : "default"}
+              onClick={() => navigate("/profile/subscriptions")}
+            >
+              Подписки
+            </Button>
           </div>
         </div>
       </div>
