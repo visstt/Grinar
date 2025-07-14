@@ -6,8 +6,12 @@
   gap: 10px;
   margin-bottom: 40px;
 }
-.card img {
+.imageWrapper {
+  position: relative;
+}
+.imageWrapper img {
   border-radius: 10px;
+  width: 270px;
 }
 .card h3 {
   font-family: Manrope;
@@ -43,6 +47,21 @@
   line-height: 16.39px;
   letter-spacing: 0px;
 }
+.category {
+  position: absolute;
+  left: 10px;
+  bottom: 20px;
+  background: #14141459;
+  backdrop-filter: blur(16px);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: Manrope;
+  font-weight: 500;
+  z-index: 2;
+}
+
 @media (max-width: 600px) {
   .card {
     display: flex;

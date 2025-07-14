@@ -8,7 +8,15 @@ export default function Card({ project }) {
   if (!project) return null;
   return (
     <div className={styles.card}>
-      <img src={getProjectPhotoUrl(project.projectPhotoName)} alt="cardImage" />
+      <div className={styles.imageWrapper}>
+        <img
+          src={getProjectPhotoUrl(project.projectPhotoName)}
+          alt="cardImage"
+        />
+        {project.category && (
+          <span className={styles.category}>{project.category}</span>
+        )}
+      </div>
       <h3>{project.name}</h3>
       <div className={styles.author}>
         <img src={getUserLogoUrl(project.userLogoPhotoName)} alt="authorLogo" />

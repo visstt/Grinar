@@ -20,6 +20,7 @@
 .hero__info img {
   width: 64px;
   height: 64px;
+  border-radius: 10px;
 }
 .info__text h3 {
   font-family: Manrope;
@@ -73,8 +74,11 @@
   align-items: start;
   gap: 12px;
 }
-.photo_card img {
+.imageWrapper img {
   width: 270px;
+}
+.imageWrapper {
+  position: relative;
 }
 .photo_card p {
   font-family: Manrope;
@@ -107,17 +111,35 @@
   line-height: 16px;
   letter-spacing: 0px;
 }
+.category {
+  position: absolute;
+  left: 10px;
+  bottom: 20px;
+  background: #14141459;
+  backdrop-filter: blur(16px);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: Manrope;
+  font-weight: 500;
+  z-index: 2;
+}
 .rating_wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 40px;
 }
-
+.group {
+  display: flex;
+  gap: 5px;
+}
 .rating_wrapper p {
   display: flex;
   align-items: center;
   gap: 5px;
+  color: #14141480;
 
   font-family: Manrope;
   font-weight: 500;

@@ -52,10 +52,15 @@ export default function Specialists({ specialist }) {
         <div className={styles.photo_wrapper}>
           {specialist.projects.slice(0, visibleCount).map((project) => (
             <div className={styles.photo_card} key={project.id}>
-              <img
-                src={getProjectPhotoUrl(project.photoName)}
-                alt={project.name}
-              />
+              <div className={styles.imageWrapper}>
+                <img
+                  src={getProjectPhotoUrl(project.photoName)}
+                  alt={project.name}
+                />
+                {project.category && (
+                  <span className={styles.category}>{project.category}</span>
+                )}
+              </div>
               <p>{project.name}</p>
             </div>
           ))}
@@ -66,10 +71,14 @@ export default function Specialists({ specialist }) {
           ))}
         </div>
         <div className={styles.rating_wrapper}>
-          <p>Рейтинг:</p>
-          <h3>15 069</h3>
-          <p>Подписчики:</p>
-          <h3>389</h3>
+          <div className={styles.group}>
+            <p>Рейтинг:</p>
+            <h3>15 069</h3>
+          </div>
+          <div className={styles.group}>
+            <p>Подписчики:</p>
+            <h3>389</h3>
+          </div>
           <p>
             Веб-сайт: <Link to="/">alex-smm.com</Link>
           </p>
