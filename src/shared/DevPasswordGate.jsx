@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-const DEV_PASSWORD = "bentydev2025";
+import styles from "./DevPasswordGate.module.css";
+
+const DEV_PASSWORD = import.meta.env.VITE_DEV_PASSWORD;
 
 export default function DevPasswordGate({ children }) {
   const [input, setInput] = useState("");
@@ -22,32 +24,20 @@ export default function DevPasswordGate({ children }) {
 
   if (!authorized) {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "#f5f5f5",
-        }}
-      >
-        <h2>Доступ к сайту только для разработчиков</h2>
-        <form
-          onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column", gap: 16 }}
-        >
+      <div className={styles.devGateBg}>
+        <form className={styles.devGateForm} onSubmit={handleSubmit}>
+          <h2>Доступ к сайту только для разработчиков</h2>
           <input
             type="password"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Введите пароль"
-            style={{ padding: 8, fontSize: 18 }}
+            className={styles.devGateInput}
           />
-          <button type="submit" style={{ padding: 8, fontSize: 18 }}>
+          <button type="submit" className={styles.devGateBtn}>
             Войти
           </button>
-          {error && <div style={{ color: "red" }}>{error}</div>}
+          {error && <div className={styles.devGateError}>{error}</div>}
         </form>
       </div>
     );
