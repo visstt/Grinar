@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { useUserStore } from "../../../shared/store/userStore";
@@ -8,7 +8,7 @@ import styles from "./Registration.module.css";
 import RegistrationStep2 from "./RegistrationStep2";
 import { useRegistration } from "./hooks/useRegistration";
 
-export default function Registration() {
+export default function Registration({ onClose }) {
   const [profileTypeId, setProfileTypeId] = useState(1);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
@@ -42,6 +42,28 @@ export default function Registration() {
 
   return (
     <div className={styles.registration_wrapper}>
+      <button
+        type="button"
+        onClick={onClose}
+        style={{
+          position: "absolute",
+          top: 24,
+          right: 20,
+          background: "rgba(255,255,255,0.08)",
+          border: "none",
+          borderRadius: "12px",
+          width: 30,
+          height: 30,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          zIndex: 1100,
+        }}
+        aria-label="Закрыть"
+      >
+        <X color="#fff" size={20} strokeWidth={2} />
+      </button>
       <h3>Регистрация</h3>
       <p>Выберите тип профиля</p>
       <div className={styles.btn_wrapper}>
@@ -61,6 +83,12 @@ export default function Registration() {
         </button>
       </div>
       <form className={styles.form} onSubmit={handleSubmit}>
+        {error && (
+          <div className={styles.error_block}>
+            <X color="#ff3b3b" size={24} />
+            {error}
+          </div>
+        )}
         <div className={styles.input_wrapper}>
           <div className={styles.block}>
             <label>Логин</label>
@@ -70,6 +98,7 @@ export default function Registration() {
               value={login}
               onChange={(e) => setLogin(e.target.value)}
               required
+              className={error ? styles.input_error : undefined}
             />
           </div>
           <div className={styles.block}>
@@ -80,6 +109,7 @@ export default function Registration() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className={error ? styles.input_error : undefined}
             />
           </div>
           <div className={styles.block}>
@@ -91,6 +121,7 @@ export default function Registration() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className={error ? styles.input_error : undefined}
               />
               <button
                 type="button"
@@ -110,6 +141,7 @@ export default function Registration() {
                 value={repassword}
                 onChange={(e) => setRepassword(e.target.value)}
                 required
+                className={error ? styles.input_error : undefined}
               />
               <button
                 type="button"
@@ -139,7 +171,6 @@ export default function Registration() {
             <Link>Политикой конфиденциальности</Link>
           </p>
         </div>
-        {error && <div className={styles.error}>{error}</div>}
         <button
           className={
             !policyChecked || loading

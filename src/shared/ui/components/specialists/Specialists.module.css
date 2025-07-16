@@ -1,5 +1,4 @@
 .specialist_wrapper {
-  margin-top: 30px;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -101,7 +100,7 @@
   gap: 10px;
 }
 .categories p {
-  padding: 10px;
+  padding: 10px 15px;
   background-color: #195ee60d;
   border-radius: 24px;
 

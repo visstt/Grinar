@@ -1,7 +1,13 @@
 .registration_wrapper {
   width: 600px;
   height: 100vh;
-  background-color: #141414;
+  background:
+    radial-gradient(
+      ellipse 70% 100% at 0% 0%,
+      rgba(25, 94, 230, 0.12) 0%,
+      rgba(0, 0, 0, 0) 80%
+    ),
+    #141414;
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -68,7 +74,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  text-align: left;
 }
 .input_wrapper {
   display: flex;
@@ -88,6 +94,7 @@
   font-size: 14px;
   line-height: 16px;
   letter-spacing: 0%;
+  text-align: left;
 }
 .block input {
   margin-top: 8px;
@@ -112,6 +119,7 @@
 }
 .eye_button {
   position: absolute;
+  top: 31%;
   right: 10px;
   background: none;
   border: none;
@@ -119,8 +127,10 @@
   color: #fff;
 }
 .policy_block {
+  width: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
   gap: 10px;
   margin-bottom: 30px;
   padding-left: 40px;
@@ -169,7 +179,7 @@
   gap: 30px;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  text-align: left;
 }
 .gap {
   display: flex;
@@ -206,6 +216,35 @@
 .codeInput:focus {
   box-shadow: 0 0 0 2px #195ee6;
 }
+.input_error {
+  border: 1.5px solid #ff3b3b !important;
+  background-color: rgba(255, 59, 59, 0.06) !important;
+  color: #ff3b3b !important;
+  border-radius: 12px !important;
+  transition:
+    border 0.2s,
+    background 0.2s;
+}
+.error_block {
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 12px 20px;
+  background: rgba(255, 59, 59, 0.06);
+  border: 1px solid #ff3b3b;
+  color: #ff3b3b;
+  border-radius: 16px;
+  font-size: 14px;
+  font-family: Manrope, Arial, sans-serif;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
+.error_block svg {
+  min-width: 24px;
+  min-height: 24px;
+}
 @media (max-width: 600px) {
   .registration_wrapper {
     position: fixed;
@@ -240,7 +279,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
+    text-align: left;
   }
   .registration_wrapper,
   .form,
@@ -248,7 +287,7 @@
   .gap,
   .policy_block {
     align-items: center;
-    text-align: center;
+    text-align: left;
   }
   .submit_btn {
     align-self: center;
@@ -258,7 +297,7 @@
 .form p,
 .form label,
 .form .error {
-  text-align: center;
+  text-align: left;
   width: 100%;
 }
 .error {

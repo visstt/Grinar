@@ -20,11 +20,15 @@
   text-align: left;
 }
 .form h3,
-.form p,
 .form label,
 .form .error {
   text-align: left;
   width: 100%;
+}
+.form p {
+  width: 100%;
+  text-align: right;
+  color: #fff;
 }
 .form h3 {
   color: #fff;
@@ -89,20 +93,11 @@
 
 .eye_button {
   position: absolute;
+  top: 31%;
   right: 10px;
   background: none;
   border: none;
   cursor: pointer;
-  color: #fff;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #202020 inset;
-  -webkit-text-fill-color: #fff;
-  background-color: #202020;
   color: #fff;
 }
 
@@ -155,4 +150,36 @@ input:-webkit-autofill:active {
   font-size: 14px;
   margin: 8px 0;
   text-align: center;
+}
+
+.input_error {
+  border: 1.5px solid #ff3b3b !important;
+  background-color: rgba(255, 59, 59, 0.06) !important;
+  color: #ff3b3b !important;
+  border-radius: 12px !important;
+  transition:
+    border 0.2s,
+    background 0.2s;
+}
+
+.error_block {
+  width: 300px;
+  margin-bottom: 18px;
+  padding: 12px 20px;
+  background: rgba(255, 59, 59, 0.06);
+  border: 1px solid #ff3b3b;
+  color: #ff3b3b;
+  border-radius: 16px;
+  font-size: 14px;
+  font-family: Manrope, Arial, sans-serif;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.error_block svg {
+  min-width: 24px;
+  min-height: 24px;
 }

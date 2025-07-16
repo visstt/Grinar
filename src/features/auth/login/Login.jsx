@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, X } from "lucide-react";
 import { toast } from "react-toastify";
 
 import { useUserStore } from "../../../shared/store/userStore";
@@ -9,7 +9,10 @@ import styles from "./Login.module.css";
 import { useLogin } from "./hooks/useLogin";
 import loginBg from "/images/loginBg.png";
 
-export default function Login({ onSuccess }) {
+export default function Login({ onSuccess, onClose }) {
+  const handleClose = () => {
+    if (onClose) onClose();
+  };
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,11 +21,59 @@ export default function Login({ onSuccess }) {
   const setUser = useUserStore((state) => state.setUser);
 
   if (forgot) {
-    return <ForgotPassword onSuccess={() => setForgot(false)} />;
+    return (
+      <div className={styles.login_wrapper}>
+        <button
+          type="button"
+          onClick={handleClose}
+          style={{
+            position: "absolute",
+            top: 24,
+            right: 20,
+            background: "rgba(255,255,255,0.08)",
+            border: "none",
+            borderRadius: "12px",
+            width: 30,
+            height: 30,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            zIndex: 1100,
+          }}
+          aria-label="Закрыть"
+        >
+          <X color="#fff" size={20} strokeWidth={2} />
+        </button>
+        <ForgotPassword onSuccess={() => setForgot(false)} />
+      </div>
+    );
   }
 
   return (
     <div className={styles.login_wrapper}>
+      <button
+        type="button"
+        onClick={handleClose}
+        style={{
+          position: "absolute",
+          top: 24,
+          right: 20,
+          background: "rgba(255,255,255,0.08)",
+          border: "none",
+          borderRadius: "12px",
+          width: 30,
+          height: 30,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          zIndex: 1100,
+        }}
+        aria-label="Закрыть"
+      >
+        <X color="#fff" size={20} strokeWidth={2} />
+      </button>
       <img src={loginBg} alt="loginBg" />
       <form
         className={styles.form}
@@ -36,8 +87,12 @@ export default function Login({ onSuccess }) {
           }
         }}
       >
-        <h3>Войти в аккаунт</h3>
-
+        {error && (
+          <div className={styles.error_block}>
+            <X color="#ff3b3b" size={24} />
+            Неверно указана почта или пароль
+          </div>
+        )}
         <label>Email</label>
         <input
           type="email"
@@ -45,9 +100,13 @@ export default function Login({ onSuccess }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className={styles.input}
+          className={
+            error ? `${styles.input} ${styles.input_error}` : styles.input
+          }
         />
-
+        {error && (
+          <div className={styles.error}>Неверно указана почта или пароль</div>
+        )}
         <label>Пароль</label>
         <div className={styles.password_input_wrapper}>
           <input
@@ -56,7 +115,9 @@ export default function Login({ onSuccess }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className={styles.input}
+            className={
+              error ? `${styles.input} ${styles.input_error}` : styles.input
+            }
           />
           <button
             type="button"
@@ -67,15 +128,15 @@ export default function Login({ onSuccess }) {
             {passwordVisible ? <Eye size={20} /> : <EyeOff size={20} />}
           </button>
         </div>
-
-        {error && <div className={styles.error}>{error}</div>}
+        {error && (
+          <div className={styles.error}>Неверно указана почта или пароль</div>
+        )}
         <p
-          style={{ cursor: "pointer", color: "#195ee6", marginBottom: 16 }}
+          style={{ cursor: "pointer", marginBottom: 16 }}
           onClick={() => setForgot(true)}
         >
           Забыли пароль?
         </p>
-
         <button className={styles.submit_btn} disabled={loading}>
           {loading ? "Входим..." : "Войти"}
         </button>

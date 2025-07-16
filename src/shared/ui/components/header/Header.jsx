@@ -216,10 +216,10 @@ export default function Header() {
           onClick={() => setLoginOpen(false)}
           style={{
             position: "fixed",
-            top: 0,
+            top: document.querySelector(".container")?.offsetHeight || 80,
             left: 0,
             width: "100vw",
-            height: "100vh",
+            height: `calc(100vh - ${(document.querySelector(".container")?.offsetHeight || 80)}px)`,
             background: "rgba(20,20,20,0.4)",
             backdropFilter: "blur(8px)",
             zIndex: 2000,
@@ -232,7 +232,7 @@ export default function Header() {
           className={`${styles.loginWrapper} ${loginOpen ? styles.open : ""}`}
           style={{
             position: "fixed",
-            top: 0,
+            top: document.querySelector(".container")?.offsetHeight || 80,
             right: 32,
             left: "auto",
             transform: "none",
@@ -241,7 +241,10 @@ export default function Header() {
             width: "90vw",
           }}
         >
-          <Login onSuccess={() => setLoginOpen(false)} />
+          <Login
+            onSuccess={() => setLoginOpen(false)}
+            onClose={() => setLoginOpen(false)}
+          />
         </div>
       )}
 
@@ -251,10 +254,10 @@ export default function Header() {
           onClick={handleCloseRegistration}
           style={{
             position: "fixed",
-            top: 0,
+            top: document.querySelector(".container")?.offsetHeight || 80,
             left: 0,
             width: "100vw",
-            height: "100vh",
+            height: `calc(100vh - ${(document.querySelector(".container")?.offsetHeight || 80)}px)`,
             background: "rgba(20,20,20,0.4)",
             backdropFilter: "blur(8px)",
             zIndex: 2000,
@@ -267,7 +270,7 @@ export default function Header() {
           className={`${styles.registrationWrapper} ${registrationOpen ? styles.open : ""}`}
           style={{
             position: "fixed",
-            top: 0,
+            top: document.querySelector(".container")?.offsetHeight || 80,
             right: 32,
             left: "auto",
             transform: "none",
