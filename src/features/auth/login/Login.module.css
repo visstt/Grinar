@@ -50,7 +50,7 @@
 .form input {
   margin-top: 8px;
   margin-bottom: 20px;
-  width: 300px;
+  width: 330px;
   min-width: 0;
   padding-left: 15px;
   padding-right: 40px;
@@ -163,7 +163,7 @@
 }
 
 .error_block {
-  width: 300px;
+  width: 325px;
   margin-bottom: 18px;
   padding: 12px 20px;
   background: rgba(255, 59, 59, 0.06);

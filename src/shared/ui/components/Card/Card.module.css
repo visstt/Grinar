@@ -50,11 +50,11 @@
 .category {
   position: absolute;
   left: 10px;
-  bottom: 20px;
+  bottom: 15px;
   background: #14141459;
   backdrop-filter: blur(16px);
   color: #fff;
-  padding: 4px 10px;
+  padding: 7px 11px;
   border-radius: 6px;
   font-size: 13px;
   font-family: Manrope;

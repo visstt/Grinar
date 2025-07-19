@@ -37,8 +37,8 @@ input:-moz-autofill {
   margin-bottom: 5px;
 }
 .form_group input {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  border: 1px solid #fff;
   border-radius: 8px;
   padding: 10px;
   color: #fff;

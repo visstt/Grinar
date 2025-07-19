@@ -89,7 +89,7 @@ export default function Login({ onSuccess, onClose }) {
       >
         {error && (
           <div className={styles.error_block}>
-            <X color="#ff3b3b" size={24} />
+            <img src="/icons/close-circle.svg" style={{ width: 20 }} />
             Неверно указана почта или пароль
           </div>
         )}
