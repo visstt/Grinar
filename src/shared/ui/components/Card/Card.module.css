@@ -66,8 +66,11 @@
   .card {
     display: flex;
     flex-direction: column;
-    width: 320px;
+    width: 100%;
     gap: 10px;
     margin-bottom: 20px;
+  }
+  .imageWrapper img {
+    width: 100%;
   }
 }

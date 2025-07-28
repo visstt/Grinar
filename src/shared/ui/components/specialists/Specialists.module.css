@@ -217,3 +217,24 @@
     font-size: 16px;
   }
 }
+@media (max-width: 380px) {
+  .hero__info img {
+    width: 40px;
+    height: auto;
+  }
+  .hero__info p {
+    font-size: 14px;
+  }
+
+  .info__text img {
+    width: 15px;
+  }
+  .hero__btn button {
+    width: 100px;
+    height: 40px;
+  }
+  .hero__btn img {
+    width: 30px;
+    height: 30px;
+  }
+}
