@@ -11,7 +11,7 @@ import Button from "../button/Button";
 import styles from "./Header.module.css";
 import mainLogo from "/icons/mainLogo.svg";
 
-export default function Header() {
+export default function Header({ darkBackground = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [registrationOpen, setRegistrationOpen] = useState(false);
@@ -50,7 +50,9 @@ export default function Header() {
   };
 
   return (
-    <>
+    <div
+      className={`${styles.header} ${darkBackground ? styles.darkHeader : ""}`}
+    >
       <div className="container">
         <div className={styles.header_wrapper}>
           <div className={styles.header_wrapper__logo}>
@@ -87,6 +89,7 @@ export default function Header() {
                     <Button
                       variant="secondary"
                       className={styles.header_wrapper__addProject}
+                      onClick={() => navigate("/create-project")}
                     >
                       Добавить проект
                     </Button>
@@ -296,6 +299,6 @@ export default function Header() {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }

@@ -6,6 +6,7 @@ import ProfileAccount from "../../pages/profileSettings/profileAccount/ProfileAc
 import ProfileDecor from "../../pages/profileSettings/profileDecor/ProfileDecor";
 import ProfileInfo from "../../pages/profileSettings/profileInfo/ProfileInfo";
 import ProfileNotifications from "../../pages/profileSettings/profileNotifications/ProfileNotifications";
+import CreateProject from "../../pages/createProject/project/CreateProject";
 
 export const router = createBrowserRouter([
   {
@@ -43,5 +44,9 @@ export const router = createBrowserRouter([
   {
     path: "/profile/profile-account",
     element: <ProfileAccount />,
+  },
+  {
+    path: "/create-project",
+    element: <CreateProject />,
   },
 ]);

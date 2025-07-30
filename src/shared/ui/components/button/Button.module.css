@@ -32,8 +32,9 @@
   background-color: #353535;
 }
 .default {
-  background-color: #d2dfff80;
-  color: #195ee680;
+  backdrop-filter: blur(16px);
+  background: rgba(25, 94, 230, 0.05);
+  color: #195ee6;
 }
 .default:hover {
   background-color: #d2dfff;
