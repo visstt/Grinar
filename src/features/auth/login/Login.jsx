@@ -98,7 +98,13 @@ export default function Login({ onSuccess, onClose }) {
           type="email"
           placeholder="Введите email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            // Сбрасываем ошибку при изменении поля
+            if (error) {
+              // Можно добавить логику сброса ошибки если нужно
+            }
+          }}
           required
           className={
             error ? `${styles.input} ${styles.input_error}` : styles.input
@@ -113,7 +119,13 @@ export default function Login({ onSuccess, onClose }) {
             type={passwordVisible ? "text" : "password"}
             placeholder="Введите пароль"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              // Сбрасываем ошибку при изменении поля
+              if (error) {
+                // Можно добавить логику сброса ошибки если нужно
+              }
+            }}
             required
             className={
               error ? `${styles.input} ${styles.input_error}` : styles.input
