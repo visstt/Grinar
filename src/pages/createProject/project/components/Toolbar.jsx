@@ -114,6 +114,7 @@ const Toolbar = () => {
   };
 
   const removeLink = () => {
+    // Простое удаление всех ссылок в текущем выделении или позиции курсора
     Transforms.unwrapNodes(editor, {
       match: (n) =>
         !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === "link",

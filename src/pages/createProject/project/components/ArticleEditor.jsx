@@ -177,6 +177,27 @@ const ArticleEditor = ({ onShowToolbar }) => {
             {props.children}
           </div>
         );
+      case "link":
+        return (
+          <a
+            {...props.attributes}
+            href={props.element.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            contentEditable={false}
+            style={{
+              color: "#195ee6",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(props.element.url, "_blank", "noopener,noreferrer");
+            }}
+          >
+            {props.children}
+          </a>
+        );
       default:
         return <p {...props.attributes}>{props.children}</p>;
     }

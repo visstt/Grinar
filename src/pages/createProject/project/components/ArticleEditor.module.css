@@ -204,3 +204,16 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+/* Стили для ссылок */
+.editor a {
+  color: #195ee6;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.editor a:hover {
+  color: #0c4dad;
+  text-decoration: none;
+}
