@@ -5,7 +5,6 @@ import styles from "./CreateProjectNav.module.css";
 export default function CreateProjectNav() {
   return (
     <div className={styles.nav}>
-      <Header darkBackground={true} />
       <div className="containerXS">
         <div
           className={styles.backButton}

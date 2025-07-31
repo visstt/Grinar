@@ -1,0 +1,232 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: #2d3748;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: white;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  border-bottom: 1px solid #4a5568;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titleSection h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+}
+
+.icon {
+  color: #a0aec0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  color: #a0aec0;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: #4a5568;
+  color: white;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #4a5568;
+}
+
+.tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 16px 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #a0aec0;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+  background: #4a5568;
+  color: #e2e8f0;
+}
+
+.activeTab {
+  color: #4299e1 !important;
+  border-bottom-color: #4299e1 !important;
+  background: #2a4365 !important;
+}
+
+.content {
+  padding: 24px;
+}
+
+.uploadArea {
+  border: 2px dashed #4a5568;
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #1a202c;
+}
+
+.uploadArea:hover {
+  border-color: #4299e1;
+  background: #2a4365;
+}
+
+.dragActive {
+  border-color: #4299e1 !important;
+  background: #2a4365 !important;
+  transform: scale(1.02);
+}
+
+.uploadContent h3 {
+  margin: 16px 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.uploadContent p {
+  margin: 4px 0;
+  color: #a0aec0;
+  font-size: 14px;
+}
+
+.uploadIcon {
+  color: #718096;
+  margin-bottom: 16px;
+}
+
+.urlSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.urlSection label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.urlInput {
+  padding: 12px 16px;
+  border: 1px solid #4a5568;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+  background: #1a202c;
+  color: white;
+}
+
+.urlInput:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.urlInput::placeholder {
+  color: #718096;
+}
+
+.footer {
+  padding: 24px;
+  border-top: 1px solid #4a5568;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.uploadButton,
+.submitButton {
+  background: #4299e1;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.uploadButton:hover,
+.submitButton:hover {
+  background: #3182ce;
+  transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+  background: #4a5568;
+  color: #718096;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submitButton:disabled:hover {
+  background: #4a5568;
+  transform: none;
+}
