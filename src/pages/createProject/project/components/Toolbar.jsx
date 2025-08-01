@@ -76,20 +76,29 @@ const Toolbar = () => {
   };
 
   const setFontSize = (size) => {
-    Editor.addMark(editor, "fontSize", size);
+    const { selection } = editor;
+    if (selection) {
+      Editor.addMark(editor, "fontSize", size);
+    }
     setSizeDropdownOpen(false);
   };
 
   const setFontFamily = (font) => {
-    Editor.addMark(editor, "fontFamily", font);
+    const { selection } = editor;
+
+    if (selection) {
+      Editor.addMark(editor, "fontFamily", font);
+    }
     setFontDropdownOpen(false);
   };
 
   const setTextColor = (color) => {
-    Editor.addMark(editor, "color", color);
+    const { selection } = editor;
+    if (selection) {
+      Editor.addMark(editor, "color", color);
+    }
     setColorDropdownOpen(false);
   };
-
   const insertLink = () => {
     const url = window.prompt("Введите URL:");
     if (!url) return;
