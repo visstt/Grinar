@@ -158,194 +158,208 @@ const Toolbar = () => {
 
   return (
     <div className={styles.toolbar} ref={toolbarRef}>
-      {/* Font Family Dropdown */}
-      <div className={styles.dropdown}>
-        <button
-          className={styles.dropdownButton}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setFontDropdownOpen(!fontDropdownOpen);
-            setSizeDropdownOpen(false);
-            setColorDropdownOpen(false);
-          }}
-        >
-          {getCurrentFontFamily()}
-          <ChevronDown size={16} />
-        </button>
-        {fontDropdownOpen && (
-          <div className={styles.dropdownMenu}>
-            {fonts.map((font) => (
-              <button
-                key={font}
-                className={styles.dropdownItem}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setFontFamily(font);
-                }}
-                style={{ fontFamily: font }}
-              >
-                {getFontDisplayName(font)}
-              </button>
-            ))}
-          </div>
-        )}
+      {/* Группа: Начертание и размер шрифта */}
+      <div className={styles.toolbarGroup}>
+        {/* Font Family Dropdown */}
+        <div className={styles.dropdown}>
+          <button
+            className={styles.dropdownButton}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setFontDropdownOpen(!fontDropdownOpen);
+              setSizeDropdownOpen(false);
+              setColorDropdownOpen(false);
+            }}
+          >
+            {getCurrentFontFamily()}
+            <ChevronDown size={16} />
+          </button>
+          {fontDropdownOpen && (
+            <div className={styles.dropdownMenu}>
+              {fonts.map((font) => (
+                <button
+                  key={font}
+                  className={styles.dropdownItem}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setFontFamily(font);
+                  }}
+                  style={{ fontFamily: font }}
+                >
+                  {getFontDisplayName(font)}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Font Size Dropdown */}
+        <div className={styles.dropdown}>
+          <button
+            className={styles.dropdownButton}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setSizeDropdownOpen(!sizeDropdownOpen);
+              setFontDropdownOpen(false);
+              setColorDropdownOpen(false);
+            }}
+          >
+            {getCurrentFontSize()}
+            <ChevronDown size={16} />
+          </button>
+          {sizeDropdownOpen && (
+            <div className={styles.dropdownMenu}>
+              {sizes.map((size) => (
+                <button
+                  key={size}
+                  className={styles.dropdownItem}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setFontSize(size);
+                  }}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Font Size Dropdown */}
-      <div className={styles.dropdown}>
-        <button
-          className={styles.dropdownButton}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setSizeDropdownOpen(!sizeDropdownOpen);
-            setFontDropdownOpen(false);
-            setColorDropdownOpen(false);
-          }}
-        >
-          {getCurrentFontSize()}
-          <ChevronDown size={16} />
-        </button>
-        {sizeDropdownOpen && (
-          <div className={styles.dropdownMenu}>
-            {sizes.map((size) => (
-              <button
-                key={size}
-                className={styles.dropdownItem}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setFontSize(size);
-                }}
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-        )}
+      {/* Группа: Выбор цвета */}
+      <div className={styles.toolbarGroup}>
+        {/* Color Picker */}
+        <div className={styles.dropdown}>
+          <button
+            className={styles.toolbarButton}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setColorDropdownOpen(!colorDropdownOpen);
+              setFontDropdownOpen(false);
+              setSizeDropdownOpen(false);
+            }}
+          >
+            <DrawIcon size={16} />
+          </button>
+          {colorDropdownOpen && (
+            <div className={styles.colorPicker}>
+              {colors.map((color) => (
+                <button
+                  key={color}
+                  className={styles.colorItem}
+                  style={{ backgroundColor: color }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setTextColor(color);
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Color Picker */}
-      <div className={styles.dropdown}>
+      {/* Группа: Жирный, курсив и подчеркивание */}
+      <div className={styles.toolbarGroup}>
+        {/* Bold (Ж) */}
+        <button
+          className={`${styles.toolbarButton} ${isMarkActive("bold") ? styles.active : ""}`}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            toggleMark("bold");
+          }}
+        >
+          <strong>Ж</strong>
+        </button>
+
+        {/* Italic (К) */}
+        <button
+          className={`${styles.toolbarButton} ${isMarkActive("italic") ? styles.active : ""}`}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            toggleMark("italic");
+          }}
+        >
+          <em>К</em>
+        </button>
+
+        {/* Underline (Ж с подчеркиванием) */}
+        <button
+          className={`${styles.toolbarButton} ${isMarkActive("underline") ? styles.active : ""}`}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            toggleMark("underline");
+          }}
+        >
+          <u>
+            <strong>Ж</strong>
+          </u>
+        </button>
+      </div>
+
+      {/* Группа: Добавить/удалить ссылку */}
+      <div className={styles.toolbarGroup}>
+        {/* Link */}
         <button
           className={styles.toolbarButton}
-          onClick={(e) => {
+          onMouseDown={(e) => {
             e.preventDefault();
-            e.stopPropagation();
-            setColorDropdownOpen(!colorDropdownOpen);
-            setFontDropdownOpen(false);
-            setSizeDropdownOpen(false);
+            insertLink();
           }}
         >
-          <DrawIcon size={16} />
+          <Link size={16} />
         </button>
-        {colorDropdownOpen && (
-          <div className={styles.colorPicker}>
-            {colors.map((color) => (
-              <button
-                key={color}
-                className={styles.colorItem}
-                style={{ backgroundColor: color }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setTextColor(color);
-                }}
-              />
-            ))}
-          </div>
-        )}
+
+        {/* Unlink */}
+        <button
+          className={styles.toolbarButton}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            removeLink();
+          }}
+        >
+          <Unlink size={16} />
+        </button>
       </div>
 
-      {/* Bold (Ж) */}
-      <button
-        className={`${styles.toolbarButton} ${isMarkActive("bold") ? styles.active : ""}`}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          toggleMark("bold");
-        }}
-      >
-        <strong>Ж</strong>
-      </button>
+      {/* Группа: Выравнивание текста */}
+      <div className={styles.toolbarGroup}>
+        <button
+          className={styles.toolbarButton}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            setTextAlignment("left");
+          }}
+        >
+          <AlignLeft size={16} />
+        </button>
 
-      {/* Italic (К) */}
-      <button
-        className={`${styles.toolbarButton} ${isMarkActive("italic") ? styles.active : ""}`}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          toggleMark("italic");
-        }}
-      >
-        <em>К</em>
-      </button>
+        <button
+          className={styles.toolbarButton}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            setTextAlignment("center");
+          }}
+        >
+          <AlignCenter size={16} />
+        </button>
 
-      {/* Underline (Ж с подчеркиванием) */}
-      <button
-        className={`${styles.toolbarButton} ${isMarkActive("underline") ? styles.active : ""}`}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          toggleMark("underline");
-        }}
-      >
-        <u>
-          <strong>Ж</strong>
-        </u>
-      </button>
-
-      {/* Link */}
-      <button
-        className={styles.toolbarButton}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          insertLink();
-        }}
-      >
-        <Link size={16} />
-      </button>
-
-      {/* Unlink */}
-      <button
-        className={styles.toolbarButton}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          removeLink();
-        }}
-      >
-        <Unlink size={16} />
-      </button>
-
-      {/* Alignment Buttons */}
-      <button
-        className={styles.toolbarButton}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          setTextAlignment("left");
-        }}
-      >
-        <AlignLeft size={16} />
-      </button>
-
-      <button
-        className={styles.toolbarButton}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          setTextAlignment("center");
-        }}
-      >
-        <AlignCenter size={16} />
-      </button>
-
-      <button
-        className={styles.toolbarButton}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          setTextAlignment("right");
-        }}
-      >
-        <AlignRight size={16} />
-      </button>
+        <button
+          className={styles.toolbarButton}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            setTextAlignment("right");
+          }}
+        >
+          <AlignRight size={16} />
+        </button>
+      </div>
     </div>
   );
 };

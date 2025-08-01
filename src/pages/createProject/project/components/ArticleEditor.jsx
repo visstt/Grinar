@@ -184,15 +184,57 @@ const ArticleEditor = ({ onShowToolbar }) => {
             href={props.element.url}
             target="_blank"
             rel="noopener noreferrer"
-            contentEditable={false}
+            title="Ctrl + Click чтобы открыть ссылку"
             style={{
               color: "#195ee6",
               textDecoration: "underline",
-              cursor: "pointer",
+              cursor: "text",
             }}
             onClick={(e) => {
-              e.stopPropagation();
-              window.open(props.element.url, "_blank", "noopener,noreferrer");
+              if (e.ctrlKey || e.metaKey) {
+                // Открываем ссылку только при Ctrl+Click (или Cmd+Click на Mac)
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(props.element.url, "_blank", "noopener,noreferrer");
+              }
+              // Без Ctrl - обычное поведение текста (не блокируем событие)
+            }}
+            onMouseEnter={(e) => {
+              // Показываем pointer при зажатом Ctrl
+              const updateCursor = () => {
+                if (e.target) {
+                  e.target.style.cursor =
+                    window.event?.ctrlKey || window.event?.metaKey
+                      ? "pointer"
+                      : "text";
+                }
+              };
+              updateCursor();
+
+              // Добавляем слушатели для отслеживания Ctrl в реальном времени
+              const handleKeyDown = (keyEvent) => {
+                if (keyEvent.ctrlKey || keyEvent.metaKey) {
+                  e.target.style.cursor = "pointer";
+                }
+              };
+              const handleKeyUp = (keyEvent) => {
+                if (!keyEvent.ctrlKey && !keyEvent.metaKey) {
+                  e.target.style.cursor = "text";
+                }
+              };
+
+              document.addEventListener("keydown", handleKeyDown);
+              document.addEventListener("keyup", handleKeyUp);
+
+              // Убираем слушатели при уходе мыши
+              e.target.addEventListener(
+                "mouseleave",
+                () => {
+                  document.removeEventListener("keydown", handleKeyDown);
+                  document.removeEventListener("keyup", handleKeyUp);
+                },
+                { once: true },
+              );
             }}
           >
             {props.children}

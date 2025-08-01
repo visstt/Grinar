@@ -5,7 +5,7 @@
   padding: 12px 20px;
   background: rgba(0, 0, 0, 0.95);
   border-radius: 12px;
-  max-width: 1000px;
+  width: fit-content;
   margin: 0 auto;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -253,6 +253,16 @@
   color: #ffffff;
 }
 
+.toolbarGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbarGroup:not(:last-child) {
+  margin-right: 24px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .toolbar {
@@ -267,5 +277,10 @@
   .dropdownButton {
     min-width: 100px;
     padding: 6px 10px;
+  }
+
+  .toolbarGroup:not(:last-child) {
+    margin-right: 16px;
+    padding-right: 16px;
   }
 }
