@@ -1,8 +1,24 @@
+import { useLocation, useNavigate } from "react-router-dom";
+
 import Button from "../../shared/ui/components/button/Button";
 import Header from "../../shared/ui/components/header/Header";
 import styles from "./CreateProjectNav.module.css";
 
 export default function CreateProjectNav() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isProjectPage = location.pathname === "/create-project";
+  const isInformationPage = location.pathname === "/project-information";
+
+  const handleProjectClick = () => {
+    navigate("/create-project");
+  };
+
+  const handleInformationClick = () => {
+    navigate("/project-information");
+  };
+
   return (
     <div className={styles.nav}>
       <div className="containerXS">
@@ -15,8 +31,27 @@ export default function CreateProjectNav() {
           <p>Назад</p>
         </div>
         <div className={styles.navButtons}>
-          <Button variant="primary">Проект</Button>
-          <Button variant="default">Информация</Button>
+          <div className={styles.tabButtons}>
+            <Button
+              variant={isProjectPage ? "primary" : "default"}
+              onClick={handleProjectClick}
+              className={styles.navButton}
+            >
+              Проект
+            </Button>
+            <Button
+              variant={isInformationPage ? "primary" : "default"}
+              onClick={handleInformationClick}
+              className={styles.navButton}
+            >
+              Информация
+            </Button>
+          </div>
+          {isInformationPage && (
+            <Button variant="primary" className={styles.navButton}>
+              Опубликовать
+            </Button>
+          )}
         </div>
       </div>
     </div>
