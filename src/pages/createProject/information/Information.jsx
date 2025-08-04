@@ -1,4 +1,5 @@
 import Button from "../../../shared/ui/components/button/Button";
+import Header from "../../../shared/ui/components/header/Header";
 import Input from "../../../shared/ui/components/input/Input";
 import Select from "../../../shared/ui/components/input/Select";
 import Textarea from "../../../shared/ui/components/input/Textarea";
@@ -8,6 +9,7 @@ import styles from "./Information.module.css";
 export default function Information() {
   return (
     <div>
+      <Header darkBackground={true} />
       <CreateProjectNav />
       <div className="containerXS">
         <div className={styles.content}>
