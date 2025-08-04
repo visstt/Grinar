@@ -7,6 +7,7 @@ import ProfileDecor from "../../pages/profileSettings/profileDecor/ProfileDecor"
 import ProfileInfo from "../../pages/profileSettings/profileInfo/ProfileInfo";
 import ProfileNotifications from "../../pages/profileSettings/profileNotifications/ProfileNotifications";
 import CreateProject from "../../pages/createProject/project/CreateProject";
+import Information from "../../pages/createProject/information/Information";
 
 export const router = createBrowserRouter([
   {
@@ -48,5 +49,9 @@ export const router = createBrowserRouter([
   {
     path: "/create-project",
     element: <CreateProject />,
+  },
+  {
+    path: "/project-information",
+    element: <Information />,
   },
 ]);

@@ -7,7 +7,7 @@ import { useUserStore } from "../../../shared/store/userStore";
 import ForgotPassword from "./ForgotPassword";
 import styles from "./Login.module.css";
 import { useLogin } from "./hooks/useLogin";
-import loginBg from "/images/loginBg.png";
+import loginBg from "/images/loginBg2.png";
 
 export default function Login({ onSuccess, onClose }) {
   const handleClose = () => {

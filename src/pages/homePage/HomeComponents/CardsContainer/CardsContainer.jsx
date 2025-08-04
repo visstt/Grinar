@@ -6,7 +6,7 @@ export default function CardsContainer() {
   const { projects, loading, error } = useProjects();
 
   if (loading) return <div>Загрузка...</div>;
-  if (error) return <div>Ошибка: {error.message}</div>;
+  if (error) return <div>Ошибка: {error?.message || error}</div>;
 
   return (
     <div className="container">

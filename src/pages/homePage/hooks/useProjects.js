@@ -9,7 +9,7 @@ export default function useProjects() {
 
   useEffect(() => {
     api
-      .get("/project/projects-to-main-page")
+      .get("/projects/main")
       .then((res) => setProjects(res.data))
       .catch(setError)
       .finally(() => setLoading(false));

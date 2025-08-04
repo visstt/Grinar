@@ -35,8 +35,15 @@ const MediaModal = ({ isOpen, onClose, onUpload, type = "image" }) => {
   };
 
   const handleFile = (file) => {
-    if (!file.type.startsWith("image/")) {
-      alert("Пожалуйста, выберите файл изображения");
+    const isValidType =
+      type === "image"
+        ? file.type.startsWith("image/")
+        : file.type.startsWith("video/");
+
+    if (!isValidType) {
+      alert(
+        `Пожалуйста, выберите файл ${type === "image" ? "изображения" : "видео"}`,
+      );
       return;
     }
 
@@ -68,19 +75,29 @@ const MediaModal = ({ isOpen, onClose, onUpload, type = "image" }) => {
         handleFileUpload();
         return;
       }
-      alert("Пожалуйста, введите URL изображения");
+      alert(
+        `Пожалуйста, введите URL ${type === "image" ? "изображения" : "видео"}`,
+      );
       return;
     }
 
-    // Простая проверка URL на изображение
+    // Проверка URL в зависимости от типа
     const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg"];
-    const isImageUrl =
-      imageExtensions.some((ext) => urlInput.toLowerCase().includes(ext)) ||
-      urlInput.includes("unsplash.com") ||
-      urlInput.includes("images");
+    const videoExtensions = [".mp4", ".avi", ".mov", ".wmv", ".flv", ".webm"];
 
-    if (!isImageUrl) {
-      alert("Пожалуйста, введите корректную ссылку на изображение");
+    const isValidUrl =
+      type === "image"
+        ? imageExtensions.some((ext) => urlInput.toLowerCase().includes(ext)) ||
+          urlInput.includes("unsplash.com") ||
+          urlInput.includes("images")
+        : videoExtensions.some((ext) => urlInput.toLowerCase().includes(ext)) ||
+          urlInput.includes("youtube.com") ||
+          urlInput.includes("vimeo.com");
+
+    if (!isValidUrl) {
+      alert(
+        `Пожалуйста, введите корректную ссылку на ${type === "image" ? "изображение" : "видео"}`,
+      );
       return;
     }
 
@@ -114,7 +131,7 @@ const MediaModal = ({ isOpen, onClose, onUpload, type = "image" }) => {
     <div className={styles.overlay} onClick={handleClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <h1>Добавить фото</h1>
+          <h1>Добавить {type === "image" ? "фото" : "видео"}</h1>
           <button
             type="button"
             onClick={handleClose}
@@ -149,11 +166,19 @@ const MediaModal = ({ isOpen, onClose, onUpload, type = "image" }) => {
           >
             {preview ? (
               <div className={styles.previewContainer}>
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className={styles.previewImage}
-                />
+                {type === "image" ? (
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className={styles.previewImage}
+                  />
+                ) : (
+                  <video
+                    src={preview}
+                    className={styles.previewImage}
+                    controls
+                  />
+                )}
                 <button
                   className={styles.removeButton}
                   onClick={(e) => {
@@ -166,8 +191,12 @@ const MediaModal = ({ isOpen, onClose, onUpload, type = "image" }) => {
               </div>
             ) : (
               <div className={styles.uploadContent}>
-                <h3>Перетащите изображение</h3>
-                <p>Рекомендуется ширина не менее 1600 пикселей.</p>
+                <h3>Перетащите {type === "image" ? "изображение" : "видео"}</h3>
+                <p>
+                  {type === "image"
+                    ? "Рекомендуется ширина не менее 1600 пикселей."
+                    : "Поддерживаемые форматы: MP4, AVI, MOV, WMV, FLV, WebM."}
+                </p>
                 <p>Максимальный размер — 10 МБ</p>
               </div>
             )}
@@ -175,15 +204,15 @@ const MediaModal = ({ isOpen, onClose, onUpload, type = "image" }) => {
               ref={fileInputRef}
               type="file"
               className={styles.fileInput}
-              accept="image/*"
+              accept={type === "image" ? "image/*" : "video/*"}
               onChange={handleFileSelect}
             />
           </div>
           <div className={styles.inputGroup}>
-            <label htmlFor="imageUrl">Добавить по ссылке</label>
+            <label htmlFor="mediaUrl">Добавить по ссылке</label>
             <input
               type="url"
-              id="imageUrl"
+              id="mediaUrl"
               autoComplete="off"
               placeholder="Укажите ссылку"
               value={urlInput}
@@ -207,7 +236,7 @@ const MediaModal = ({ isOpen, onClose, onUpload, type = "image" }) => {
             }
           >
             {preview
-              ? "Добавить изображение"
+              ? `Добавить ${type === "image" ? "изображение" : "видео"}`
               : urlInput.trim()
                 ? "Добавить по ссылке"
                 : "Загрузить с устройства"}

@@ -58,7 +58,7 @@
 .disactive {
   width: 100px;
   height: 44px;
-  background-color: #202020;
+  background-color: rgba(255, 255, 255, 0.05);
   border: none;
   color: #fff;
   font-family: Manrope;
@@ -99,14 +99,24 @@
 .block input {
   margin-top: 8px;
   margin-bottom: 20px;
-  width: 290px;
+  width: 270px;
   padding-left: 15px;
   height: 48px;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
-  background-color: #202020;
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   outline: none;
+}
+
+.block input:-webkit-autofill,
+.block input:-webkit-autofill:hover,
+.block input:-webkit-autofill:focus,
+.block input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.01) inset !important;
+  -webkit-text-fill-color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
 }
 .password_input_wrapper {
   display: flex;
@@ -114,8 +124,17 @@
   position: relative;
 }
 .password_input_wrapper input {
-  flex: 1;
-  padding-right: 137px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  width: 225px;
+  padding-left: 15px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  outline: none;
+  padding-right: 45px;
 }
 .eye_button {
   position: absolute;
@@ -135,6 +154,37 @@
   margin-bottom: 30px;
   padding-left: 40px;
   padding-right: 40px;
+}
+
+.policy_block input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.policy_block input[type="checkbox"]:checked {
+  background-color: #195ee6;
+  border-color: #195ee6;
+}
+
+.policy_block input[type="checkbox"]:checked::after {
+  content: "✔";
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .policy_block p {
   font-family: Manrope;
@@ -168,7 +218,7 @@
   align-self: flex-start;
 }
 .submit_btn_disabled {
-  background-color: #202020;
+  background-color: rgba(255, 255, 255, 0.05);
   color: #bdbdbd;
   cursor: not-allowed;
 }

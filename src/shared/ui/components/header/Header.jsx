@@ -27,14 +27,69 @@ export default function Header({ darkBackground = false }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Яндекс.Метрика
+  useEffect(() => {
+    // Проверяем, не загружена ли уже Метрика
+    if (window.ym) return;
+
+    // Создаем и добавляем скрипт Яндекс.Метрики
+    (function (m, e, t, r, i, k, a) {
+      m[i] =
+        m[i] ||
+        function () {
+          (m[i].a = m[i].a || []).push(arguments);
+        };
+      m[i].l = 1 * new Date();
+      for (var j = 0; j < document.scripts.length; j++) {
+        if (document.scripts[j].src === r) {
+          return;
+        }
+      }
+      ((k = e.createElement(t)),
+        (a = e.getElementsByTagName(t)[0]),
+        (k.async = 1),
+        (k.src = r),
+        a.parentNode.insertBefore(k, a));
+    })(
+      window,
+      document,
+      "script",
+      "https://mc.yandex.ru/metrika/tag.js?id=103494311",
+      "ym",
+    );
+
+    // Инициализируем счетчик
+    window.ym(103494311, "init", {
+      ssr: true,
+      webvisor: true,
+      clickmap: true,
+      ecommerce: "dataLayer",
+      accurateTrackBounce: true,
+      trackLinks: true,
+    });
+
+    // Добавляем noscript fallback
+    const noscriptImg = document.createElement("img");
+    noscriptImg.src = "https://mc.yandex.ru/watch/103494311";
+    noscriptImg.style.cssText = "position:absolute; left:-9999px;";
+    noscriptImg.alt = "";
+
+    const noscriptDiv = document.createElement("div");
+    noscriptDiv.appendChild(noscriptImg);
+
+    const noscript = document.createElement("noscript");
+    noscript.appendChild(noscriptDiv);
+    document.head.appendChild(noscript);
+  }, []);
+
   useEffect(() => {
     if (loginOpen || registrationOpen) {
-      document.body.classList.add(styles.noScroll);
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.classList.remove(styles.noScroll);
+      document.body.style.overflow = "unset";
     }
     return () => {
-      document.body.classList.remove(styles.noScroll);
+      document.body.style.overflow = "unset";
     };
   }, [loginOpen, registrationOpen]);
 
@@ -47,6 +102,18 @@ export default function Header({ darkBackground = false }) {
     setRegistrationOpen(false);
     setRegistrationStep(1);
     setRegistrationEmail("");
+  };
+
+  const handleOpenLogin = () => {
+    setRegistrationOpen(false);
+    setRegistrationStep(1); // Сбрасываем шаг регистрации
+    setRegistrationEmail(""); // Сбрасываем email
+    setLoginOpen(true);
+  };
+
+  const handleOpenRegistration = () => {
+    setLoginOpen(false);
+    setRegistrationOpen(true);
   };
 
   return (
@@ -115,7 +182,7 @@ export default function Header({ darkBackground = false }) {
                       variant="primary"
                       className={styles.header_wrapper__login}
                       onClick={() => {
-                        setLoginOpen(true);
+                        handleOpenLogin();
                         setMenuOpen(false);
                       }}
                     >
@@ -125,7 +192,7 @@ export default function Header({ darkBackground = false }) {
                       variant="secondary"
                       className={styles.header_wrapper__registration}
                       onClick={() => {
-                        setRegistrationOpen(true);
+                        handleOpenRegistration();
                         setMenuOpen(false);
                       }}
                     >
@@ -155,6 +222,10 @@ export default function Header({ darkBackground = false }) {
                       <Button
                         variant="secondary"
                         className={styles.header_wrapper__addProject}
+                        onClick={() => {
+                          navigate("/create-project");
+                          setMenuOpen(false);
+                        }}
                       >
                         Добавить проект
                       </Button>
@@ -180,7 +251,7 @@ export default function Header({ darkBackground = false }) {
                         variant="primary"
                         className={styles.header_wrapper__login}
                         onClick={() => {
-                          setLoginOpen(true);
+                          handleOpenLogin();
                           setMenuOpen(false);
                         }}
                       >
@@ -190,7 +261,7 @@ export default function Header({ darkBackground = false }) {
                         variant="secondary"
                         className={styles.header_wrapper__registration}
                         onClick={() => {
-                          setRegistrationOpen(true);
+                          handleOpenRegistration();
                           setMenuOpen(false);
                         }}
                       >

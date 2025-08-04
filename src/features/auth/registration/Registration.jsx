@@ -21,6 +21,25 @@ export default function Registration({ onClose }) {
   const { register, loading, error } = useRegistration();
   const setUser = useUserStore((state) => state.setUser);
 
+  // Функции для скачивания документов
+  const downloadPrivacyPolicy = () => {
+    const link = document.createElement("a");
+    link.href = "/docs/Политика конфиденциальности.docx";
+    link.download = "Политика конфиденциальности.docx";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const downloadUserAgreement = () => {
+    const link = document.createElement("a");
+    link.href = "/docs/Пользовательское соглашение.docx";
+    link.download = "Пользовательское соглашение.docx";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await register({
@@ -167,8 +186,26 @@ export default function Registration({ onClose }) {
             id="policy"
           />
           <p>
-            Я согласен с <Link>Правилами</Link> и{" "}
-            <Link>Политикой конфиденциальности</Link>
+            Я согласен с{" "}
+            <span
+              onClick={downloadUserAgreement}
+              style={{
+                color: "#195ee6",
+                cursor: "pointer",
+              }}
+            >
+              Правилами
+            </span>{" "}
+            и{" "}
+            <span
+              onClick={downloadPrivacyPolicy}
+              style={{
+                color: "#195ee6",
+                cursor: "pointer",
+              }}
+            >
+              Политикой конфиденциальности
+            </span>
           </p>
         </div>
         <button

@@ -16,22 +16,30 @@ export default function Card({ project }) {
       <div className={styles.card} onClick={() => setOpen(true)}>
         <div className={styles.imageWrapper}>
           <img
-            src={getProjectPhotoUrl(project.projectPhotoName)}
+            src={getProjectPhotoUrl(
+              project.coverImage || project.projectPhotoName,
+            )}
             alt="cardImage"
           />
           {project.category && (
-            <span className={styles.category}>{project.category}</span>
+            <span className={styles.category}>
+              {project.category.name || project.category}
+            </span>
           )}
         </div>
         <h3>{project.name}</h3>
         <div className={styles.author}>
           <img
-            src={getUserLogoUrl(project.userLogoPhotoName)}
+            src={getUserLogoUrl(
+              project.author?.avatar || project.userLogoPhotoName,
+            )}
             alt="authorLogo"
           />
           <div className={styles.author__text}>
-            <h3>{project.fullName}</h3>
-            <p>{project.specialization}</p>
+            <h3>{project.author?.name || project.fullName}</h3>
+            <p>
+              {project.author?.specializations?.[0] || project.specialization}
+            </p>
           </div>
         </div>
       </div>

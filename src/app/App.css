@@ -10,8 +10,26 @@
   max-width: 960px;
   box-sizing: border-box;
 }
+
+@media (max-width: 768px) {
+  .containerXS {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .containerXS {
+    padding: 0 8px;
+  }
+}
 .stripe {
   background-color: rgba(255, 255, 255, 0.1);
+  height: 2px;
+  margin: 20px 0px;
+}
+.stripe2 {
+  background-color: #141414;
+  opacity: 0.1;
   height: 2px;
   margin: 20px 0px;
 }

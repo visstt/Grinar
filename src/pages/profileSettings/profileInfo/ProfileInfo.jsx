@@ -19,13 +19,13 @@ export default function ProfileInfo() {
   if (loading || !form) return <div>Загрузка...</div>;
   if (error) return <div>Ошибка загрузки данных</div>;
 
-  // Гарантируем, что всегда 3 специализации для выбора
+
   const specArray = Array.from(
     { length: 3 },
     (_, idx) => form.specializations?.[idx] || "",
   );
 
-  // Если поля пустые, пользователь может их заполнить (Input уже позволяет это)
+
 
   return (
     <>

@@ -55,12 +55,22 @@
   padding-left: 15px;
   padding-right: 40px;
   height: 48px;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
-  background-color: #202020;
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   outline: none;
   box-sizing: border-box;
+}
+
+.form input:-webkit-autofill,
+.form input:-webkit-autofill:hover,
+.form input:-webkit-autofill:focus,
+.form input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.01) inset !important;
+  -webkit-text-fill-color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
 }
 .form p {
   color: #fff;

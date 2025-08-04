@@ -307,7 +307,7 @@ const Toolbar = () => {
           }}
         >
           <u>
-            <strong>Ж</strong>
+            Ж
           </u>
         </button>
       </div>

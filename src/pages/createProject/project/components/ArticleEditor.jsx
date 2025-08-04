@@ -149,143 +149,332 @@ const ArticleEditor = ({ onShowToolbar }) => {
     setTimeout(() => setActiveLineId(null), 100);
   }, []);
 
-  const renderElement = useCallback((props) => {
-    switch (props.element.type) {
-      case "title":
-        return (
-          <h1
-            className={styles.title}
-            {...props.attributes}
-            style={{ textAlign: props.element.align || "left" }}
-          >
-            {props.children}
-          </h1>
+  // Функции для drag & drop видео
+  const handleVideoDragStart = useCallback(
+    (e, element) => {
+      console.log("🎬 Video drag start:", element);
+      e.stopPropagation();
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.dropEffect = "move";
+
+      try {
+        // Находим путь к элементу в редакторе
+        const path = ReactEditor.findPath(editor, element);
+        console.log("📍 Source path:", path);
+        e.dataTransfer.setData("application/slate-path", JSON.stringify(path));
+
+        // Также сохраняем данные элемента как fallback
+        e.dataTransfer.setData(
+          "text/plain",
+          JSON.stringify({
+            type: element.type,
+            url: element.url,
+          }),
         );
-      case "description":
-        return (
-          <p
-            className={styles.editableDescription}
-            {...props.attributes}
-            style={{ textAlign: props.element.align || "left" }}
-          >
-            {props.children}
-          </p>
-        );
-      case "heading":
-        return (
-          <h2
-            className={styles.heading}
-            {...props.attributes}
-            style={{ textAlign: props.element.align || "left" }}
-          >
-            {props.children}
-          </h2>
-        );
-      case "paragraph": {
-        const isEmpty = props.element.children?.[0]?.text === "";
-        return (
-          <div className={styles.paragraphWrapper} {...props.attributes}>
-            <p
-              className={styles.paragraph}
+
+        // Добавляем визуальную обратную связь
+        const videoWrapper = e.target.closest('[class*="videoWrapper"]');
+        if (videoWrapper) {
+          videoWrapper.style.opacity = "0.7";
+          videoWrapper.style.transform = "scale(0.98)";
+
+          // Убираем эффект через небольшое время
+          const resetStyles = () => {
+            if (videoWrapper) {
+              videoWrapper.style.opacity = "1";
+              videoWrapper.style.transform = "scale(1)";
+            }
+          };
+
+          // Сбрасываем стили через 3 секунды или при завершении drag
+          setTimeout(resetStyles, 3000);
+
+          // Также слушаем события завершения drag
+          const handleDragEnd = () => {
+            resetStyles();
+            document.removeEventListener("dragend", handleDragEnd);
+            document.removeEventListener("drop", handleDragEnd);
+          };
+
+          document.addEventListener("dragend", handleDragEnd);
+          document.addEventListener("drop", handleDragEnd);
+        }
+      } catch (error) {
+        console.error("❌ Error in handleVideoDragStart:", error);
+      }
+    },
+    [editor],
+  );
+
+  const handleVideoDragOver = useCallback((e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    console.log("🎯 Video drag over");
+  }, []);
+
+  const handleVideoDrop = useCallback(
+    (e, targetElement) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log("🎯 Video drop on:", targetElement);
+
+      try {
+        const pathData = e.dataTransfer.getData("application/slate-path");
+        if (!pathData) {
+          console.log("❌ No path data");
+          return;
+        }
+
+        const sourcePath = JSON.parse(pathData);
+        const targetPath = ReactEditor.findPath(editor, targetElement);
+
+        console.log("📍 Source path:", sourcePath);
+        console.log("🎯 Target path:", targetPath);
+
+        // Не перемещаем элемент сам на себя
+        if (JSON.stringify(sourcePath) === JSON.stringify(targetPath)) {
+          console.log("⚠️ Same element, skipping");
+          return;
+        }
+
+        // Получаем элемент для перемещения
+        const [sourceNode] = Editor.node(editor, sourcePath);
+        console.log("📦 Source node:", sourceNode);
+
+        // Удаляем исходный элемент
+        Transforms.removeNodes(editor, { at: sourcePath });
+        console.log("🗑️ Removed source node");
+
+        // Корректируем путь если нужно
+        const adjustedTargetPath =
+          sourcePath[0] < targetPath[0] ? [targetPath[0] - 1] : targetPath;
+
+        console.log("📍 Adjusted target path:", adjustedTargetPath);
+
+        // Вставляем элемент после целевого элемента
+        Transforms.insertNodes(editor, sourceNode, {
+          at: [adjustedTargetPath[0] + 1],
+        });
+
+        console.log("✅ Video moved successfully");
+      } catch (error) {
+        console.error("❌ Video drag & drop error:", error);
+
+        // Fallback: попробуем еще раз с простой логикой
+        try {
+          const pathData = e.dataTransfer.getData("application/slate-path");
+          const sourcePath = JSON.parse(pathData);
+          const targetPath = ReactEditor.findPath(editor, targetElement);
+
+          if (sourcePath[0] !== targetPath[0]) {
+            const [sourceNode] = Editor.node(editor, sourcePath);
+
+            Transforms.removeNodes(editor, { at: sourcePath });
+
+            const newTargetIndex =
+              sourcePath[0] < targetPath[0] ? targetPath[0] : targetPath[0] + 1;
+
+            Transforms.insertNodes(editor, sourceNode, {
+              at: [newTargetIndex],
+            });
+            console.log("✅ Video moved via fallback");
+          }
+        } catch (fallbackError) {
+          console.error("❌ Video drag & drop fallback error:", fallbackError);
+        }
+      }
+    },
+    [editor],
+  );
+
+  const renderElement = useCallback(
+    (props) => {
+      switch (props.element.type) {
+        case "title":
+          return (
+            <h1
+              className={styles.title}
+              {...props.attributes}
               style={{ textAlign: props.element.align || "left" }}
-              data-placeholder={isEmpty ? "Продолжить писать..." : ""}
+            >
+              {props.children}
+            </h1>
+          );
+        case "description":
+          return (
+            <p
+              className={styles.editableDescription}
+              {...props.attributes}
+              style={{ textAlign: props.element.align || "left" }}
             >
               {props.children}
             </p>
-          </div>
-        );
+          );
+        case "heading":
+          return (
+            <h2
+              className={styles.heading}
+              {...props.attributes}
+              style={{ textAlign: props.element.align || "left" }}
+            >
+              {props.children}
+            </h2>
+          );
+        case "paragraph": {
+          const isEmpty = props.element.children?.[0]?.text === "";
+          return (
+            <div
+              className={styles.paragraphWrapper}
+              {...props.attributes}
+              onDragOver={handleVideoDragOver}
+              onDrop={(e) => handleVideoDrop(e, props.element)}
+            >
+              <p
+                className={styles.paragraph}
+                style={{ textAlign: props.element.align || "left" }}
+                data-placeholder={isEmpty ? "Продолжить писать..." : ""}
+              >
+                {props.children}
+              </p>
+            </div>
+          );
+        }
+        case "image":
+          return (
+            <div
+              className={styles.imageWrapper}
+              {...props.attributes}
+              onDragOver={handleVideoDragOver}
+              onDrop={(e) => handleVideoDrop(e, props.element)}
+            >
+              <div className={styles.imageContainer}>
+                <img
+                  src={props.element.url}
+                  alt=""
+                  className={styles.image}
+                  contentEditable={false}
+                />
+              </div>
+              {props.children}
+            </div>
+          );
+        case "video":
+          return (
+            <div
+              className={styles.videoWrapper}
+              {...props.attributes}
+              onDragOver={handleVideoDragOver}
+              onDrop={(e) => handleVideoDrop(e, props.element)}
+            >
+              <div className={styles.videoDragHandle}>
+                <div
+                  className={styles.dragIcon}
+                  draggable
+                  onDragStart={(e) => handleVideoDragStart(e, props.element)}
+                  onMouseDown={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                  }}
+                  onSelectStart={(e) => e.preventDefault()}
+                  title="Перетащите для изменения порядка"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle cx="3" cy="3" r="1.5" fill="#6B7280" />
+                    <circle cx="8" cy="3" r="1.5" fill="#6B7280" />
+                    <circle cx="13" cy="3" r="1.5" fill="#6B7280" />
+                    <circle cx="3" cy="8" r="1.5" fill="#6B7280" />
+                    <circle cx="8" cy="8" r="1.5" fill="#6B7280" />
+                    <circle cx="13" cy="8" r="1.5" fill="#6B7280" />
+                    <circle cx="3" cy="13" r="1.5" fill="#6B7280" />
+                    <circle cx="8" cy="13" r="1.5" fill="#6B7280" />
+                    <circle cx="13" cy="13" r="1.5" fill="#6B7280" />
+                  </svg>
+                </div>
+              </div>
+              <div className={styles.videoContainer}>
+                <video
+                  src={props.element.url}
+                  controls
+                  className={styles.video}
+                  contentEditable={false}
+                />
+              </div>
+              {props.children}
+            </div>
+          );
+        case "link":
+          return (
+            <a
+              {...props.attributes}
+              href={props.element.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Ctrl + Click чтобы открыть ссылку"
+              style={{
+                color: "#195ee6",
+                textDecoration: "underline",
+                cursor: "text",
+              }}
+              onClick={(e) => {
+                if (e.ctrlKey || e.metaKey) {
+                  // Открываем ссылку только при Ctrl+Click (или Cmd+Click на Mac)
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.open(
+                    props.element.url,
+                    "_blank",
+                    "noopener,noreferrer",
+                  );
+                }
+                // Без Ctrl - обычное поведение текста (не блокируем событие)
+              }}
+              onMouseEnter={(e) => {
+                // Показываем pointer при зажатом Ctrl
+                const updateCursor = () => {
+                  if (e.target) {
+                    e.target.style.cursor =
+                      window.event?.ctrlKey || window.event?.metaKey
+                        ? "pointer"
+                        : "text";
+                  }
+                };
+                updateCursor();
+
+                // Добавляем слушатели для отслеживания Ctrl в реальном времени
+                const handleKeyDown = (keyEvent) => {
+                  if (keyEvent.ctrlKey || keyEvent.metaKey) {
+                    e.target.style.cursor = "pointer";
+                  }
+                };
+                const handleKeyUp = (keyEvent) => {
+                  if (!keyEvent.ctrlKey && !keyEvent.metaKey) {
+                    e.target.style.cursor = "text";
+                  }
+                };
+
+                document.addEventListener("keydown", handleKeyDown);
+                document.addEventListener("keyup", handleKeyUp);
+
+                // Убираем слушатели при уходе мыши
+                e.target.addEventListener(
+                  "mouseleave",
+                  () => {
+                    document.removeEventListener("keydown", handleKeyDown);
+                    document.removeEventListener("keyup", handleKeyUp);
+                  },
+                  { once: true },
+                );
+              }}
+            >
+              {props.children}
+            </a>
+          );
+        default:
+          return <p {...props.attributes}>{props.children}</p>;
       }
-      case "image":
-        return (
-          <div className={styles.imageContainer} {...props.attributes}>
-            <img
-              src={props.element.url}
-              alt=""
-              className={styles.image}
-              contentEditable={false}
-            />
-            {props.children}
-          </div>
-        );
-      case "video":
-        return (
-          <div className={styles.videoContainer} {...props.attributes}>
-            <video
-              src={props.element.url}
-              controls
-              className={styles.video}
-              contentEditable={false}
-            />
-            {props.children}
-          </div>
-        );
-      case "link":
-        return (
-          <a
-            {...props.attributes}
-            href={props.element.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Ctrl + Click чтобы открыть ссылку"
-            style={{
-              color: "#195ee6",
-              textDecoration: "underline",
-              cursor: "text",
-            }}
-            onClick={(e) => {
-              if (e.ctrlKey || e.metaKey) {
-                // Открываем ссылку только при Ctrl+Click (или Cmd+Click на Mac)
-                e.preventDefault();
-                e.stopPropagation();
-                window.open(props.element.url, "_blank", "noopener,noreferrer");
-              }
-              // Без Ctrl - обычное поведение текста (не блокируем событие)
-            }}
-            onMouseEnter={(e) => {
-              // Показываем pointer при зажатом Ctrl
-              const updateCursor = () => {
-                if (e.target) {
-                  e.target.style.cursor =
-                    window.event?.ctrlKey || window.event?.metaKey
-                      ? "pointer"
-                      : "text";
-                }
-              };
-              updateCursor();
-
-              // Добавляем слушатели для отслеживания Ctrl в реальном времени
-              const handleKeyDown = (keyEvent) => {
-                if (keyEvent.ctrlKey || keyEvent.metaKey) {
-                  e.target.style.cursor = "pointer";
-                }
-              };
-              const handleKeyUp = (keyEvent) => {
-                if (!keyEvent.ctrlKey && !keyEvent.metaKey) {
-                  e.target.style.cursor = "text";
-                }
-              };
-
-              document.addEventListener("keydown", handleKeyDown);
-              document.addEventListener("keyup", handleKeyUp);
-
-              // Убираем слушатели при уходе мыши
-              e.target.addEventListener(
-                "mouseleave",
-                () => {
-                  document.removeEventListener("keydown", handleKeyDown);
-                  document.removeEventListener("keyup", handleKeyUp);
-                },
-                { once: true },
-              );
-            }}
-          >
-            {props.children}
-          </a>
-        );
-      default:
-        return <p {...props.attributes}>{props.children}</p>;
-    }
-  }, []);
+    },
+    [handleVideoDragOver, handleVideoDragStart, handleVideoDrop],
+  );
 
   const renderLeaf = useCallback((props) => {
     let element = props.children;
