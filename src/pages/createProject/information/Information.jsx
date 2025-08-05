@@ -151,7 +151,7 @@ export default function Information() {
                 label={`Ниша`}
                 id={`categoryId`}
                 theme="white"
-                options={[{ value: 1, label: "Медицина" }]}
+                options={[{ value: 3, label: "Медицина" }]}
                 value={projectData.categoryId}
                 onChange={(option) => handleSelectChange("categoryId", option)}
               />

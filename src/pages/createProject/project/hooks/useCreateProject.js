@@ -1,11 +1,9 @@
 import { useState } from "react";
-
 import api from "../../../../shared/api/api";
 
 export function useCreateProject() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   const createProject = async ({
     name,
@@ -19,53 +17,42 @@ export function useCreateProject() {
   }) => {
     setLoading(true);
     setError(null);
-    setSuccess(false);
 
     try {
+      // Создаем FormData
       const formData = new FormData();
+      
+      // Обязательные поля
       formData.append("name", name);
-      formData.append("description", description);
-      formData.append("categoryId", categoryId.toString());
-      formData.append("specializationId", specializationId.toString());
-      formData.append("firstLink", firstLink || "");
-      formData.append("secondLink", secondLink || "");
+      formData.append("categoryId", Number(categoryId));
+      formData.append("specializationId", Number(specializationId));
       formData.append("content", JSON.stringify(content));
 
+      // Опциональные поля
+      if (description) formData.append("description", description);
+      if (firstLink) formData.append("firstLink", firstLink);
+      if (secondLink) formData.append("secondLink", secondLink);
+      
+      // Добавляем coverImage если есть
       if (coverImage) {
         formData.append("coverImage", coverImage);
       }
 
+      // Отправляем запрос
       const response = await api.post("/projects/create-projects", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      setSuccess(true);
       return response.data;
     } catch (err) {
-      const errorMessage =
-        err?.response?.data?.message ||
-        err?.response?.data?.error ||
-        err?.message ||
-        "Ошибка при сохранении проекта";
-      setError(errorMessage);
-      throw new Error(errorMessage);
+      setError(err.response?.data?.message || err.message || "Ошибка при создании проекта");
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  const resetState = () => {
-    setError(null);
-    setSuccess(false);
-  };
-
-  return {
-    createProject,
-    loading,
-    error,
-    success,
-    resetState,
-  };
+  return { createProject, loading, error };
 }
