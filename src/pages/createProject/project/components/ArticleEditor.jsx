@@ -13,6 +13,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("image");
   const [activeLineId, setActiveLineId] = useState(null);
+  // eslint-disable-next-line
   const [isDragging, setIsDragging] = useState(false);
   const [dragOverElement, setDragOverElement] = useState(null);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
@@ -160,11 +161,37 @@ const ArticleEditor = ({ onShowToolbar }) => {
   }, [onShowToolbar, updateMenuPosition]);
 
   const handleEditorClick = useCallback(() => {
-    // Обновляем позицию меню при клике
+    // Get the clicked node
+    const { selection } = editor;
+    if (!selection) return;
+
+    try {
+      // Get the current node and check if it's a placeholder
+      const [node, path] = Editor.node(editor, selection);
+      const [parent] = Editor.parent(editor, path);
+
+      // Check if clicked on placeholder text
+      const isTitlePlaceholder =
+        parent?.type === "title" && node?.text === "Здесь может быть заголовок";
+      const isDescriptionPlaceholder =
+        parent?.type === "description" &&
+        node?.text === "Здесь можно добавить описание";
+
+      // If clicked on placeholder, move cursor to beginning
+      if (isTitlePlaceholder || isDescriptionPlaceholder) {
+        // Set selection to the start of the text
+        const startPoint = Editor.start(editor, path);
+        Transforms.select(editor, startPoint);
+      }
+    } catch {
+      // Silent catch in case of any selection errors
+    }
+
+    // Update menu position with a small delay
     setTimeout(() => {
       updateMenuPosition();
-    }, 10); // Небольшая задержка чтобы позиция курсора успела обновиться
-  }, [updateMenuPosition]);
+    }, 10);
+  }, [editor, updateMenuPosition]);
 
   const handleKeyDown = useCallback(
     (e) => {
@@ -184,8 +211,52 @@ const ArticleEditor = ({ onShowToolbar }) => {
           updateMenuPosition();
         }, 10);
       }
+
+      // Handle default text replacement
+      const { selection } = editor;
+      if (!selection) return;
+
+      const [node, path] = Editor.node(editor, selection);
+      const [parent] = Editor.parent(editor, path);
+
+      // For placeholder text, clear it when user starts typing (except for navigation and modifier keys)
+      if (
+        !navigationKeys.includes(e.key) &&
+        !e.metaKey &&
+        !e.ctrlKey &&
+        !e.altKey &&
+        e.key.length === 1
+      ) {
+        if (
+          parent.type === "title" &&
+          node.text === "Здесь может быть заголовок"
+        ) {
+          e.preventDefault();
+          // Clear title and insert the typed character
+          Transforms.delete(editor, {
+            at: {
+              anchor: Editor.start(editor, path),
+              focus: Editor.end(editor, path),
+            },
+          });
+          Transforms.insertText(editor, e.key);
+        } else if (
+          parent.type === "description" &&
+          node.text === "Здесь можно добавить описание"
+        ) {
+          e.preventDefault();
+          // Clear description and insert the typed character
+          Transforms.delete(editor, {
+            at: {
+              anchor: Editor.start(editor, path),
+              focus: Editor.end(editor, path),
+            },
+          });
+          Transforms.insertText(editor, e.key);
+        }
+      }
     },
-    [updateMenuPosition],
+    [editor, updateMenuPosition],
   );
 
   const handleEditorBlur = useCallback((e) => {
@@ -432,10 +503,12 @@ const ArticleEditor = ({ onShowToolbar }) => {
   const renderElement = useCallback(
     (props) => {
       switch (props.element.type) {
-        case "title":
+        case "title": {
+          const isTitleDefault =
+            props.element.children?.[0]?.text === "Здесь может быть заголовок";
           return (
             <h1
-              className={styles.title}
+              className={`${styles.title} ${isTitleDefault ? styles.placeholderText : ""}`}
               {...props.attributes}
               style={{ textAlign: props.element.align || "left" }}
               onDragOver={handleMediaDragOver}
@@ -445,10 +518,14 @@ const ArticleEditor = ({ onShowToolbar }) => {
               {props.children}
             </h1>
           );
-        case "description":
+        }
+        case "description": {
+          const isDescriptionDefault =
+            props.element.children?.[0]?.text ===
+            "Здесь можно добавить описание";
           return (
             <p
-              className={styles.editableDescription}
+              className={`${styles.editableDescription} ${isDescriptionDefault ? styles.placeholderText : ""}`}
               {...props.attributes}
               style={{ textAlign: props.element.align || "left" }}
               onDragOver={handleMediaDragOver}
@@ -458,6 +535,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
               {props.children}
             </p>
           );
+        }
         case "heading":
           return (
             <h2
