@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import api from "../../../../shared/api/api";
 
 export function useCreateProject() {
@@ -19,26 +20,22 @@ export function useCreateProject() {
     setError(null);
 
     try {
-      // Создаем FormData
       const formData = new FormData();
-      
+
       // Обязательные поля
       formData.append("name", name);
-      formData.append("categoryId", Number(categoryId));
-      formData.append("specializationId", Number(specializationId));
+      formData.append("categoryId", String(categoryId));
+      formData.append("specializationId", String(specializationId));
+
+      // Контент как строка JSON
       formData.append("content", JSON.stringify(content));
 
-      // Опциональные поля
+      // Опциональные поля (добавляем только если они есть)
       if (description) formData.append("description", description);
       if (firstLink) formData.append("firstLink", firstLink);
       if (secondLink) formData.append("secondLink", secondLink);
-      
-      // Добавляем coverImage если есть
-      if (coverImage) {
-        formData.append("coverImage", coverImage);
-      }
+      if (coverImage) formData.append("coverImage", coverImage);
 
-      // Отправляем запрос
       const response = await api.post("/projects/create-projects", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -47,7 +44,11 @@ export function useCreateProject() {
 
       return response.data;
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Ошибка при создании проекта");
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Ошибка при создании проекта",
+      );
       throw err;
     } finally {
       setLoading(false);

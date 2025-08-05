@@ -9,11 +9,23 @@ import Textarea from "../../../shared/ui/components/input/Textarea";
 import CreateProjectNav from "../CreateProjectNav";
 import { useCreateProject } from "../project/hooks/useCreateProject";
 import styles from "./Information.module.css";
+import { useFetchOptions } from "./hooks/useFetchOptions";
 
 export default function Information() {
   const { projectData, updateProjectData, setCoverImage, resetProject } =
     useProjectStore();
-  const { createProject, loading, error, success } = useCreateProject();
+  const {
+    createProject,
+    loading: createLoading,
+    error: createError,
+    success,
+  } = useCreateProject();
+  const {
+    specializations,
+    categories,
+    loading: fetchLoading,
+    error: fetchError,
+  } = useFetchOptions();
 
   // Очистка blob URL при размонтировании компонента
   useEffect(() => {
@@ -67,7 +79,7 @@ export default function Information() {
     try {
       await createProject(projectData);
       alert("Проект успешно опубликован!");
-      resetProject(); // Очищаем данные после успешной публикации
+      resetProject();
     } catch (err) {
       alert(`Ошибка при публикации: ${err.message}`);
     }
@@ -76,12 +88,15 @@ export default function Information() {
   return (
     <div>
       <Header darkBackground={true} />
-      <CreateProjectNav onPublish={handlePublish} isLoading={loading} />
+      <CreateProjectNav
+        onPublish={handlePublish}
+        isLoading={createLoading || fetchLoading}
+      />
       <div className="containerXS">
         <div className={styles.content}>
-          {error && (
+          {(createError || fetchError) && (
             <div style={{ color: "red", marginBottom: "20px" }}>
-              Ошибка: {error}
+              Ошибка: {createError || fetchError}
             </div>
           )}
           {success && (
@@ -98,7 +113,7 @@ export default function Information() {
                   src={
                     projectData.coverImagePreview ||
                     projectData.coverImageBase64 ||
-                    "/images/loginBg.png"
+                    "/images/projectPhoto.png"
                   }
                   alt="Sample_Project_Icon"
                   className={styles.coverImage}
@@ -137,23 +152,26 @@ export default function Information() {
             <div className="stripe2"></div>
             <div className={styles.formSelect}>
               <Select
-                label={`Направление`}
-                id={`specializationId`}
+                label="Направление"
+                id="specializationId"
                 theme="white"
-                options={[{ value: 1, label: "SMM" }]}
+                options={specializations}
                 value={projectData.specializationId}
                 onChange={(option) =>
                   handleSelectChange("specializationId", option)
                 }
+                isLoading={fetchLoading}
+                placeholder="Выберите направление"
               />
-
               <Select
-                label={`Ниша`}
-                id={`categoryId`}
+                label="Ниша"
+                id="categoryId"
                 theme="white"
-                options={[{ value: 3, label: "Медицина" }]}
+                options={categories}
                 value={projectData.categoryId}
                 onChange={(option) => handleSelectChange("categoryId", option)}
+                isLoading={fetchLoading}
+                placeholder="Выберите нишу"
               />
             </div>
           </div>
@@ -163,8 +181,8 @@ export default function Information() {
             <div className="stripe2"></div>
             <div className={styles.form}>
               <Input
-                label={`Название проекта`}
-                id={`name`}
+                label="Название проекта"
+                id="name"
                 theme="white"
                 style={{ width: "100%" }}
                 className={styles.fullWidthInput}
@@ -174,8 +192,8 @@ export default function Information() {
             </div>
             <div className={styles.form}>
               <Textarea
-                label={`Описание проекта`}
-                id={`description`}
+                label="Описание проекта"
+                id="description"
                 theme="white"
                 className={styles.fullWidthInput}
                 value={projectData.description}
@@ -191,16 +209,15 @@ export default function Information() {
             <div className="stripe2"></div>
             <div className={styles.formSelect}>
               <Input
-                label={`Ссылка 1`}
-                id={`firstLink`}
+                label="Ссылка 1"
+                id="firstLink"
                 theme="white"
                 value={projectData.firstLink}
                 onChange={(e) => handleInputChange("firstLink", e.target.value)}
               />
-
               <Input
-                label={`Ссылка 2`}
-                id={`secondLink`}
+                label="Ссылка 2"
+                id="secondLink"
                 theme="white"
                 value={projectData.secondLink}
                 onChange={(e) =>

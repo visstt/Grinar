@@ -79,8 +79,7 @@
   color: #9ca3af !important;
   font-size: 16px;
   font-weight: 400;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   line-height: 1.6;
   transition: color 0.2s ease-in-out;
 }
@@ -90,8 +89,7 @@
   font-weight: 400;
   color: #111827;
   margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   line-height: 1.3;
   outline: none;
   border: none;
@@ -107,8 +105,7 @@
 .editor {
   background: transparent;
   outline: none;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.6;
   min-height: 200px;
@@ -181,7 +178,6 @@
   outline: none;
 }
 
-/* Обертки для медиа элементов */
 .videoWrapper {
   position: relative;
   margin: 24px 0;
@@ -213,33 +209,21 @@
   border-radius: 4px;
 }
 
-.videoDragHandle {
-  position: absolute;
-  top: 8px;
-  left: -45px;
-  z-index: 20;
-  opacity: 1; /* Временно делаем всегда видимым для отладки */
-  transition: opacity 0.2s ease;
-}
-
-.videoWrapper:hover .videoDragHandle {
-  opacity: 1;
-}
-
+.videoDragHandle,
 .imageDragHandle {
   position: absolute;
   top: 8px;
   left: -45px;
   z-index: 20;
-  opacity: 1; /* Временно делаем всегда видимым для отладки */
+  opacity: 1;
   transition: opacity 0.2s ease;
 }
 
+.videoWrapper:hover .videoDragHandle,
 .imageWrapper:hover .imageDragHandle {
   opacity: 1;
 }
 
-/* Drop zone styles */
 .paragraphWrapper.dropTarget,
 .imageWrapper.dropTarget,
 .videoWrapper.dropTarget {
@@ -275,9 +259,6 @@
   align-items: center;
   justify-content: center;
   user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
 }
 
 .dragIcon:active {
@@ -309,7 +290,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Стили для ссылок */
 .editor a {
   color: #195ee6;
   text-decoration: underline;
@@ -322,7 +302,6 @@
   text-decoration: none;
 }
 
-/* Секция публикации */
 .publishSection {
   margin-top: 40px;
   padding: 24px 0;
@@ -384,4 +363,145 @@
   font-size: 14px;
   max-width: 400px;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .editorContainer {
+    padding: 15px 0;
+    min-height: calc(100vh - 150px);
+  }
+
+  .editorWrapper {
+    padding: 0 10px;
+  }
+
+  .editor {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .title {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .editableTitle {
+    font-size: 24px;
+    padding: 6px 0;
+  }
+
+  .heading {
+    font-size: 20px;
+    margin: 24px 0 12px 0;
+  }
+
+  .editableDescription {
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 3px 0;
+  }
+
+  .paragraph {
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 3px 0;
+  }
+
+  .imageWrapper, .videoWrapper {
+    margin: 16px 0;
+  }
+
+  .image, .video {
+    border-radius: 8px;
+  }
+
+  .editorContentMenu {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: fit-content;
+    max-width: 90%;
+  }
+
+  .descriptionContentMenu, .titleContentMenu, .contentMenuWrapper {
+    left: -40px;
+  }
+
+  .videoDragHandle, .imageDragHandle {
+    display: none; /* Отключаем drag handles на мобильных */
+  }
+
+  .paragraphWrapper.dropTarget::after,
+  .imageWrapper.dropTarget::after,
+  .videoWrapper.dropTarget::after {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .publishSection {
+    margin-top: 30px;
+    padding: 16px 0;
+  }
+
+  .publishButton {
+    padding: 12px 24px;
+    font-size: 14px;
+    min-width: 120px;
+  }
+
+  .publishError, .publishSuccess {
+    font-size: 13px;
+    padding: 10px 14px;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 600px) {
+  .editorContainer {
+    padding: 10px 0;
+  }
+
+  .editorWrapper {
+    padding: 0 8px;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .editableTitle {
+    font-size: 20px;
+    padding: 5px 0;
+  }
+
+  .heading {
+    font-size: 18px;
+    margin: 20px 0 10px 0;
+  }
+
+  .editableDescription, .paragraph {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .imageWrapper, .videoWrapper {
+    margin: 12px 0;
+  }
+
+  .image, .video {
+    border-radius: 6px;
+  }
+
+  .editorContentMenu {
+    bottom: 15px;
+  }
+
+  .publishButton {
+    padding: 10px 20px;
+    font-size: 13px;
+    min-width: 100px;
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   getProjectPhotoUrl,
@@ -10,7 +10,23 @@ import CardPage from "./cardPage/CardPage";
 
 export default function Card({ project }) {
   const [open, setOpen] = useState(false);
+
+  // Блокируем/разблокируем прокрутку при открытии/закрытии модалки
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    // Очищаем стиль при размонтировании компонента
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   if (!project) return null;
+
   return (
     <>
       <div className={styles.card} onClick={() => setOpen(true)}>

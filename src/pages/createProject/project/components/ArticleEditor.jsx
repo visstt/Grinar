@@ -13,27 +13,30 @@ const ArticleEditor = ({ onShowToolbar }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("image");
   const [activeLineId, setActiveLineId] = useState(null);
-  // eslint-disable-next-line
   const [isDragging, setIsDragging] = useState(false);
   const [dragOverElement, setDragOverElement] = useState(null);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Проверка мобильного устройства
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Загружаем Google Fonts
   useEffect(() => {
     const loadGoogleFonts = () => {
-      // Проверяем, не загружены ли уже шрифты
-      if (document.querySelector('link[href*="fonts.googleapis.com"]')) {
-        return;
-      }
-
+      if (document.querySelector('link[href*="fonts.googleapis.com"]')) return;
       const link = document.createElement("link");
       link.rel = "stylesheet";
       link.href =
         "https://fonts.googleapis.com/css2?" +
-        // Основные шрифты из toolbar
         "family=Manrope:wght@400;500;600;700&" +
-        "family=Courier+Prime:wght@400;700&" + // Аналог Courier New
-        // Дополнительные популярные шрифты
+        "family=Courier+Prime:wght@400;700&" +
         "family=Inter:wght@400;500;600;700&" +
         "family=Roboto:wght@400;500;700&" +
         "family=Open+Sans:wght@400;600;700&" +
@@ -48,46 +51,29 @@ const ArticleEditor = ({ onShowToolbar }) => {
         "family=Libre+Baskerville:wght@400;700&" +
         "family=Noto+Serif:wght@400;700&" +
         "family=Noto+Sans:wght@400;500;600;700&" +
-        // Дополнительные serif и sans-serif
         "family=Source+Serif+Pro:wght@400;600;700&" +
         "family=IBM+Plex+Sans:wght@400;500;600;700&" +
         "family=IBM+Plex+Serif:wght@400;500;600;700&" +
         "family=Fira+Sans:wght@400;500;600;700&" +
         "family=Work+Sans:wght@400;500;600;700&" +
         "display=swap";
-
       document.head.appendChild(link);
     };
-
     loadGoogleFonts();
   }, []);
 
   const insertImage = useCallback((editor, url) => {
-    const image = {
-      type: "image",
-      url,
-      children: [{ text: "" }],
-    };
-
+    const image = { type: "image", url, children: [{ text: "" }] };
     Transforms.insertNodes(editor, image);
   }, []);
 
   const insertVideo = useCallback((editor, url) => {
-    const video = {
-      type: "video",
-      url,
-      children: [{ text: "" }],
-    };
-
+    const video = { type: "video", url, children: [{ text: "" }] };
     Transforms.insertNodes(editor, video);
   }, []);
 
   const addTextBlock = useCallback(() => {
-    const textBlock = {
-      type: "paragraph",
-      children: [{ text: "" }],
-    };
-
+    const textBlock = { type: "paragraph", children: [{ text: "" }] };
     Transforms.insertNodes(editor, textBlock);
     ReactEditor.focus(editor);
     setMenuOpen(false);
@@ -117,40 +103,32 @@ const ArticleEditor = ({ onShowToolbar }) => {
   );
 
   const updateMenuPosition = useCallback(() => {
+    if (isMobile) {
+      // На мобильных устройствах фиксируем меню внизу экрана
+      setMenuPosition({ top: "auto", left: 0, bottom: 20 });
+      return;
+    }
     try {
       const { selection } = editor;
       if (!selection) return;
-
-      // Получаем DOM элемент для текущей позиции курсора
       const domRange = ReactEditor.toDOMRange(editor, selection);
       const rect = domRange.getBoundingClientRect();
-
-      // Получаем позицию относительно редактора
       const editorElement = ReactEditor.toDOMNode(editor, editor);
       const editorRect = editorElement.getBoundingClientRect();
-
-      // Позиционируем меню слева от редактора на уровне курсора
-      const top = rect.top - editorRect.top; // На уровне курсора
-      const left = -60; // Слева от редактора (отрицательное значение)
-
+      const top = rect.top - editorRect.top;
+      const left = -60;
       setMenuPosition({ top, left });
     } catch {
-      // Если не удается определить позицию, используем позицию по умолчанию
       setMenuPosition({ top: 0, left: -60 });
     }
-  }, [editor]);
+  }, [editor, isMobile]);
 
   const handleEditorChange = useCallback(() => {
-    // Показываем тулбар при любом изменении в редакторе
     onShowToolbar && onShowToolbar(true);
-
-    // Также проверяем изменение выделения
     const { selection } = editor;
     if (selection && !Editor.isCollapsed(editor, selection)) {
       onShowToolbar && onShowToolbar(true);
     }
-
-    // Обновляем позицию меню при изменении курсора
     updateMenuPosition();
   }, [onShowToolbar, editor, updateMenuPosition]);
 
@@ -161,41 +139,28 @@ const ArticleEditor = ({ onShowToolbar }) => {
   }, [onShowToolbar, updateMenuPosition]);
 
   const handleEditorClick = useCallback(() => {
-    // Get the clicked node
     const { selection } = editor;
     if (!selection) return;
-
     try {
-      // Get the current node and check if it's a placeholder
       const [node, path] = Editor.node(editor, selection);
       const [parent] = Editor.parent(editor, path);
-
-      // Check if clicked on placeholder text
       const isTitlePlaceholder =
         parent?.type === "title" && node?.text === "Здесь может быть заголовок";
       const isDescriptionPlaceholder =
         parent?.type === "description" &&
         node?.text === "Здесь можно добавить описание";
-
-      // If clicked on placeholder, move cursor to beginning
       if (isTitlePlaceholder || isDescriptionPlaceholder) {
-        // Set selection to the start of the text
         const startPoint = Editor.start(editor, path);
         Transforms.select(editor, startPoint);
       }
     } catch {
-      // Silent catch in case of any selection errors
+      // Silent catch
     }
-
-    // Update menu position with a small delay
-    setTimeout(() => {
-      updateMenuPosition();
-    }, 10);
+    setTimeout(() => updateMenuPosition(), 10);
   }, [editor, updateMenuPosition]);
 
   const handleKeyDown = useCallback(
     (e) => {
-      // Обновляем позицию меню при навигации с клавиатуры
       const navigationKeys = [
         "ArrowUp",
         "ArrowDown",
@@ -207,19 +172,12 @@ const ArticleEditor = ({ onShowToolbar }) => {
         "PageDown",
       ];
       if (navigationKeys.includes(e.key)) {
-        setTimeout(() => {
-          updateMenuPosition();
-        }, 10);
+        setTimeout(() => updateMenuPosition(), 10);
       }
-
-      // Handle default text replacement
       const { selection } = editor;
       if (!selection) return;
-
       const [node, path] = Editor.node(editor, selection);
       const [parent] = Editor.parent(editor, path);
-
-      // For placeholder text, clear it when user starts typing (except for navigation and modifier keys)
       if (
         !navigationKeys.includes(e.key) &&
         !e.metaKey &&
@@ -232,7 +190,6 @@ const ArticleEditor = ({ onShowToolbar }) => {
           node.text === "Здесь может быть заголовок"
         ) {
           e.preventDefault();
-          // Clear title and insert the typed character
           Transforms.delete(editor, {
             at: {
               anchor: Editor.start(editor, path),
@@ -245,7 +202,6 @@ const ArticleEditor = ({ onShowToolbar }) => {
           node.text === "Здесь можно добавить описание"
         ) {
           e.preventDefault();
-          // Clear description and insert the typed character
           Transforms.delete(editor, {
             at: {
               anchor: Editor.start(editor, path),
@@ -260,50 +216,34 @@ const ArticleEditor = ({ onShowToolbar }) => {
   );
 
   const handleEditorBlur = useCallback((e) => {
-    // Проверяем, не кликнули ли на элемент меню
     if (e.relatedTarget && e.relatedTarget.closest('[class*="ContentMenu"]')) {
-      return; // Не скрываем меню если кликнули на него
+      return;
     }
-    // Небольшая задержка чтобы не скрывать меню слишком быстро
     setTimeout(() => setActiveLineId(null), 100);
   }, []);
 
-  // Функции для drag & drop изображений
   const handleImageDragStart = useCallback(
     (e, element) => {
+      if (isMobile) return; // Отключаем drag-and-drop на мобильных
       setIsDragging(true);
-
       try {
-        // Находим путь к элементу в редакторе
         const path = ReactEditor.findPath(editor, element);
-
-        // Устанавливаем данные для передачи
         e.dataTransfer.effectAllowed = "move";
         e.dataTransfer.dropEffect = "move";
-
-        // Используем только стандартные типы данных
         const elementData = JSON.stringify({
           type: element.type,
           url: element.url,
           path: path,
-          dragType: "slate-media", // Маркер для идентификации наших данных
+          dragType: "slate-media",
         });
-
-        // Используем только text/plain - он всегда работает
         e.dataTransfer.setData("text/plain", elementData);
-
-        // Дополнительно пробуем другие форматы
         e.dataTransfer.setData("application/json", elementData);
-
-        // Создаем пустой div для drag image чтобы не тянулся SVG
         const dragImage = document.createElement("div");
         dragImage.style.opacity = "0";
         dragImage.style.position = "absolute";
         dragImage.style.top = "-1000px";
         document.body.appendChild(dragImage);
         e.dataTransfer.setDragImage(dragImage, 0, 0);
-
-        // Удаляем элемент после завершения drag
         setTimeout(() => {
           if (document.body.contains(dragImage)) {
             document.body.removeChild(dragImage);
@@ -313,69 +253,52 @@ const ArticleEditor = ({ onShowToolbar }) => {
         setIsDragging(false);
       }
     },
-    [editor],
+    [editor, isMobile],
   );
 
-  const handleMediaDragOver = useCallback((e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
+  const handleMediaDragOver = useCallback(
+    (e) => {
+      if (isMobile) return; // Отключаем на мобильных
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      setDragOverElement(e.currentTarget);
+    },
+    [isMobile],
+  );
 
-    // Находим ближайший wrapper элемент для подсветки
-    const targetWrapper = e.currentTarget;
-    setDragOverElement(targetWrapper);
-  }, []);
-
-  const handleMediaDragLeave = useCallback((e) => {
-    // Убираем подсветку только если покидаем элемент полностью
-    if (!e.currentTarget.contains(e.relatedTarget)) {
-      setDragOverElement(null);
-    }
-  }, []);
+  const handleMediaDragLeave = useCallback(
+    (e) => {
+      if (isMobile) return;
+      if (!e.currentTarget.contains(e.relatedTarget)) {
+        setDragOverElement(null);
+      }
+    },
+    [isMobile],
+  );
 
   const handleMediaDrop = useCallback(
     (e, targetElement) => {
+      if (isMobile) return;
       e.preventDefault();
       e.stopPropagation();
       setDragOverElement(null);
-
       try {
-        // Получаем данные из text/plain
-        let textData = e.dataTransfer.getData("text/plain");
-
-        // Если text/plain пустой, пробуем application/json
-        if (!textData) {
-          textData = e.dataTransfer.getData("application/json");
-        }
-
-        if (!textData) {
-          return;
-        }
-
+        let textData =
+          e.dataTransfer.getData("text/plain") ||
+          e.dataTransfer.getData("application/json");
+        if (!textData) return;
         let parsedData;
         try {
           parsedData = JSON.parse(textData);
         } catch {
           return;
         }
-
-        // Проверяем что это наши данные
-        if (!parsedData.dragType || parsedData.dragType !== "slate-media") {
+        if (!parsedData.dragType || parsedData.dragType !== "slate-media")
           return;
-        }
-
-        if (!parsedData.path) {
-          return;
-        }
-
+        if (!parsedData.path) return;
         const sourcePath = parsedData.path;
         const targetPath = ReactEditor.findPath(editor, targetElement);
-
-        // Проверяем валидность путей
-        if (!sourcePath || !targetPath) {
-          return;
-        }
-
-        // Проверяем что целевой элемент допустим для drop
+        if (!sourcePath || !targetPath) return;
         const allowedDropTargets = [
           "paragraph",
           "image",
@@ -384,110 +307,67 @@ const ArticleEditor = ({ onShowToolbar }) => {
           "title",
           "heading",
         ];
-        if (!allowedDropTargets.includes(targetElement.type)) {
-          return;
-        }
-
-        // Не перемещаем элемент сам на себя или на соседние позиции
-        if (JSON.stringify(sourcePath) === JSON.stringify(targetPath)) {
-          return;
-        }
-
-        // Проверяем что не пытаемся переместить в соседнюю позицию
+        if (!allowedDropTargets.includes(targetElement.type)) return;
+        if (JSON.stringify(sourcePath) === JSON.stringify(targetPath)) return;
         const sourceIndex = sourcePath[0];
         const targetIndex = targetPath[0];
-        if (Math.abs(sourceIndex - targetIndex) <= 1) {
-          return;
-        }
-
-        // Получаем элемент для перемещения
+        if (Math.abs(sourceIndex - targetIndex) <= 1) return;
         const [sourceNode] = Editor.node(editor, sourcePath);
-
-        // Определяем куда вставлять: до или после целевого элемента
-        const insertAtIndex = targetPath[0] + 1; // Всегда вставляем после целевого элемента
-
-        // Проверяем валидность индекса
-        if (insertAtIndex < 0 || insertAtIndex > editor.children.length) {
-          return;
-        }
-
-        // Удаляем исходный элемент
+        const insertAtIndex = targetPath[0] + 1;
+        if (insertAtIndex < 0 || insertAtIndex > editor.children.length) return;
         Transforms.removeNodes(editor, { at: sourcePath });
-
-        // Корректируем индекс вставки если источник был выше цели
         const adjustedInsertIndex =
           sourcePath[0] < insertAtIndex ? insertAtIndex - 1 : insertAtIndex;
-
-        // Вставляем элемент с обработкой ошибок
         try {
-          // Используем withoutNormalizing для предотвращения конфликтов
           Editor.withoutNormalizing(editor, () => {
             Transforms.insertNodes(editor, sourceNode, {
               at: [adjustedInsertIndex],
             });
           });
         } catch {
-          // Альтернативный метод: вставляем в конец документа
           try {
             Editor.withoutNormalizing(editor, () => {
               Transforms.insertNodes(editor, sourceNode);
             });
           } catch {
-            // Возвращаем удаленный элемент обратно
             try {
               Editor.withoutNormalizing(editor, () => {
-                Transforms.insertNodes(editor, sourceNode, {
-                  at: sourcePath,
-                });
+                Transforms.insertNodes(editor, sourceNode, { at: sourcePath });
               });
             } catch {
-              // Если восстановление не удалось, ничего не делаем
+              // Silent catch
             }
           }
         }
       } catch {
-        // Обработка ошибок без логирования
+        // Silent catch
       }
     },
-    [editor],
+    [editor, isMobile],
   );
 
-  // Функции для drag & drop видео (обновленные)
   const handleVideoDragStart = useCallback(
     (e, element) => {
+      if (isMobile) return;
       setIsDragging(true);
-
       try {
-        // Находим путь к элементу в редакторе
         const path = ReactEditor.findPath(editor, element);
-
-        // Устанавливаем данные для передачи
         e.dataTransfer.effectAllowed = "move";
         e.dataTransfer.dropEffect = "move";
-
-        // Используем только стандартные типы данных
         const elementData = JSON.stringify({
           type: element.type,
           url: element.url,
           path: path,
-          dragType: "slate-media", // Маркер для идентификации наших данных
+          dragType: "slate-media",
         });
-
-        // Используем только text/plain - он всегда работает
         e.dataTransfer.setData("text/plain", elementData);
-
-        // Дополнительно пробуем другие форматы
         e.dataTransfer.setData("application/json", elementData);
-
-        // Создаем пустой div для drag image чтобы не тянулся SVG
         const dragImage = document.createElement("div");
         dragImage.style.opacity = "0";
         dragImage.style.position = "absolute";
         dragImage.style.top = "-1000px";
         document.body.appendChild(dragImage);
         e.dataTransfer.setDragImage(dragImage, 0, 0);
-
-        // Удаляем элемент после завершения drag
         setTimeout(() => {
           if (document.body.contains(dragImage)) {
             document.body.removeChild(dragImage);
@@ -497,7 +377,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
         setIsDragging(false);
       }
     },
-    [editor],
+    [editor, isMobile],
   );
 
   const renderElement = useCallback(
@@ -511,9 +391,11 @@ const ArticleEditor = ({ onShowToolbar }) => {
               className={`${styles.title} ${isTitleDefault ? styles.placeholderText : ""}`}
               {...props.attributes}
               style={{ textAlign: props.element.align || "left" }}
-              onDragOver={handleMediaDragOver}
-              onDragLeave={handleMediaDragLeave}
-              onDrop={(e) => handleMediaDrop(e, props.element)}
+              onDragOver={isMobile ? undefined : handleMediaDragOver}
+              onDragLeave={isMobile ? undefined : handleMediaDragLeave}
+              onDrop={
+                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
+              }
             >
               {props.children}
             </h1>
@@ -528,9 +410,11 @@ const ArticleEditor = ({ onShowToolbar }) => {
               className={`${styles.editableDescription} ${isDescriptionDefault ? styles.placeholderText : ""}`}
               {...props.attributes}
               style={{ textAlign: props.element.align || "left" }}
-              onDragOver={handleMediaDragOver}
-              onDragLeave={handleMediaDragLeave}
-              onDrop={(e) => handleMediaDrop(e, props.element)}
+              onDragOver={isMobile ? undefined : handleMediaDragOver}
+              onDragLeave={isMobile ? undefined : handleMediaDragLeave}
+              onDrop={
+                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
+              }
             >
               {props.children}
             </p>
@@ -542,9 +426,11 @@ const ArticleEditor = ({ onShowToolbar }) => {
               className={styles.heading}
               {...props.attributes}
               style={{ textAlign: props.element.align || "left" }}
-              onDragOver={handleMediaDragOver}
-              onDragLeave={handleMediaDragLeave}
-              onDrop={(e) => handleMediaDrop(e, props.element)}
+              onDragOver={isMobile ? undefined : handleMediaDragOver}
+              onDragLeave={isMobile ? undefined : handleMediaDragLeave}
+              onDrop={
+                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
+              }
             >
               {props.children}
             </h2>
@@ -556,9 +442,11 @@ const ArticleEditor = ({ onShowToolbar }) => {
             <div
               className={`${styles.paragraphWrapper} ${isDropTarget ? styles.dropTarget : ""}`}
               {...props.attributes}
-              onDragOver={handleMediaDragOver}
-              onDragLeave={handleMediaDragLeave}
-              onDrop={(e) => handleMediaDrop(e, props.element)}
+              onDragOver={isMobile ? undefined : handleMediaDragOver}
+              onDragLeave={isMobile ? undefined : handleMediaDragLeave}
+              onDrop={
+                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
+              }
             >
               <p
                 className={styles.paragraph}
@@ -575,91 +463,87 @@ const ArticleEditor = ({ onShowToolbar }) => {
             <div
               className={styles.imageWrapper}
               {...props.attributes}
-              onDragOver={handleMediaDragOver}
-              onDrop={(e) => handleMediaDrop(e, props.element)}
+              onDragOver={isMobile ? undefined : handleMediaDragOver}
+              onDrop={
+                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
+              }
             >
-              <div className={styles.imageDragHandle}>
-                <div
-                  className={styles.dragIcon}
-                  draggable={true}
-                  onDragStart={(e) => {
-                    e.stopPropagation();
-                    handleImageDragStart(e, props.element);
-                  }}
-                  onMouseDown={(e) => {
-                    e.stopPropagation();
-                  }}
-                  onDragEnd={(e) => {
-                    e.stopPropagation();
-                    setIsDragging(false);
-                  }}
-                  title="Перетащите для изменения порядка"
-                  style={{
-                    userSelect: "none",
-                    WebkitUserSelect: "none",
-                    MozUserSelect: "none",
-                    msUserSelect: "none",
-                    cursor: "grab",
-                  }}
-                >
-                  <svg
-                    width="29"
-                    height="28"
-                    viewBox="0 0 29 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+              {!isMobile && (
+                <div className={styles.imageDragHandle}>
+                  <div
+                    className={styles.dragIcon}
+                    draggable={true}
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      handleImageDragStart(e, props.element);
+                    }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onDragEnd={(e) => {
+                      e.stopPropagation();
+                      setIsDragging(false);
+                    }}
+                    title="Перетащите для изменения порядка"
+                    style={{ userSelect: "none", cursor: "grab" }}
                   >
-                    <rect
-                      x="8.5"
-                      y="5"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                    <rect
-                      x="16.5"
-                      y="5"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                    <rect
-                      x="8.5"
-                      y="12"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                    <rect
-                      x="16.5"
-                      y="12"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                    <rect
-                      x="8.5"
-                      y="19"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                    <rect
-                      x="16.5"
-                      y="19"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                  </svg>
+                    <svg
+                      width="29"
+                      height="28"
+                      viewBox="0 0 29 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="8.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className={styles.imageContainer}>
                 <img
                   src={props.element.url}
@@ -676,91 +560,87 @@ const ArticleEditor = ({ onShowToolbar }) => {
             <div
               className={styles.videoWrapper}
               {...props.attributes}
-              onDragOver={handleMediaDragOver}
-              onDrop={(e) => handleMediaDrop(e, props.element)}
+              onDragOver={isMobile ? undefined : handleMediaDragOver}
+              onDrop={
+                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
+              }
             >
-              <div className={styles.videoDragHandle}>
-                <div
-                  className={styles.dragIcon}
-                  draggable={true}
-                  onDragStart={(e) => {
-                    e.stopPropagation();
-                    handleVideoDragStart(e, props.element);
-                  }}
-                  onMouseDown={(e) => {
-                    e.stopPropagation();
-                  }}
-                  onDragEnd={(e) => {
-                    e.stopPropagation();
-                    setIsDragging(false);
-                  }}
-                  title="Перетащите для изменения порядка"
-                  style={{
-                    userSelect: "none",
-                    WebkitUserSelect: "none",
-                    MozUserSelect: "none",
-                    msUserSelect: "none",
-                    cursor: "grab",
-                  }}
-                >
-                  <svg
-                    width="29"
-                    height="28"
-                    viewBox="0 0 29 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+              {!isMobile && (
+                <div className={styles.videoDragHandle}>
+                  <div
+                    className={styles.dragIcon}
+                    draggable={true}
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      handleVideoDragStart(e, props.element);
+                    }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onDragEnd={(e) => {
+                      e.stopPropagation();
+                      setIsDragging(false);
+                    }}
+                    title="Перетащите для изменения порядка"
+                    style={{ userSelect: "none", cursor: "grab" }}
                   >
-                    <rect
-                      x="8.5"
-                      y="5"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                    <rect
-                      x="16.5"
-                      y="5"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                    <rect
-                      x="8.5"
-                      y="12"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                    <rect
-                      x="16.5"
-                      y="12"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                    <rect
-                      x="8.5"
-                      y="19"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                    <rect
-                      x="16.5"
-                      y="19"
-                      width="4"
-                      height="4"
-                      rx="2"
-                      fill="#195EE6"
-                    />
-                  </svg>
+                    <svg
+                      width="29"
+                      height="28"
+                      viewBox="0 0 29 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="8.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className={styles.videoContainer}>
                 <video
                   src={props.element.url}
@@ -779,15 +659,18 @@ const ArticleEditor = ({ onShowToolbar }) => {
               href={props.element.url}
               target="_blank"
               rel="noopener noreferrer"
-              title="Ctrl + Click чтобы открыть ссылку"
+              title={
+                isMobile
+                  ? "Нажмите для открытия ссылки"
+                  : "Ctrl + Click чтобы открыть ссылку"
+              }
               style={{
                 color: "#195ee6",
                 textDecoration: "underline",
-                cursor: "text",
+                cursor: isMobile ? "pointer" : "text",
               }}
               onClick={(e) => {
-                if (e.ctrlKey || e.metaKey) {
-                  // Открываем ссылку только при Ctrl+Click (или Cmd+Click на Mac)
+                if (isMobile || e.ctrlKey || e.metaKey) {
                   e.preventDefault();
                   e.stopPropagation();
                   window.open(
@@ -796,44 +679,16 @@ const ArticleEditor = ({ onShowToolbar }) => {
                     "noopener,noreferrer",
                   );
                 }
-                // Без Ctrl - обычное поведение текста (не блокируем событие)
               }}
-              onMouseEnter={(e) => {
-                // Показываем pointer при зажатом Ctrl
-                const updateCursor = () => {
-                  if (e.target) {
-                    e.target.style.cursor =
-                      window.event?.ctrlKey || window.event?.metaKey
-                        ? "pointer"
-                        : "text";
-                  }
-                };
-                updateCursor();
-
-                // Добавляем слушатели для отслеживания Ctrl в реальном времени
-                const handleKeyDown = (keyEvent) => {
-                  if (keyEvent.ctrlKey || keyEvent.metaKey) {
-                    e.target.style.cursor = "pointer";
-                  }
-                };
-                const handleKeyUp = (keyEvent) => {
-                  if (!keyEvent.ctrlKey && !keyEvent.metaKey) {
-                    e.target.style.cursor = "text";
-                  }
-                };
-
-                document.addEventListener("keydown", handleKeyDown);
-                document.addEventListener("keyup", handleKeyUp);
-
-                // Убираем слушатели при уходе мыши
-                e.target.addEventListener(
-                  "mouseleave",
-                  () => {
-                    document.removeEventListener("keydown", handleKeyDown);
-                    document.removeEventListener("keyup", handleKeyUp);
-                  },
-                  { once: true },
-                );
+              onTouchStart={(e) => {
+                if (isMobile) {
+                  e.preventDefault();
+                  window.open(
+                    props.element.url,
+                    "_blank",
+                    "noopener,noreferrer",
+                  );
+                }
               }}
             >
               {props.children}
@@ -850,43 +705,21 @@ const ArticleEditor = ({ onShowToolbar }) => {
       handleMediaDrop,
       handleMediaDragLeave,
       dragOverElement,
+      isMobile,
     ],
   );
 
   const renderLeaf = useCallback((props) => {
     let element = props.children;
-
-    // Применяем форматирование
-    if (props.leaf.bold) {
-      element = <strong>{element}</strong>;
-    }
-
-    if (props.leaf.italic) {
-      element = <em>{element}</em>;
-    }
-
-    if (props.leaf.underline) {
-      element = <u>{element}</u>;
-    }
-
-    // Создаем финальный span с принудительными стилями
+    if (props.leaf.bold) element = <strong>{element}</strong>;
+    if (props.leaf.italic) element = <em>{element}</em>;
+    if (props.leaf.underline) element = <u>{element}</u>;
     const finalStyles = {};
-
-    if (props.leaf.color) {
-      finalStyles.color = props.leaf.color;
-    }
-
-    if (props.leaf.fontSize) {
-      finalStyles.fontSize = `${props.leaf.fontSize}px`;
-    }
-
+    if (props.leaf.color) finalStyles.color = props.leaf.color;
+    if (props.leaf.fontSize) finalStyles.fontSize = `${props.leaf.fontSize}px`;
     if (props.leaf.fontFamily) {
-      // Создаем правильный font-family с fallback
-      let fontFamily = props.leaf.fontFamily;
-
-      // Добавляем fallback шрифты для лучшей совместимости
       const fontWithFallback = (() => {
-        switch (fontFamily) {
+        switch (props.leaf.fontFamily) {
           case "Manrope":
             return '"Manrope", "Inter", "Roboto", Arial, sans-serif';
           case "Arial":
@@ -949,67 +782,39 @@ const ArticleEditor = ({ onShowToolbar }) => {
           case "Noto Serif":
             return '"Noto Serif", serif';
           default:
-            return fontFamily.includes(" ") ? `"${fontFamily}"` : fontFamily;
+            return props.leaf.fontFamily.includes(" ")
+              ? `"${props.leaf.fontFamily}"`
+              : props.leaf.fontFamily;
         }
       })();
-
       finalStyles.fontFamily = fontWithFallback;
-
-      // Сохраняем fontWithFallback для использования в JSX
       finalStyles._fontWithFallback = fontWithFallback;
     }
-
     const fontWithFallback = finalStyles._fontWithFallback;
-
     return (
       <span
         {...props.attributes}
         style={{
           ...finalStyles,
-          // Принудительно переопределяем все возможные CSS свойства
           fontFamily: props.leaf.fontFamily ? fontWithFallback : undefined,
-          WebkitFontFamily: props.leaf.fontFamily
-            ? fontWithFallback
-            : undefined,
-          MozFontFamily: props.leaf.fontFamily ? fontWithFallback : undefined,
         }}
         ref={(el) => {
           if (el && props.leaf.fontFamily && fontWithFallback) {
-            // Сохраняем существующие стили
             const existingStyles = {
               color: props.leaf.color || el.style.color,
               fontSize: props.leaf.fontSize
                 ? `${props.leaf.fontSize}px`
                 : el.style.fontSize,
             };
-
-            // Принудительно устанавливаем через DOM API с максимальным приоритетом
             el.style.setProperty("font-family", fontWithFallback, "important");
-
-            // Восстанавливаем другие стили
-            if (existingStyles.color) {
+            if (existingStyles.color)
               el.style.setProperty("color", existingStyles.color, "important");
-            }
-            if (existingStyles.fontSize) {
+            if (existingStyles.fontSize)
               el.style.setProperty(
                 "font-size",
                 existingStyles.fontSize,
                 "important",
               );
-            }
-
-            el.style.setProperty(
-              "-webkit-font-family",
-              fontWithFallback,
-              "important",
-            );
-            el.style.setProperty(
-              "-moz-font-family",
-              fontWithFallback,
-              "important",
-            );
-
-            // Добавляем CSS правило прямо в head для максимального приоритета
             const styleId = `font-override-${Math.random().toString(36).substr(2, 9)}`;
             const style = document.createElement("style");
             style.id = styleId;
@@ -1019,33 +824,17 @@ const ArticleEditor = ({ onShowToolbar }) => {
               }
             `;
             document.head.appendChild(style);
-
-            // Формируем cssText с сохранением всех стилей
             let cssText = `font-family: ${fontWithFallback} !important;`;
-            if (existingStyles.color) {
+            if (existingStyles.color)
               cssText += ` color: ${existingStyles.color} !important;`;
-            }
-            if (existingStyles.fontSize) {
+            if (existingStyles.fontSize)
               cssText += ` font-size: ${existingStyles.fontSize} !important;`;
-            }
-
-            // Полностью перезаписываем cssText с сохранением стилей
             el.style.cssText = cssText;
-
-            // Дополнительно через setAttribute
             el.setAttribute("style", cssText);
-
-            // Проверяем результат
-            setTimeout(() => {
-              window.getComputedStyle(el);
-            }, 100);
+            setTimeout(() => window.getComputedStyle(el), 100);
           }
         }}
         data-font={props.leaf.fontFamily || "default"}
-        // Дополнительные атрибуты для принудительного стиля
-        data-style={
-          props.leaf.fontFamily ? `font-family: ${fontWithFallback}` : undefined
-        }
       >
         {element}
       </span>
@@ -1055,7 +844,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
   return (
     <div className="containerXS">
       <div className={styles.editorContainer}>
-        <div className={styles.editorWrapper} style={{ position: "relative" }}>
+        <div className={styles.editorWrapper}>
           <Editable
             className={styles.editor}
             renderElement={renderElement}
@@ -1067,14 +856,16 @@ const ArticleEditor = ({ onShowToolbar }) => {
             onClick={handleEditorClick}
             onKeyDown={handleKeyDown}
           />
-
           {activeLineId === "editor" && (
             <div
               className={styles.editorContentMenu}
               style={{
-                position: "absolute",
-                top: `${menuPosition.top}px`,
-                left: `${menuPosition.left}px`,
+                position: isMobile ? "fixed" : "absolute",
+                top: isMobile ? undefined : `${menuPosition.top}px`,
+                left: isMobile
+                  ? `${menuPosition.left}px`
+                  : `${menuPosition.left}px`,
+                bottom: isMobile ? `${menuPosition.bottom}px` : undefined,
                 zIndex: 1000,
               }}
             >
@@ -1088,7 +879,6 @@ const ArticleEditor = ({ onShowToolbar }) => {
             </div>
           )}
         </div>
-
         <MediaModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
