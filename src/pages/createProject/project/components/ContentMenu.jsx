@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Image, Plus, Type, Video } from "lucide-react";
 
@@ -11,13 +11,28 @@ const ContentMenu = ({
   isOpen,
   onToggle,
 }) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isSmallMobile, setIsSmallMobile] = useState(window.innerWidth <= 480);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsSmallMobile(window.innerWidth <= 480);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Определяем размер иконки в зависимости от размера экрана
+  const iconSize = isSmallMobile ? 14 : isMobile ? 16 : 20;
+
   return (
     <div className={styles.container}>
       <button
         className={`${styles.addButton} ${isOpen ? styles.active : ""}`}
         onClick={onToggle}
       >
-        <Plus size={20} />
+        <Plus size={iconSize} />
       </button>
 
       <div className={`${styles.menu} ${isOpen ? styles.open : ""}`}>

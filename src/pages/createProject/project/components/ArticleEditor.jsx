@@ -15,17 +15,31 @@ const ArticleEditor = ({ onShowToolbar }) => {
   const [activeLineId, setActiveLineId] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOverElement, setDragOverElement] = useState(null);
-  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const [menuPosition, setMenuPosition] = useState({
+    top: null,
+    left: window.innerWidth <= 768 ? -45 : -60,
+    bottom: null,
+  });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   // Проверка мобильного устройства
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const newIsMobile = window.innerWidth <= 768;
+      setIsMobile(newIsMobile);
+
+      // Сбрасываем позицию меню при изменении типа устройства
+      if (newIsMobile !== isMobile) {
+        if (newIsMobile) {
+          setMenuPosition({ top: null, left: -45, bottom: null });
+        } else {
+          setMenuPosition({ top: null, left: -60, bottom: null });
+        }
+      }
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [isMobile]);
 
   // Загружаем Google Fonts
   useEffect(() => {
@@ -60,6 +74,11 @@ const ArticleEditor = ({ onShowToolbar }) => {
       document.head.appendChild(link);
     };
     loadGoogleFonts();
+  }, []);
+
+  // Инициализация activeLineId для показа ContentMenu
+  useEffect(() => {
+    setActiveLineId("editor");
   }, []);
 
   const insertImage = useCallback((editor, url) => {
@@ -104,41 +123,117 @@ const ArticleEditor = ({ onShowToolbar }) => {
 
   const updateMenuPosition = useCallback(() => {
     if (isMobile) {
-      // На мобильных устройствах фиксируем меню внизу экрана
-      setMenuPosition({ top: "auto", left: 0, bottom: 20 });
+      // На мобильных устройствах оставляем меню слева от курсора, но с адаптивным размером
+      try {
+        const { selection } = editor;
+        if (!selection) {
+          setMenuPosition({ top: 0, left: -45, bottom: null });
+          return;
+        }
+
+        const domRange = ReactEditor.toDOMRange(editor, selection);
+        const rect = domRange.getBoundingClientRect();
+        const editorElement = ReactEditor.toDOMNode(editor, editor);
+        const editorRect = editorElement.getBoundingClientRect();
+
+        // Проверяем, корректны ли размеры rect
+        if (rect.height === 0 || rect.width === 0) {
+          // Для пустых элементов используем позицию курсора
+          try {
+            const [, path] = Editor.node(editor, selection);
+            const [parent] = Editor.parent(editor, path);
+
+            // Получаем DOM элемент параграфа
+            const nodeElement = ReactEditor.toDOMNode(editor, parent);
+            const nodeRect = nodeElement.getBoundingClientRect();
+
+            if (nodeRect.height > 0) {
+              const top = nodeRect.top - editorRect.top;
+              const left = -45;
+              setMenuPosition({ top: Math.max(0, top), left, bottom: null });
+              return;
+            }
+          } catch {
+            // Fallback если не удается получить элемент
+          }
+        }
+
+        const top = rect.top - editorRect.top;
+        const left = -45;
+        setMenuPosition({ top: Math.max(0, top), left, bottom: null });
+      } catch {
+        setMenuPosition({ top: 0, left: -45, bottom: null });
+      }
       return;
     }
+
     try {
       const { selection } = editor;
-      if (!selection) return;
+      if (!selection) {
+        setMenuPosition({ top: 0, left: -60, bottom: null });
+        return;
+      }
+
       const domRange = ReactEditor.toDOMRange(editor, selection);
       const rect = domRange.getBoundingClientRect();
       const editorElement = ReactEditor.toDOMNode(editor, editor);
       const editorRect = editorElement.getBoundingClientRect();
+
+      // Проверяем, корректны ли размеры rect
+      if (rect.height === 0 || rect.width === 0) {
+        // Для пустых элементов используем позицию курсора
+        try {
+          const [, path] = Editor.node(editor, selection);
+          const [parent] = Editor.parent(editor, path);
+
+          // Получаем DOM элемент параграфа
+          const nodeElement = ReactEditor.toDOMNode(editor, parent);
+          const nodeRect = nodeElement.getBoundingClientRect();
+
+          if (nodeRect.height > 0) {
+            const top = nodeRect.top - editorRect.top;
+            const left = -60;
+            setMenuPosition({ top: Math.max(0, top), left, bottom: null });
+            return;
+          }
+        } catch {
+          // Fallback если не удается получить элемент
+        }
+      }
+
       const top = rect.top - editorRect.top;
       const left = -60;
-      setMenuPosition({ top, left });
+      setMenuPosition({ top: Math.max(0, top), left, bottom: null });
     } catch {
-      setMenuPosition({ top: 0, left: -60 });
+      setMenuPosition({ top: 0, left: -60, bottom: null });
     }
   }, [editor, isMobile]);
 
   const handleEditorChange = useCallback(() => {
+    setActiveLineId("editor"); // Устанавливаем activeLineId при изменении контента
     onShowToolbar && onShowToolbar(true);
     const { selection } = editor;
     if (selection && !Editor.isCollapsed(editor, selection)) {
       onShowToolbar && onShowToolbar(true);
     }
-    updateMenuPosition();
+    // Задержка для стабильного обновления позиции
+    setTimeout(() => {
+      updateMenuPosition();
+    }, 100);
   }, [onShowToolbar, editor, updateMenuPosition]);
 
   const handleEditorFocus = useCallback(() => {
     setActiveLineId("editor");
     onShowToolbar && onShowToolbar(true);
-    updateMenuPosition();
+
+    // Задержка для корректного обновления позиции
+    setTimeout(() => {
+      updateMenuPosition();
+    }, 50);
   }, [onShowToolbar, updateMenuPosition]);
 
   const handleEditorClick = useCallback(() => {
+    setActiveLineId("editor"); // Устанавливаем activeLineId при клике
     const { selection } = editor;
     if (!selection) return;
     try {
@@ -156,7 +251,10 @@ const ArticleEditor = ({ onShowToolbar }) => {
     } catch {
       // Silent catch
     }
-    setTimeout(() => updateMenuPosition(), 10);
+    // Увеличиваем задержку для пустых параграфов
+    setTimeout(() => {
+      updateMenuPosition();
+    }, 100);
   }, [editor, updateMenuPosition]);
 
   const handleKeyDown = useCallback(
@@ -172,7 +270,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
         "PageDown",
       ];
       if (navigationKeys.includes(e.key)) {
-        setTimeout(() => updateMenuPosition(), 10);
+        setTimeout(() => updateMenuPosition(), 100);
       }
       const { selection } = editor;
       if (!selection) return;
@@ -860,12 +958,16 @@ const ArticleEditor = ({ onShowToolbar }) => {
             <div
               className={styles.editorContentMenu}
               style={{
-                position: isMobile ? "fixed" : "absolute",
-                top: isMobile ? undefined : `${menuPosition.top}px`,
-                left: isMobile
-                  ? `${menuPosition.left}px`
-                  : `${menuPosition.left}px`,
-                bottom: isMobile ? `${menuPosition.bottom}px` : undefined,
+                position: "absolute",
+                top:
+                  menuPosition.top !== null
+                    ? `${menuPosition.top}px`
+                    : undefined,
+                left: `${menuPosition.left}px`,
+                bottom:
+                  menuPosition.bottom !== null
+                    ? `${menuPosition.bottom}px`
+                    : undefined,
                 zIndex: 1000,
               }}
             >

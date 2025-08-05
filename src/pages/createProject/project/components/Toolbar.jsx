@@ -1,8 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
+
 import { motion } from "framer-motion";
-import { AlignCenter, AlignLeft, AlignRight, Bold, ChevronDown, Italic, Link, Underline, Unlink } from "lucide-react";
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  Bold,
+  ChevronDown,
+  Italic,
+  Link,
+  Underline,
+  Unlink,
+} from "lucide-react";
 import { Editor, Element as SlateElement, Transforms } from "slate";
 import { useSlate } from "slate-react";
+
 import DrawIcon from "./DrawIcon";
 import styles from "./Toolbar.module.css";
 
@@ -12,12 +24,14 @@ const Toolbar = () => {
   const [sizeDropdownOpen, setSizeDropdownOpen] = useState(false);
   const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isSmallMobile, setIsSmallMobile] = useState(window.innerWidth <= 480);
 
   const toolbarRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
+      setIsSmallMobile(window.innerWidth <= 480);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -99,17 +113,27 @@ const Toolbar = () => {
     const url = window.prompt("Введите URL:");
     if (!url) return;
     const { selection } = editor;
-    const isCollapsed = selection && selection.anchor.offset === selection.focus.offset;
+    const isCollapsed =
+      selection && selection.anchor.offset === selection.focus.offset;
     if (isCollapsed) {
-      Transforms.insertNodes(editor, { type: "link", url, children: [{ text: url }] });
+      Transforms.insertNodes(editor, {
+        type: "link",
+        url,
+        children: [{ text: url }],
+      });
     } else {
-      Transforms.wrapNodes(editor, { type: "link", url, children: [] }, { split: true });
+      Transforms.wrapNodes(
+        editor,
+        { type: "link", url, children: [] },
+        { split: true },
+      );
     }
   };
 
   const removeLink = () => {
     Transforms.unwrapNodes(editor, {
-      match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === "link",
+      match: (n) =>
+        !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === "link",
     });
   };
 
@@ -171,7 +195,7 @@ const Toolbar = () => {
             whileTap={{ scale: isMobile ? 1 : 0.95 }}
           >
             {getCurrentFontFamily()}
-            <ChevronDown size={isMobile ? 14 : 16} />
+            <ChevronDown size={isSmallMobile ? 12 : isMobile ? 14 : 16} />
           </motion.button>
           {fontDropdownOpen && (
             <motion.div
@@ -189,7 +213,10 @@ const Toolbar = () => {
                     e.stopPropagation();
                     setFontFamily(font);
                   }}
-                  style={{ fontFamily: font, fontSize: isMobile ? 13 : 14 }}
+                  style={{
+                    fontFamily: font,
+                    fontSize: isSmallMobile ? 12 : isMobile ? 13 : 14,
+                  }}
                 >
                   {getFontDisplayName(font)}
                 </button>
@@ -211,7 +238,7 @@ const Toolbar = () => {
             whileTap={{ scale: isMobile ? 1 : 0.95 }}
           >
             {getCurrentFontSize()}
-            <ChevronDown size={isMobile ? 14 : 16} />
+            <ChevronDown size={isSmallMobile ? 12 : isMobile ? 14 : 16} />
           </motion.button>
           {sizeDropdownOpen && (
             <motion.div
@@ -229,7 +256,7 @@ const Toolbar = () => {
                     e.stopPropagation();
                     setFontSize(size);
                   }}
-                  style={{ fontSize: isMobile ? 13 : 14 }}
+                  style={{ fontSize: isSmallMobile ? 12 : isMobile ? 13 : 14 }}
                 >
                   {size}
                 </button>
@@ -252,7 +279,7 @@ const Toolbar = () => {
             whileHover={{ scale: isMobile ? 1 : 1.05 }}
             whileTap={{ scale: isMobile ? 1 : 0.95 }}
           >
-            <DrawIcon size={isMobile ? 14 : 16} />
+            <DrawIcon size={isSmallMobile ? 12 : isMobile ? 14 : 16} />
           </motion.button>
           {colorDropdownOpen && (
             <motion.div
@@ -322,7 +349,7 @@ const Toolbar = () => {
           whileHover={{ scale: isMobile ? 1 : 1.05 }}
           whileTap={{ scale: isMobile ? 1 : 0.95 }}
         >
-          <Link size={isMobile ? 14 : 16} />
+          <Link size={isSmallMobile ? 12 : isMobile ? 14 : 16} />
         </motion.button>
         <motion.button
           className={styles.toolbarButton}
@@ -333,7 +360,7 @@ const Toolbar = () => {
           whileHover={{ scale: isMobile ? 1 : 1.05 }}
           whileTap={{ scale: isMobile ? 1 : 0.95 }}
         >
-          <Unlink size={isMobile ? 14 : 16} />
+          <Unlink size={isSmallMobile ? 12 : isMobile ? 14 : 16} />
         </motion.button>
       </div>
       <div className={styles.toolbarGroup}>
@@ -346,7 +373,7 @@ const Toolbar = () => {
           whileHover={{ scale: isMobile ? 1 : 1.05 }}
           whileTap={{ scale: isMobile ? 1 : 0.95 }}
         >
-          <AlignLeft size={isMobile ? 14 : 16} />
+          <AlignLeft size={isSmallMobile ? 12 : isMobile ? 14 : 16} />
         </motion.button>
         <motion.button
           className={styles.toolbarButton}
@@ -357,7 +384,7 @@ const Toolbar = () => {
           whileHover={{ scale: isMobile ? 1 : 1.05 }}
           whileTap={{ scale: isMobile ? 1 : 0.95 }}
         >
-          <AlignCenter size={isMobile ? 14 : 16} />
+          <AlignCenter size={isSmallMobile ? 12 : isMobile ? 14 : 16} />
         </motion.button>
         <motion.button
           className={styles.toolbarButton}
@@ -368,7 +395,7 @@ const Toolbar = () => {
           whileHover={{ scale: isMobile ? 1 : 1.05 }}
           whileTap={{ scale: isMobile ? 1 : 0.95 }}
         >
-          <AlignRight size={isMobile ? 14 : 16} />
+          <AlignRight size={isSmallMobile ? 12 : isMobile ? 14 : 16} />
         </motion.button>
       </div>
     </motion.div>

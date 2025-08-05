@@ -51,7 +51,7 @@
   left: -50px;
   top: 0;
   opacity: 1;
-  z-index: 10;
+  z-index: 1000;
 }
 
 .titleSection {
@@ -79,7 +79,8 @@
   color: #9ca3af !important;
   font-size: 16px;
   font-weight: 400;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   line-height: 1.6;
   transition: color 0.2s ease-in-out;
 }
@@ -89,7 +90,8 @@
   font-weight: 400;
   color: #111827;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   line-height: 1.3;
   outline: none;
   border: none;
@@ -105,7 +107,8 @@
 .editor {
   background: transparent;
   outline: none;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.6;
   min-height: 200px;
@@ -372,7 +375,7 @@
   }
 
   .editorWrapper {
-    padding: 0 10px;
+    padding: 0 50px 0 10px; /* Увеличиваем левый отступ для ContentMenu */
   }
 
   .editor {
@@ -407,29 +410,24 @@
     padding: 3px 0;
   }
 
-  .imageWrapper, .videoWrapper {
+  .imageWrapper,
+  .videoWrapper {
     margin: 16px 0;
   }
 
-  .image, .video {
+  .image,
+  .video {
     border-radius: 8px;
   }
 
-  .editorContentMenu {
-    position: fixed;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: fit-content;
-    max-width: 90%;
-  }
-
-  .descriptionContentMenu, .titleContentMenu, .contentMenuWrapper {
+  .descriptionContentMenu,
+  .titleContentMenu,
+  .contentMenuWrapper {
     left: -40px;
   }
 
-  .videoDragHandle, .imageDragHandle {
+  .videoDragHandle,
+  .imageDragHandle {
     display: none; /* Отключаем drag handles на мобильных */
   }
 
@@ -451,7 +449,8 @@
     min-width: 120px;
   }
 
-  .publishError, .publishSuccess {
+  .publishError,
+  .publishSuccess {
     font-size: 13px;
     padding: 10px 14px;
     max-width: 90%;
@@ -464,7 +463,7 @@
   }
 
   .editorWrapper {
-    padding: 0 8px;
+    padding: 0 45px 0 8px; /* Увеличиваем левый отступ для ContentMenu */
   }
 
   .title {
@@ -482,21 +481,20 @@
     margin: 20px 0 10px 0;
   }
 
-  .editableDescription, .paragraph {
+  .editableDescription,
+  .paragraph {
     font-size: 13px;
     line-height: 1.4;
   }
 
-  .imageWrapper, .videoWrapper {
+  .imageWrapper,
+  .videoWrapper {
     margin: 12px 0;
   }
 
-  .image, .video {
+  .image,
+  .video {
     border-radius: 6px;
-  }
-
-  .editorContentMenu {
-    bottom: 15px;
   }
 
   .publishButton {
