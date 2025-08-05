@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
+// eslint-disable-next-line
+import { motion } from "framer-motion";
 import {
   AlignCenter,
   AlignLeft,
@@ -166,12 +168,25 @@ const Toolbar = () => {
   ];
 
   return (
-    <div className={styles.toolbar} ref={toolbarRef}>
+    <motion.div
+      className={styles.toolbar}
+      ref={toolbarRef}
+      initial={{ opacity: 0, y: -20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -20, scale: 0.95 }}
+      transition={{
+        duration: 0.3,
+        ease: "easeOut",
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+      }}
+    >
       {/* Группа: Начертание и размер шрифта */}
       <div className={styles.toolbarGroup}>
         {/* Font Family Dropdown */}
         <div className={styles.dropdown}>
-          <button
+          <motion.button
             className={styles.dropdownButton}
             onClick={(e) => {
               e.preventDefault();
@@ -180,12 +195,20 @@ const Toolbar = () => {
               setSizeDropdownOpen(false);
               setColorDropdownOpen(false);
             }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             {getCurrentFontFamily()}
             <ChevronDown size={16} />
-          </button>
+          </motion.button>
           {fontDropdownOpen && (
-            <div className={styles.dropdownMenu}>
+            <motion.div
+              className={styles.dropdownMenu}
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+            >
               {fonts.map((font) => (
                 <button
                   key={font}
@@ -200,13 +223,13 @@ const Toolbar = () => {
                   {getFontDisplayName(font)}
                 </button>
               ))}
-            </div>
+            </motion.div>
           )}
         </div>
 
         {/* Font Size Dropdown */}
         <div className={styles.dropdown}>
-          <button
+          <motion.button
             className={styles.dropdownButton}
             onClick={(e) => {
               e.preventDefault();
@@ -215,12 +238,20 @@ const Toolbar = () => {
               setFontDropdownOpen(false);
               setColorDropdownOpen(false);
             }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             {getCurrentFontSize()}
             <ChevronDown size={16} />
-          </button>
+          </motion.button>
           {sizeDropdownOpen && (
-            <div className={styles.dropdownMenu}>
+            <motion.div
+              className={styles.dropdownMenu}
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+            >
               {sizes.map((size) => (
                 <button
                   key={size}
@@ -234,7 +265,7 @@ const Toolbar = () => {
                   {size}
                 </button>
               ))}
-            </div>
+            </motion.div>
           )}
         </div>
       </div>
@@ -243,7 +274,7 @@ const Toolbar = () => {
       <div className={styles.toolbarGroup}>
         {/* Color Picker */}
         <div className={styles.dropdown}>
-          <button
+          <motion.button
             className={styles.toolbarButton}
             onClick={(e) => {
               e.preventDefault();
@@ -252,11 +283,19 @@ const Toolbar = () => {
               setFontDropdownOpen(false);
               setSizeDropdownOpen(false);
             }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <DrawIcon size={16} />
-          </button>
+          </motion.button>
           {colorDropdownOpen && (
-            <div className={styles.colorPicker}>
+            <motion.div
+              className={styles.colorPicker}
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+            >
               {colors.map((color) => (
                 <button
                   key={color}
@@ -269,7 +308,7 @@ const Toolbar = () => {
                   }}
                 />
               ))}
-            </div>
+            </motion.div>
           )}
         </div>
       </div>
@@ -277,99 +316,113 @@ const Toolbar = () => {
       {/* Группа: Жирный, курсив и подчеркивание */}
       <div className={styles.toolbarGroup}>
         {/* Bold (Ж) */}
-        <button
+        <motion.button
           className={`${styles.toolbarButton} ${isMarkActive("bold") ? styles.active : ""}`}
           onMouseDown={(e) => {
             e.preventDefault();
             toggleMark("bold");
           }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <strong>Ж</strong>
-        </button>
+        </motion.button>
 
         {/* Italic (К) */}
-        <button
+        <motion.button
           className={`${styles.toolbarButton} ${isMarkActive("italic") ? styles.active : ""}`}
           onMouseDown={(e) => {
             e.preventDefault();
             toggleMark("italic");
           }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <em>К</em>
-        </button>
+        </motion.button>
 
         {/* Underline (Ж с подчеркиванием) */}
-        <button
+        <motion.button
           className={`${styles.toolbarButton} ${isMarkActive("underline") ? styles.active : ""}`}
           onMouseDown={(e) => {
             e.preventDefault();
             toggleMark("underline");
           }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <u>
-            Ж
-          </u>
-        </button>
+          <u>Ж</u>
+        </motion.button>
       </div>
 
       {/* Группа: Добавить/удалить ссылку */}
       <div className={styles.toolbarGroup}>
         {/* Link */}
-        <button
+        <motion.button
           className={styles.toolbarButton}
           onMouseDown={(e) => {
             e.preventDefault();
             insertLink();
           }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <Link size={16} />
-        </button>
+        </motion.button>
 
         {/* Unlink */}
-        <button
+        <motion.button
           className={styles.toolbarButton}
           onMouseDown={(e) => {
             e.preventDefault();
             removeLink();
           }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <Unlink size={16} />
-        </button>
+        </motion.button>
       </div>
 
       {/* Группа: Выравнивание текста */}
       <div className={styles.toolbarGroup}>
-        <button
+        <motion.button
           className={styles.toolbarButton}
           onMouseDown={(e) => {
             e.preventDefault();
             setTextAlignment("left");
           }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <AlignLeft size={16} />
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           className={styles.toolbarButton}
           onMouseDown={(e) => {
             e.preventDefault();
             setTextAlignment("center");
           }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <AlignCenter size={16} />
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
           className={styles.toolbarButton}
           onMouseDown={(e) => {
             e.preventDefault();
             setTextAlignment("right");
           }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <AlignRight size={16} />
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

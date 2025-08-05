@@ -7,7 +7,16 @@ export function useCreateProject() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const createProject = async ({ name, categoryId, content, coverImage }) => {
+  const createProject = async ({
+    name,
+    description,
+    categoryId,
+    specializationId,
+    firstLink,
+    secondLink,
+    content,
+    coverImage,
+  }) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -15,7 +24,11 @@ export function useCreateProject() {
     try {
       const formData = new FormData();
       formData.append("name", name);
+      formData.append("description", description);
       formData.append("categoryId", categoryId.toString());
+      formData.append("specializationId", specializationId.toString());
+      formData.append("firstLink", firstLink || "");
+      formData.append("secondLink", secondLink || "");
       formData.append("content", JSON.stringify(content));
 
       if (coverImage) {
@@ -32,7 +45,10 @@ export function useCreateProject() {
       return response.data;
     } catch (err) {
       const errorMessage =
-        err?.response?.data?.message || "Ошибка при сохранении проекта";
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.message ||
+        "Ошибка при сохранении проекта";
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {

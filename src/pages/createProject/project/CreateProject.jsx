@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Transforms, createEditor } from "slate";
 import { withHistory } from "slate-history";
 import { Slate, withReact } from "slate-react";
 
+import { useProjectStore } from "../../../shared/store/projectStore";
 import Header from "../../../shared/ui/components/header/Header";
 import CreateProjectNav from "../CreateProjectNav";
 import styles from "./CreateProject.module.css";
@@ -12,6 +13,7 @@ import Toolbar from "./components/Toolbar";
 
 export default function CreateProject() {
   const [showToolbar, setShowToolbar] = useState(false);
+  const { projectData, updateProjectData } = useProjectStore();
 
   const insertImage = useCallback((editor, url) => {
     const image = {
@@ -72,7 +74,7 @@ export default function CreateProject() {
     [withImages],
   );
 
-  const initialValue = [
+  const initialValue = projectData.content || [
     {
       type: "title",
       children: [{ text: "Здесь может быть заголовок" }],
@@ -86,10 +88,19 @@ export default function CreateProject() {
       children: [{ text: "" }],
     },
   ];
+
+  const handleEditorChange = (value) => {
+    updateProjectData({ content: value });
+  };
+
   return (
     <div className={styles.container}>
       <Header darkBackground={true} />
-      <Slate editor={editor} initialValue={initialValue}>
+      <Slate
+        editor={editor}
+        initialValue={initialValue}
+        onChange={handleEditorChange}
+      >
         {showToolbar && (
           <div className={styles.toolbarSection}>
             <Toolbar />

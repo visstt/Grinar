@@ -4,7 +4,7 @@ import Button from "../../shared/ui/components/button/Button";
 import Header from "../../shared/ui/components/header/Header";
 import styles from "./CreateProjectNav.module.css";
 
-export default function CreateProjectNav() {
+export default function CreateProjectNav({ onPublish, isLoading }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -19,6 +19,11 @@ export default function CreateProjectNav() {
     navigate("/project-information");
   };
 
+  const handlePublishClick = () => {
+    if (onPublish) {
+      onPublish();
+    }
+  };
   return (
     <div className={styles.nav}>
       <div className="containerXS">
@@ -48,8 +53,13 @@ export default function CreateProjectNav() {
             </Button>
           </div>
           {isInformationPage && (
-            <Button variant="primary" className={styles.navButton}>
-              Опубликовать
+            <Button
+              variant="primary"
+              className={styles.navButton}
+              onClick={handlePublishClick}
+              disabled={isLoading}
+            >
+              {isLoading ? "Публикуется..." : "Опубликовать"}
             </Button>
           )}
         </div>

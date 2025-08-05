@@ -1,13 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 
+import ProjectLayout from "../../pages/createProject/ProjectLayout";
+import Information from "../../pages/createProject/information/Information";
+import CreateProject from "../../pages/createProject/project/CreateProject";
 import HomePage from "../../pages/homePage/HomePage";
 import ProfilePage from "../../pages/profilePage/ProfilePage";
 import ProfileAccount from "../../pages/profileSettings/profileAccount/ProfileAccount";
 import ProfileDecor from "../../pages/profileSettings/profileDecor/ProfileDecor";
 import ProfileInfo from "../../pages/profileSettings/profileInfo/ProfileInfo";
 import ProfileNotifications from "../../pages/profileSettings/profileNotifications/ProfileNotifications";
-import CreateProject from "../../pages/createProject/project/CreateProject";
-import Information from "../../pages/createProject/information/Information";
 
 export const router = createBrowserRouter([
   {
@@ -47,11 +48,38 @@ export const router = createBrowserRouter([
     element: <ProfileAccount />,
   },
   {
+    path: "/project",
+    element: <ProjectLayout />,
+    children: [
+      {
+        path: "create",
+        element: <CreateProject />,
+      },
+      {
+        path: "information",
+        element: <Information />,
+      },
+    ],
+  },
+  // Для обратной совместимости с существующими ссылками
+  {
     path: "/create-project",
-    element: <CreateProject />,
+    element: <ProjectLayout />,
+    children: [
+      {
+        index: true,
+        element: <CreateProject />,
+      },
+    ],
   },
   {
     path: "/project-information",
-    element: <Information />,
+    element: <ProjectLayout />,
+    children: [
+      {
+        index: true,
+        element: <Information />,
+      },
+    ],
   },
 ]);

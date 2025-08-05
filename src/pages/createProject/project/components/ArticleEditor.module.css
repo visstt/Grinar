@@ -215,9 +215,9 @@
 .videoDragHandle {
   position: absolute;
   top: 8px;
-  right: 8px;
+  left: -45px;
   z-index: 20;
-  opacity: 0;
+  opacity: 1; /* Временно делаем всегда видимым для отладки */
   transition: opacity 0.2s ease;
 }
 
@@ -225,17 +225,54 @@
   opacity: 1;
 }
 
+.imageDragHandle {
+  position: absolute;
+  top: 8px;
+  left: -45px;
+  z-index: 20;
+  opacity: 1; /* Временно делаем всегда видимым для отладки */
+  transition: opacity 0.2s ease;
+}
+
+.imageWrapper:hover .imageDragHandle {
+  opacity: 1;
+}
+
+/* Drop zone styles */
+.paragraphWrapper.dropTarget,
+.imageWrapper.dropTarget,
+.videoWrapper.dropTarget {
+  background: rgba(25, 94, 230, 0.1) !important;
+  border: 2px dashed #195ee6 !important;
+  border-radius: 8px !important;
+}
+
+.paragraphWrapper.dropTarget::after,
+.imageWrapper.dropTarget::after,
+.videoWrapper.dropTarget::after {
+  content: "Отпустите чтобы переместить сюда";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(25, 94, 230, 0.9);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 100;
+  pointer-events: none;
+}
+
 .dragIcon {
-  background: rgba(255, 255, 255, 0.95);
+  background: transparent;
   border-radius: 6px;
   padding: 6px;
   cursor: grab;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(107, 114, 128, 0.2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -244,13 +281,7 @@
 
 .dragIcon:active {
   cursor: grabbing;
-  background: rgba(245, 247, 250, 0.98);
   transform: scale(0.95);
-}
-
-.dragIcon:hover {
-  background: rgba(255, 255, 255, 1);
-  border-color: rgba(107, 114, 128, 0.4);
 }
 
 .imageContainer {
