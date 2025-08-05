@@ -57,6 +57,25 @@
   flex-wrap: wrap;
   gap: 20px;
 }
+
+.phone_container {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.phone_input_wrapper {
+  max-width: 300px;
+  flex: 1;
+}
+
+.phone_btn {
+  height: 40px;
+  margin-top: 25px;
+  white-space: nowrap;
+}
+
 .submit_btn {
   height: 40px;
   margin-top: 25px;
@@ -88,7 +107,17 @@
     flex-direction: column;
     align-items: center;
   }
-  .submit_btn {
+  .phone_container {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .phone_input_wrapper {
+    width: 100%;
+    max-width: 300px;
+  }
+  .submit_btn,
+  .phone_btn {
     margin-top: 0;
     width: 150px;
   }

@@ -238,21 +238,23 @@ export default function ProfileAccount() {
                     </Button>
                   </div>
                   <div className={styles.btn_container}>
-                    <div className={styles.group}>
-                      <Input
-                        label="Телефон"
-                        id="phoneNumber"
-                        autoComplete="off"
-                        placeholder={"Введите новый номер"}
-                        value={phoneInput}
-                        onChange={(e) => setPhoneInput(e.target.value)}
-                      />
-                      {phoneError && (
-                        <div className={styles.error}>{phoneError}</div>
-                      )}
+                    <div className={styles.phone_container}>
+                      <div className={styles.phone_input_wrapper}>
+                        <Input
+                          label="Телефон"
+                          id="phoneNumber"
+                          autoComplete="off"
+                          placeholder={"Введите новый номер"}
+                          value={phoneInput}
+                          onChange={(e) => setPhoneInput(e.target.value)}
+                        />
+                        {phoneError && (
+                          <div className={styles.error}>{phoneError}</div>
+                        )}
+                      </div>
                       <Button
                         type="button"
-                        className={styles.submit_btn}
+                        className={styles.phone_btn}
                         disabled={phoneLoading || !phoneInput}
                         onClick={handlePhoneSubmit}
                       >
