@@ -5,6 +5,7 @@
   width: 270px;
   gap: 10px;
   margin-bottom: 40px;
+  cursor: pointer;
 }
 .imageWrapper {
   position: relative;

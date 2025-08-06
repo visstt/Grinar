@@ -10,6 +10,11 @@
   max-width: 960px;
   box-sizing: border-box;
 }
+.stripe3 {
+  background-color: rgba(255, 255, 255, 0.1);
+  height: 1px;
+  margin: 20px 0px;
+}
 
 @media (max-width: 768px) {
   .containerXS {

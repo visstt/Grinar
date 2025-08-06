@@ -9,6 +9,7 @@ import ProfileAccount from "../../pages/profileSettings/profileAccount/ProfileAc
 import ProfileDecor from "../../pages/profileSettings/profileDecor/ProfileDecor";
 import ProfileInfo from "../../pages/profileSettings/profileInfo/ProfileInfo";
 import ProfileNotifications from "../../pages/profileSettings/profileNotifications/ProfileNotifications";
+import PaymentPage from "../../pages/paymentPage/PaymentPage";
 
 export const router = createBrowserRouter([
   {
@@ -48,20 +49,10 @@ export const router = createBrowserRouter([
     element: <ProfileAccount />,
   },
   {
-    path: "/project",
-    element: <ProjectLayout />,
-    children: [
-      {
-        path: "create",
-        element: <CreateProject />,
-      },
-      {
-        path: "information",
-        element: <Information />,
-      },
-    ],
+    path: "/payment",
+    element: <PaymentPage />,
   },
-  // Для обратной совместимости с существующими ссылками
+
   {
     path: "/create-project",
     element: <ProjectLayout />,
