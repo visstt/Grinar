@@ -50,6 +50,17 @@
   gap: 20px;
 }
 
+@media (max-width: 920px) {
+  .blocks {
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+  }
+  .content_wrappper h1 {
+    text-align: center;
+  }
+}
+
 @media (max-width: 768px) {
   .blocks {
     flex-direction: column;
@@ -585,7 +596,7 @@
   margin-top: 30px;
   position: relative;
   z-index: 2;
-  min-height: 375px;
+  min-height: 390px;
 }
 
 @media (max-width: 480px) {
