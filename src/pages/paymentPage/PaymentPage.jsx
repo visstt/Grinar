@@ -56,8 +56,8 @@ export default function PaymentPage() {
                     символа в разделе блог.
                   </p>
                 </div>
-                <button className={styles.btnpro}>Оформить PRO</button>
               </div>
+                <button className={styles.btnpro}>Оформить PRO</button>
             </div>
 
             <div className={styles.block_premium}>
@@ -93,8 +93,8 @@ export default function PaymentPage() {
                 <div className={styles.line}>
                   <img src="/icons/payment/userPrem.svg" alt="user" />
                   <p>
-                    <b>Два направления работы</b> — укажите компетенции для
-                    роста заказов.
+                    <b>Три направления работы</b> — укажите максимум компетенций
+                    для роста заказов.
                   </p>
                 </div>
                 <div className="stripe3"></div>
@@ -105,8 +105,8 @@ export default function PaymentPage() {
                     символа в разделе блог.
                   </p>
                 </div>
-                <button className={styles.btnprem}>Оформить PREMIUM</button>
               </div>
+                <button className={styles.btnprem}>Оформить PREMIUM</button>
             </div>
           </div>
         </div>

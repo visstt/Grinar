@@ -585,6 +585,7 @@
   margin-top: 30px;
   position: relative;
   z-index: 2;
+  min-height: 375px;
 }
 
 @media (max-width: 480px) {
@@ -641,6 +642,7 @@
   font-weight: 600;
   font-size: 14px;
   color: #fff;
+  margin: auto;
 }
 
 @media (max-width: 768px) {
@@ -698,6 +700,7 @@
   font-weight: 600;
   font-size: 14px;
   color: #fff;
+  margin: auto;
 }
 
 @media (max-width: 768px) {

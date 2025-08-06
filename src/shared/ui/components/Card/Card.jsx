@@ -14,15 +14,28 @@ export default function Card({ project }) {
   // Блокируем/разблокируем прокрутку при открытии/закрытии модалки
   useEffect(() => {
     if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+      // Сохраняем текущую позицию прокрутки
+      const scrollY = window.scrollY;
 
-    // Очищаем стиль при размонтировании компонента
-    return () => {
-      document.body.style.overflow = "";
-    };
+      // Блокируем прокрутку
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.overflow = "hidden";
+      document.body.style.width = "100%";
+
+      return () => {
+        // Восстанавливаем прокрутку и позицию
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.overflow = "";
+        document.body.style.width = "";
+        window.scrollTo(0, scrollY);
+      };
+    }
   }, [open]);
 
   if (!project) return null;

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { getUserLogoUrl } from "../../../../utils/getProjectImageUrl";
+import Card from "../Card";
 import styles from "./CardPage.module.css";
 import { useFetchProject } from "./hooks/useFetchProject";
 import like from "/icons/like.svg";
@@ -88,6 +89,31 @@ export default function CardPage({ project: initialProject }) {
         contentArray.map((item, index) => renderContent(item, index))
       ) : (
         <p className={styles.noContent}>Контент проекта отсутствует</p>
+      )}
+
+      {/* Блок с другими проектами пользователя */}
+      {currentProject.projects && currentProject.projects.length > 0 && (
+        <div className={styles.userProjects}>
+          <h3 className={styles.userProjectsTitle}>
+            Проекты {currentProject.user?.fullName || currentProject.fullName}
+          </h3>
+          <div className={styles.projectsGrid}>
+            {currentProject.projects
+              .filter((project) => project.id !== currentProject.id)
+              .map((project) => (
+                <Card
+                  key={project.id}
+                  project={{
+                    ...project,
+                    projectPhotoName: project.photoName,
+                    userLogoPhotoName: project.userLogo,
+                    fullName: project.fullName,
+                    specialization: project.category,
+                  }}
+                />
+              ))}
+          </div>
+        </div>
       )}
     </div>
   );
