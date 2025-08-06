@@ -82,6 +82,7 @@
 
 .likeBtn {
   background: rgba(25, 94, 230, 0.05);
+  border: none;
   border-radius: 10px;
   padding: 12px;
   width: 48px;
@@ -89,6 +90,25 @@
   cursor: pointer;
   filter: brightness(0);
   box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.likeBtn:hover {
+  background: rgba(25, 94, 230, 0.1);
+}
+
+.likeBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.likeBtnActive {
+  background: #195ee6 !important;
+  filter: brightness(1) !important;
+}
+
+.likeBtnActive img {
+  filter: brightness(0) invert(1);
 }
 
 .contactBtn {
@@ -129,6 +149,51 @@
   font-size: 16px;
   color: #333;
   line-height: 1.5;
+}
+
+.likesSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px 0;
+  padding: 20px;
+}
+
+.likeIcon {
+  border-radius: 20px;
+  padding: 20px;
+  width: 88px;
+  height: 88px;
+  background: #195ee6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+.likesTitle {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  text-align: center;
+  color: rgba(20, 20, 20, 0.5);
+  margin: 0 0 16px 0;
+}
+
+.likedUsers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.likedUserAvatar {
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
 }
 
 .image {
@@ -226,12 +291,32 @@
 
   .likeBtn {
     background: rgba(25, 94, 230, 0.05);
+    border: none;
     border-radius: 8px;
     padding: 10px;
     width: 40px;
     height: 40px;
     filter: brightness(0);
     box-sizing: border-box;
+    transition: all 0.3s ease;
+  }
+
+  .likeBtn:hover {
+    background: rgba(25, 94, 230, 0.1);
+  }
+
+  .likeBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .likeBtnActive {
+    background: #195ee6 !important;
+    filter: brightness(1) !important;
+  }
+
+  .likeBtnActive img {
+    filter: brightness(0) invert(1);
   }
 
   .contactBtn {
@@ -258,6 +343,37 @@
   .projectDescription {
     font-size: 14px;
     margin-bottom: 10px;
+  }
+
+  .likesSection {
+    margin: 20px 0;
+    padding: 16px;
+  }
+
+  .likeIcon {
+    width: 72px;
+    height: 72px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .likeIcon svg {
+    width: 32px;
+    height: 31px;
+  }
+
+  .likesTitle {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .likedUsers {
+    gap: 6px;
+  }
+
+  .likedUserAvatar {
+    width: 36px;
+    height: 36px;
   }
 
   .image {
@@ -314,12 +430,32 @@
 
   .likeBtn {
     background: rgba(25, 94, 230, 0.05);
+    border: none;
     border-radius: 6px;
     padding: 8px;
     width: 36px;
     height: 36px;
     filter: brightness(0);
     box-sizing: border-box;
+    transition: all 0.3s ease;
+  }
+
+  .likeBtn:hover {
+    background: rgba(25, 94, 230, 0.1);
+  }
+
+  .likeBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .likeBtnActive {
+    background: #195ee6 !important;
+    filter: brightness(1) !important;
+  }
+
+  .likeBtnActive img {
+    filter: brightness(0) invert(1);
   }
 
   .contactBtn {
@@ -335,5 +471,32 @@
 
   .projectsGrid {
     gap: 12px;
+  }
+
+  .likesSection {
+    margin: 16px 0;
+    padding: 12px;
+  }
+
+  .likeIcon {
+    width: 64px;
+    height: 64px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .likeIcon svg {
+    width: 28px;
+    height: 27px;
+  }
+
+  .likesTitle {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .likedUserAvatar {
+    width: 32px;
+    height: 32px;
   }
 }
