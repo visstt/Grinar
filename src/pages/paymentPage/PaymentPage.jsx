@@ -14,7 +14,7 @@ export default function PaymentPage() {
             <div className={styles.block_pro}>
               <div className={styles.header}>
                 <h3>PRO</h3>
-                <p>300$/месяц</p>
+                <p>1200₽/месяц</p>
               </div>
               <div className={styles.main}>
                 <div className={styles.line}>
@@ -63,7 +63,7 @@ export default function PaymentPage() {
             <div className={styles.block_premium}>
               <div className={styles.header}>
                 <h3 className={styles.prem}>PREMIUM</h3>
-                <p>500$/месяц</p>
+                <p>2000₽/месяц</p>
               </div>
               <div className={styles.main}>
                 <div className={styles.line}>
