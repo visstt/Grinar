@@ -143,10 +143,25 @@ export default function Header({ darkBackground = false }) {
               >
                 <div className={styles.navContentWrapper}>
                   <ul>
-                    <li>Главная</li>
+                    <li>
+                      <Link
+                        to="/"
+                        style={{ color: "inherit", textDecoration: "none" }}
+                      >
+                        Главная
+                      </Link>
+                    </li>
                     <li>Проекты</li>
                     <li>Специалисты</li>
                     <li>Работа</li>
+                    <li>
+                      <Link
+                        to="/payment"
+                        style={{ color: "inherit", textDecoration: "none" }}
+                      >
+                        Подписка
+                      </Link>
+                    </li>
                   </ul>
                 </div>
               </nav>
@@ -212,6 +227,9 @@ export default function Header({ darkBackground = false }) {
                   <li>Проекты</li>
                   <li>Специалисты</li>
                   <li>Работа</li>
+                  <li>
+                    <Link to="/payment">Подписка</Link>
+                  </li>
                 </ul>
                 <div
                   className={styles.header_wrapper__buttons}

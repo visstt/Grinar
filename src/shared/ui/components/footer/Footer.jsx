@@ -33,6 +33,7 @@ export default function Footer() {
                 Рязанский, проезд 4-й Вешняковский, д. 8, стр.2
               </p>
               <p>ИНН 9721242838</p>
+              <p>ОГРН 1247700757578 от 21 ноября 2024 г</p>
             </div>
             <div className={styles.links}>
               <p onClick={downloadPrivacyPolicy}>Политика конфиденциальности</p>
