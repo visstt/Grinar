@@ -44,7 +44,7 @@ export default function PaymentPage() {
                 <div className={styles.line}>
                   <img src="/icons/payment/user.svg" alt="user" />
                   <p>
-                    <b>Два направления работы</b> — укажите компетенций для
+                    <b>Два направления работы</b> — укажите компетенции для
                     роста заказов.
                   </p>
                 </div>
@@ -93,7 +93,8 @@ export default function PaymentPage() {
                 <div className={styles.line}>
                   <img src="/icons/payment/userPrem.svg" alt="user" />
                   <p>
-                    <b>Три направления работы</b> — укажите максимум компетенций для роста заказов.
+                    <b>Два направления работы</b> — укажите компетенции для
+                    роста заказов.
                   </p>
                 </div>
                 <div className="stripe3"></div>

@@ -731,3 +731,14 @@
     font-size: 16px;
   }
 }
+
+.btnprem:hover {
+  transition: 0.3s ease-in-out;
+  background: linear-gradient(
+    135deg,
+    #a0b5d1 0%,
+    #7a7ef3 38%,
+    #b965f7 65%,
+    #c8aede 100%
+  );
+}
