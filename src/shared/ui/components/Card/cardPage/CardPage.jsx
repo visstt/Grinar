@@ -1,7 +1,10 @@
 import React from "react";
 
+import { getUserLogoUrl } from "../../../../utils/getProjectImageUrl";
 import styles from "./CardPage.module.css";
 import { useFetchProject } from "./hooks/useFetchProject";
+import like from "/icons/like.svg";
+import location from "/icons/location.svg";
 
 export default function CardPage({ project: initialProject }) {
   const { project, loading, error } = useFetchProject(initialProject?.id);
@@ -51,6 +54,31 @@ export default function CardPage({ project: initialProject }) {
   return (
     <div className={styles.cardPageWrapper}>
       <h2 className={styles.projectTitle}>{currentProject.name}</h2>
+
+      {/* Блок с информацией о пользователе */}
+      {currentProject.user && (
+        <div className={styles.userInfo}>
+          <div className={styles.userDetails}>
+            <img
+              src={getUserLogoUrl(currentProject.user.logoFileName)}
+              alt="User avatar"
+              className={styles.userAvatar}
+            />
+            <div className={styles.userText}>
+              <h3>{currentProject.user.fullName}</h3>
+              <p>
+                <img src={location} alt="location" />
+                {currentProject.user.city}
+              </p>
+            </div>
+          </div>
+          <div className={styles.userActions}>
+            <img src={like} alt="like" className={styles.likeBtn} />
+            <button className={styles.contactBtn}>Связаться</button>
+          </div>
+        </div>
+      )}
+
       {currentProject.description && (
         <p className={styles.projectDescription}>
           {currentProject.description}
