@@ -7,7 +7,7 @@ import {
   getUserLogoUrl,
 } from "../../../utils/getProjectImageUrl";
 import CardPage from "../Card/cardPage/CardPage";
-import Modal from "../Modal/Modal";
+import Modal from "../modal/Modal";
 import styles from "./Specialists.module.css";
 import location from "/icons/location.svg";
 import starBtn from "/icons/starBtn.svg";
