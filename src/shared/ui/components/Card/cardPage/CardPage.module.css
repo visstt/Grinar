@@ -176,7 +176,8 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 30px;
+    padding: 12px 0;
   }
 
   .userDetails {
@@ -185,7 +186,7 @@
 
   .userActions {
     width: 100%;
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 
   .userText h3 {
@@ -253,6 +254,12 @@
 @media (max-width: 380px) {
   .userInfo {
     gap: 12px;
+    margin-bottom: 24px;
+    padding: 10px 0;
+  }
+
+  .userDetails {
+    gap: 10px;
   }
 
   .userAvatar {
