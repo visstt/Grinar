@@ -6,12 +6,26 @@ import {
   getProjectPhotoUrl,
   getUserLogoUrl,
 } from "../../../utils/getProjectImageUrl";
+import CardPage from "../Card/cardPage/CardPage";
+import Modal from "../Modal/Modal";
 import styles from "./Specialists.module.css";
 import location from "/icons/location.svg";
 import starBtn from "/icons/starBtn.svg";
 
 export default function Specialists({ specialist }) {
   const [visibleCount, setVisibleCount] = useState(specialist.projects.length);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  const handleProjectClick = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedProject(null);
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -51,7 +65,12 @@ export default function Specialists({ specialist }) {
         </div>
         <div className={styles.photo_wrapper}>
           {specialist.projects.slice(0, visibleCount).map((project) => (
-            <div className={styles.photo_card} key={project.id}>
+            <div
+              className={styles.photo_card}
+              key={project.id}
+              onClick={() => handleProjectClick(project)}
+              style={{ cursor: "pointer" }}
+            >
               <div className={styles.imageWrapper}>
                 <img
                   src={getProjectPhotoUrl(project.photoName)}
@@ -85,6 +104,11 @@ export default function Specialists({ specialist }) {
         </div>
         <div className={styles.stripe}></div>
       </div>
+
+      {/* Модальное окно с проектом */}
+      <Modal open={isModalOpen} onClose={closeModal}>
+        {selectedProject && <CardPage project={selectedProject} />}
+      </Modal>
     </div>
   );
 }
