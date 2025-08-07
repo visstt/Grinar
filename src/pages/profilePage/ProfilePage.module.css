@@ -1,0 +1,378 @@
+.container {
+  padding: 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  max-height: 85vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #195ee61a;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.userAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.userDetails {
+  flex: 1;
+}
+
+.userName {
+  font-family: Manrope, sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  color: #141414;
+  margin: 0 0 8px 0;
+}
+
+.userSpec {
+  font-family: Manrope, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #666;
+  margin: 0 0 8px 0;
+}
+
+.userLocation {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: Manrope, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #666;
+}
+
+.userLocation img {
+  width: 16px;
+  height: 16px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.subscribeBtn {
+  padding: 12px 24px;
+  border: 1px solid #195ee6;
+  border-radius: 8px;
+  background: transparent;
+  color: #195ee6;
+  font-family: Manrope, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.subscribeBtn:hover {
+  background: #195ee6;
+  color: #fff;
+}
+
+.contactBtn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #195ee6;
+  color: #fff;
+  font-family: Manrope, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.contactBtn:hover {
+  background: #1551c9;
+}
+
+.stats {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.statNumber {
+  font-family: Manrope, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 27px;
+  color: #141414;
+}
+
+.statLabel {
+  font-family: Manrope, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 19px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.aboutSection,
+.contactInfo,
+.projectsSection,
+.subscriptionsSection {
+  margin-bottom: 30px;
+}
+
+.aboutSection h3,
+.contactInfo h3,
+.projectsSection h3,
+.subscriptionsSection h3 {
+  font-family: Manrope, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: #141414;
+  margin: 0 0 16px 0;
+}
+
+.aboutSection p {
+  font-family: Manrope, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #333;
+  margin: 0;
+}
+
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contactItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.contactItem span:first-child {
+  font-family: Manrope, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #666;
+}
+
+.contactItem span:last-child {
+  font-family: Manrope, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #333;
+}
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.subscriptionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.subscriptionItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.subscriptionAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.subscriptionInfo {
+  flex: 1;
+}
+
+.subscriptionInfo h4 {
+  font-family: Manrope, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: #141414;
+  margin: 0 0 4px 0;
+}
+
+.subscriptionInfo p {
+  font-family: Manrope, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  color: #666;
+  margin: 0 0 4px 0;
+}
+
+.subscriptionInfo span {
+  font-family: Manrope, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #999;
+}
+
+.loading,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  font-family: Manrope, sans-serif;
+  font-size: 16px;
+}
+
+.loading {
+  color: #666;
+}
+
+.error {
+  color: #e74c3c;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .userInfo {
+    width: 100%;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .stats {
+    gap: 20px;
+  }
+
+  .projectsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+  }
+
+  .userAvatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  .userName {
+    font-size: 20px;
+    line-height: 27px;
+  }
+
+  .subscribeBtn,
+  .contactBtn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px;
+  }
+
+  .userInfo {
+    gap: 16px;
+  }
+
+  .userAvatar {
+    width: 56px;
+    height: 56px;
+  }
+
+  .userName {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .userSpec {
+    font-size: 14px;
+  }
+
+  .stats {
+    gap: 16px;
+  }
+
+  .projectsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .subscribeBtn,
+  .contactBtn {
+    width: 100%;
+    text-align: center;
+  }
+}

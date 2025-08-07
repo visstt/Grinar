@@ -1,0 +1,106 @@
+import React from "react";
+
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+
+import Button from "../../../shared/ui/components/button/Button";
+import Header from "../../../shared/ui/components/header/Header";
+import { getUserLogoUrl } from "../../../shared/utils/getProjectImageUrl";
+import styles from "./UserProfileTitle.module.css";
+
+export default function UserProfileTitle({ userProfile }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { userId } = useParams();
+
+  if (!userProfile) return null;
+
+  // Определяем активную вкладку по pathname
+  let activeTab = "main";
+  if (location.pathname === `/user/${userId}/projects`) activeTab = "projects";
+  else if (location.pathname === `/user/${userId}/subscriptions`)
+    activeTab = "subscriptions";
+  else if (
+    location.pathname === `/user/${userId}/main` ||
+    location.pathname === `/user/${userId}`
+  )
+    activeTab = "main";
+
+  const handleSubscribe = () => {
+    // TODO: Реализовать подписку на пользователя
+    console.log("Подписаться на пользователя:", userId);
+  };
+
+  const handleContact = () => {
+    // TODO: Реализовать связь с пользователем
+    console.log("Связаться с пользователем:", userId);
+  };
+
+  return (
+    <div className={styles.background}>
+      <Header />
+      <div className="container">
+        <div className={styles.wrapper}>
+          <div className={styles.user_info}>
+            <h1>{userProfile.fullName}</h1>
+            <div className={styles.user_info__details}>
+              <p>{userProfile.specialization}</p>
+              <p>{userProfile.city}</p>
+            </div>
+          </div>
+          <div className={styles.user_logo}>
+            <img
+              src={getUserLogoUrl(userProfile.logoFileName)}
+              alt="userLogo"
+            />
+          </div>
+          <div className={styles.user_stats}>
+            <div className={styles.stats}>
+              <div className={styles.inf}>
+                <img src="/icons/star.svg" alt="star" />
+                <p>{userProfile.favorited || 0}</p>
+              </div>
+              <div className={styles.inf}>
+                <img src="/icons/like.svg" alt="like" />
+                <p>{userProfile.likes || 0}</p>
+              </div>
+              <div className={styles.inf}>
+                <img src="/icons/profile-2user.svg" alt="user" />
+                <p>{userProfile.followers || 0}</p>
+              </div>
+            </div>
+            <div className={styles.settings}>
+              <div className={styles.actionButtons}>
+                <Button variant="secondary" onClick={handleSubscribe}>
+                  Подписаться
+                </Button>
+                <Button variant="primary" onClick={handleContact}>
+                  Связаться
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className={styles.btn_container}>
+            <Button
+              variant={activeTab === "projects" ? "primary" : "default"}
+              onClick={() => navigate(`/user/${userId}/projects`)}
+            >
+              Проекты
+            </Button>
+            <Button
+              variant={activeTab === "main" ? "primary" : "default"}
+              onClick={() => navigate(`/user/${userId}/main`)}
+            >
+              Информация
+            </Button>
+            <Button
+              variant={activeTab === "subscriptions" ? "primary" : "default"}
+              onClick={() => navigate(`/user/${userId}/subscriptions`)}
+            >
+              Подписки
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

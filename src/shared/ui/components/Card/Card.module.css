@@ -27,6 +27,12 @@
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.author:hover {
+  opacity: 0.8;
 }
 
 .author img {

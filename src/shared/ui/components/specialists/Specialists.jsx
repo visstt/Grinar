@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   getProjectPhotoUrl,
@@ -13,6 +13,7 @@ import location from "/icons/location.svg";
 import starBtn from "/icons/starBtn.svg";
 
 export default function Specialists({ specialist }) {
+  const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(specialist.projects.length);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -25,6 +26,10 @@ export default function Specialists({ specialist }) {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedProject(null);
+  };
+
+  const handleUserClick = () => {
+    navigate(`/user/${specialist.id}`);
   };
 
   useEffect(() => {
@@ -45,7 +50,11 @@ export default function Specialists({ specialist }) {
     <div className="container">
       <div className={styles.specialist_wrapper}>
         <div className={styles.specialist_wrapper__hero}>
-          <div className={styles.hero__info}>
+          <div
+            className={styles.hero__info}
+            onClick={handleUserClick}
+            style={{ cursor: "pointer" }}
+          >
             <img
               src={getUserLogoUrl(specialist.logoFileName)}
               alt="heroAvatar"

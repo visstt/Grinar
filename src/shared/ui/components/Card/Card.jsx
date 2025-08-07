@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import {
   getProjectPhotoUrl,
   getUserLogoUrl,
@@ -10,14 +12,12 @@ import CardPage from "./cardPage/CardPage";
 
 export default function Card({ project }) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-  // Блокируем/разблокируем прокрутку при открытии/закрытии модалки
   useEffect(() => {
     if (open) {
-      // Сохраняем текущую позицию прокрутки
       const scrollY = window.scrollY;
 
-      // Блокируем прокрутку
       document.body.style.position = "fixed";
       document.body.style.top = `-${scrollY}px`;
       document.body.style.left = "0";
@@ -26,7 +26,6 @@ export default function Card({ project }) {
       document.body.style.width = "100%";
 
       return () => {
-        // Восстанавливаем прокрутку и позицию
         document.body.style.position = "";
         document.body.style.top = "";
         document.body.style.left = "";
@@ -39,6 +38,18 @@ export default function Card({ project }) {
   }, [open]);
 
   if (!project) return null;
+
+  const handleAuthorClick = (e) => {
+    e.stopPropagation(); // Предотвращаем открытие модального окна проекта
+    const userId = getUserId();
+    if (userId) {
+      navigate(`/user/${userId}`);
+    }
+  };
+
+  const getUserId = () => {
+    return project.author?.id || project.userId || project.user?.id;
+  };
 
   return (
     <>
@@ -57,7 +68,7 @@ export default function Card({ project }) {
           )}
         </div>
         <h3>{project.name}</h3>
-        <div className={styles.author}>
+        <div className={styles.author} onClick={handleAuthorClick}>
           <img
             src={getUserLogoUrl(
               project.author?.avatar || project.userLogoPhotoName,

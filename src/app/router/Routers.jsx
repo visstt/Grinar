@@ -4,12 +4,13 @@ import ProjectLayout from "../../pages/createProject/ProjectLayout";
 import Information from "../../pages/createProject/information/Information";
 import CreateProject from "../../pages/createProject/project/CreateProject";
 import HomePage from "../../pages/homePage/HomePage";
+import PaymentPage from "../../pages/paymentPage/PaymentPage";
 import ProfilePage from "../../pages/profilePage/ProfilePage";
 import ProfileAccount from "../../pages/profileSettings/profileAccount/ProfileAccount";
 import ProfileDecor from "../../pages/profileSettings/profileDecor/ProfileDecor";
 import ProfileInfo from "../../pages/profileSettings/profileInfo/ProfileInfo";
 import ProfileNotifications from "../../pages/profileSettings/profileNotifications/ProfileNotifications";
-import PaymentPage from "../../pages/paymentPage/PaymentPage";
+import UserProfilePage from "../../pages/userProfile/UserProfile";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,22 @@ export const router = createBrowserRouter([
   {
     path: "/payment",
     element: <PaymentPage />,
+  },
+  {
+    path: "/user/:userId",
+    element: <UserProfilePage />,
+  },
+  {
+    path: "/user/:userId/main",
+    element: <UserProfilePage tab="main" />,
+  },
+  {
+    path: "/user/:userId/projects",
+    element: <UserProfilePage tab="projects" />,
+  },
+  {
+    path: "/user/:userId/subscriptions",
+    element: <UserProfilePage tab="subscriptions" />,
   },
 
   {
