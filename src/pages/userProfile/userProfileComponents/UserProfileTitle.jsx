@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Button from "../../../shared/ui/components/button/Button";
 import Header from "../../../shared/ui/components/header/Header";
 import { getUserLogoUrl } from "../../../shared/utils/getProjectImageUrl";
+import { useUserSubscription } from "../hooks/useUserSubscription";
 import styles from "./UserProfileTitle.module.css";
 
 export default function UserProfileTitle({ userProfile }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { userId } = useParams();
+  const { subscribeToUser, unsubscribeFromUser, loading } =
+    useUserSubscription();
+  const [isSubscribed, setIsSubscribed] = useState(false); // TODO: получать из userProfile или API
 
   if (!userProfile) return null;
 
@@ -25,9 +29,21 @@ export default function UserProfileTitle({ userProfile }) {
   )
     activeTab = "main";
 
-  const handleSubscribe = () => {
-    // TODO: Реализовать подписку на пользователя
-    console.log("Подписаться на пользователя:", userId);
+  const handleSubscribe = async () => {
+    try {
+      if (isSubscribed) {
+        await unsubscribeFromUser(userId);
+        setIsSubscribed(false);
+        console.log("Отписались от пользователя:", userId);
+      } else {
+        await subscribeToUser(userId);
+        setIsSubscribed(true);
+        console.log("Подписались на пользователя:", userId);
+      }
+    } catch (error) {
+      // Ошибка уже обработана в хуке
+      console.error("Ошибка при изменении подписки:", error);
+    }
   };
 
   const handleContact = () => {
@@ -70,8 +86,16 @@ export default function UserProfileTitle({ userProfile }) {
             </div>
             <div className={styles.settings}>
               <div className={styles.actionButtons}>
-                <Button variant="secondary" onClick={handleSubscribe}>
-                  Подписаться
+                <Button
+                  variant={isSubscribed ? "primary" : "secondary"}
+                  onClick={handleSubscribe}
+                  disabled={loading}
+                >
+                  {loading
+                    ? "Загрузка..."
+                    : isSubscribed
+                      ? "Вы подписаны"
+                      : "Подписаться"}
                 </Button>
                 <Button variant="primary" onClick={handleContact}>
                   Связаться
