@@ -47,6 +47,7 @@ export default function UserProfile() {
       {activeTab === "subscriptions" && (
         <UserSubscriptions
           subscriptions={userProfile.followings?.subscriptions || []}
+          userProfile={userProfile}
         />
       )}
     </>

@@ -1,4 +1,5 @@
 import Card from "../../../../shared/ui/components/Card/Card";
+import EmptyState from "../../../../shared/ui/components/emptyState/EmptyState";
 import useMyProfile from "../../hooks/useMyProfile";
 import styles from "./MyProjects.module.css";
 
@@ -12,7 +13,18 @@ export default function MyProjects() {
         Ошибка: {typeof error === "string" ? error : error?.message || "Ошибка"}
       </div>
     );
-  if (!profile?.projects?.length) return <div>Нет проектов</div>;
+
+  if (!profile?.projects?.length) {
+    return (
+      <EmptyState
+        icon="📁"
+        title="Пока нет проектов"
+        description="Создайте свой первый проект и поделитесь им с сообществом"
+        actionText="Добавить проект"
+        onAction={() => (window.location.href = "/create-project")}
+      />
+    );
+  }
 
   return (
     <div className={styles.projectsContainer}>

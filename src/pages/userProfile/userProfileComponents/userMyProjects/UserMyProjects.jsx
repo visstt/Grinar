@@ -1,8 +1,17 @@
 import Card from "../../../../shared/ui/components/Card/Card";
+import EmptyState from "../../../../shared/ui/components/emptyState/EmptyState";
 import styles from "./UserMyProjects.module.css";
 
 export default function UserMyProjects({ userProfile }) {
-  if (!userProfile?.projects?.length) return <div>Нет проектов</div>;
+  if (!userProfile?.projects?.length) {
+    return (
+      <EmptyState
+        icon="📁"
+        title="Нет проектов"
+        description={`У ${userProfile?.fullName || "этого пользователя"} пока нет опубликованных проектов`}
+      />
+    );
+  }
 
   return (
     <div className={styles.projectsContainer}>
