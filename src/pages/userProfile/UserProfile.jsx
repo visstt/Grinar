@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
 
-import Subscriptions from "../profilePage/profileComponents/Subscriptions/Subscriptions";
-import MyProjects from "../profilePage/profileComponents/myProjects/MyProjects";
-import ProfileMainInfo from "../profilePage/profileComponents/profileMainInfo/ProfileMainInfo";
 import { useUserProfile } from "./hooks/useUserProfile";
 import UserProfileTitle from "./userProfileComponents/UserProfileTitle";
+import UserMyProjects from "./userProfileComponents/userMyProjects/UserMyProjects";
+import UserProfileMainInfo from "./userProfileComponents/userProfileMainInfo/UserProfileMainInfo";
+import UserSubscriptions from "./userProfileComponents/userSubscriptions/UserSubscriptions";
 
 export default function UserProfile() {
   const { userId } = useParams();
@@ -39,11 +39,13 @@ export default function UserProfile() {
       <div style={{ marginBottom: 80 }}>
         <UserProfileTitle userProfile={userProfile} />
       </div>
-      
-      {activeTab === "main" && <ProfileMainInfo userProfile={userProfile} />}
-      {activeTab === "projects" && <MyProjects userProfile={userProfile} />}
+
+      {activeTab === "main" && (
+        <UserProfileMainInfo userProfile={userProfile} />
+      )}
+      {activeTab === "projects" && <UserMyProjects userProfile={userProfile} />}
       {activeTab === "subscriptions" && (
-        <Subscriptions
+        <UserSubscriptions
           subscriptions={userProfile.followings?.subscriptions || []}
         />
       )}
