@@ -1,6 +1,7 @@
 import React from "react";
 
 import styles from "./EmptyState.module.css";
+import Button from "../button/Button";
 
 export default function EmptyState({
   title,
@@ -14,9 +15,9 @@ export default function EmptyState({
         <h3 className={styles.title}>{title}</h3>
         {description && <p className={styles.description}>{description}</p>}
         {actionText && onAction && (
-          <button className={styles.actionButton} onClick={onAction}>
+          <Button className={styles.actionButton} onClick={onAction}>
             {actionText}
-          </button>
+          </Button>
         )}
       </div>
     </div>
