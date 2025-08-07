@@ -101,7 +101,7 @@ export default function PaymentPage() {
                 <div className={styles.line}>
                   <img src="/icons/payment/userPrem.svg" alt="user" />
                   <p>
-                    Размещение большого объёма текста сверх лимита в 1024
+                    Размещение большого объёма текста сверх лимита в 4000
                     символа в разделе блог.
                   </p>
                 </div>
