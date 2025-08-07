@@ -116,6 +116,42 @@ export default function Header({ darkBackground = false }) {
     setRegistrationOpen(true);
   };
 
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
+  const handleProjectsClick = () => {
+    // Если мы не на главной странице, сначала переходим на неё
+    if (window.location.pathname !== "/") {
+      navigate("/");
+      // Даём время на загрузку страницы перед скроллом
+      setTimeout(() => {
+        scrollToSection("cardsContainer");
+      }, 100);
+    } else {
+      scrollToSection("cardsContainer");
+    }
+  };
+
+  const handleSpecialistsClick = () => {
+    // Если мы не на главной странице, сначала переходим на неё
+    if (window.location.pathname !== "/") {
+      navigate("/");
+      // Даём время на загрузку страницы перед скроллом
+      setTimeout(() => {
+        scrollToSection("specialists");
+      }, 100);
+    } else {
+      scrollToSection("specialists");
+    }
+  };
+
   return (
     <div
       className={`${styles.header} ${darkBackground ? styles.darkHeader : ""}`}
@@ -151,8 +187,18 @@ export default function Header({ darkBackground = false }) {
                         Главная
                       </Link>
                     </li>
-                    <li>Проекты</li>
-                    <li>Специалисты</li>
+                    <li
+                      onClick={handleProjectsClick}
+                      style={{ cursor: "pointer" }}
+                    >
+                      Проекты
+                    </li>
+                    <li
+                      onClick={handleSpecialistsClick}
+                      style={{ cursor: "pointer" }}
+                    >
+                      Специалисты
+                    </li>
                     <li>Работа</li>
                     <li>
                       <Link
@@ -224,8 +270,24 @@ export default function Header({ darkBackground = false }) {
               <div className={styles.navContentWrapper}>
                 <ul>
                   <li>Главная</li>
-                  <li>Проекты</li>
-                  <li>Специалисты</li>
+                  <li
+                    onClick={() => {
+                      handleProjectsClick();
+                      setMenuOpen(false);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Проекты
+                  </li>
+                  <li
+                    onClick={() => {
+                      handleSpecialistsClick();
+                      setMenuOpen(false);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Специалисты
+                  </li>
                   <li>Работа</li>
                   <li>
                     <Link to="/payment">Подписка</Link>

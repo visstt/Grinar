@@ -9,7 +9,7 @@ export default function CardsContainer() {
   if (error) return <div>Ошибка: {error?.message || error}</div>;
 
   return (
-    <div className="container">
+    <div className="container" id="cardsContainer">
       <div className={styles.cardContainer}>
         {projects.slice(0, 8).map((project) => (
           <Card key={project.id} project={project} />

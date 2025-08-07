@@ -47,7 +47,7 @@ export default function Specialists({ specialist }) {
   }, [specialist.projects.length]);
 
   return (
-    <div className="container">
+    <div className="container" id="specialists">
       <div className={styles.specialist_wrapper}>
         <div className={styles.specialist_wrapper__hero}>
           <div
