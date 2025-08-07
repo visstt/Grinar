@@ -16,47 +16,12 @@ export default function CardPage({ project: initialProject }) {
   // Используем данные из хука, если они есть, иначе начальные данные
   const currentProject = project || initialProject;
 
-  // Функции для работы с localStorage
-  const getLikeStateFromStorage = (projectId) => {
-    try {
-      const likedProjects = JSON.parse(
-        localStorage.getItem("likedProjects") || "[]",
-      );
-      return likedProjects.includes(projectId);
-    } catch (error) {
-      console.error("Ошибка при чтении localStorage:", error);
-      return false;
-    }
-  };
-
-  const saveLikeStateToStorage = (projectId, liked) => {
-    try {
-      const likedProjects = JSON.parse(
-        localStorage.getItem("likedProjects") || "[]",
-      );
-      if (liked) {
-        if (!likedProjects.includes(projectId)) {
-          likedProjects.push(projectId);
-        }
-      } else {
-        const index = likedProjects.indexOf(projectId);
-        if (index > -1) {
-          likedProjects.splice(index, 1);
-        }
-      }
-      localStorage.setItem("likedProjects", JSON.stringify(likedProjects));
-    } catch (error) {
-      console.error("Ошибка при сохранении в localStorage:", error);
-    }
-  };
-
-  // Инициализация состояния лайка из localStorage
+  // Инициализация состояния лайка из данных API
   useEffect(() => {
-    if (currentProject?.id) {
-      const savedLikeState = getLikeStateFromStorage(currentProject.id);
-      setIsLiked(savedLikeState);
+    if (currentProject?.isLiked !== undefined) {
+      setIsLiked(currentProject.isLiked);
     }
-  }, [currentProject?.id]);
+  }, [currentProject?.isLiked]);
 
   // Функция для обработки лайка
   const handleLike = async () => {
@@ -67,11 +32,9 @@ export default function CardPage({ project: initialProject }) {
       if (isLiked) {
         await api.post(`/projects/unlike-project/${currentProject.id}`);
         setIsLiked(false);
-        saveLikeStateToStorage(currentProject.id, false);
       } else {
         await api.post(`/projects/like-project/${currentProject.id}`);
         setIsLiked(true);
-        saveLikeStateToStorage(currentProject.id, true);
       }
     } catch (error) {
       console.error("Ошибка при лайке проекта:", error);

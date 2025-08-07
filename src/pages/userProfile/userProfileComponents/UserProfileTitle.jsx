@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
@@ -14,7 +14,14 @@ export default function UserProfileTitle({ userProfile }) {
   const { userId } = useParams();
   const { subscribeToUser, unsubscribeFromUser, loading } =
     useUserSubscription();
-  const [isSubscribed, setIsSubscribed] = useState(false); // TODO: получать из userProfile или API
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  // Инициализируем состояние подписки на основе данных из API
+  useEffect(() => {
+    if (userProfile?.isFollow !== undefined) {
+      setIsSubscribed(userProfile.isFollow);
+    }
+  }, [userProfile?.isFollow]);
 
   if (!userProfile) return null;
 

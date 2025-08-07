@@ -21,11 +21,14 @@ export default function MyProjects() {
           <Card
             key={project.id}
             project={{
+              id: project.id,
               projectPhotoName: project.photoName,
               name: project.name,
               userLogoPhotoName: profile.logoFileName,
               fullName: profile.fullName,
               specialization: profile.specialization,
+              category: project.category,
+              userId: profile.id,
             }}
           />
         ))}

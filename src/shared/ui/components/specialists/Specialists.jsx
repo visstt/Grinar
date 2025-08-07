@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 
+import api from "../../../api/api";
 import {
   getProjectPhotoUrl,
   getUserLogoUrl,
@@ -17,6 +18,15 @@ export default function Specialists({ specialist }) {
   const [visibleCount, setVisibleCount] = useState(specialist.projects.length);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
+
+  // Инициализируем состояние избранного на основе данных из API
+  useEffect(() => {
+    if (specialist?.isFavorited !== undefined) {
+      setIsFavorited(specialist.isFavorited);
+    }
+  }, [specialist?.isFavorited]);
 
   const handleProjectClick = (project) => {
     setSelectedProject(project);
@@ -30,6 +40,26 @@ export default function Specialists({ specialist }) {
 
   const handleUserClick = () => {
     navigate(`/user/${specialist.id}`);
+  };
+
+  const handleFavoriteClick = async (e) => {
+    e.stopPropagation(); // Предотвращаем переход в профиль
+    if (isFavoriteLoading) return;
+
+    setIsFavoriteLoading(true);
+    try {
+      if (isFavorited) {
+        await api.post(`/user/unfavorite-user?userId=${specialist.id}`);
+        setIsFavorited(false);
+      } else {
+        await api.post(`/user/favorite-user?userId=${specialist.id}`);
+        setIsFavorited(true);
+      }
+    } catch (error) {
+      console.error("Ошибка при изменении избранного:", error);
+    } finally {
+      setIsFavoriteLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -68,7 +98,20 @@ export default function Specialists({ specialist }) {
             </div>
           </div>
           <div className={styles.hero__btn}>
-            <img src={starBtn} alt="starBtn" />
+            <button
+              onClick={handleFavoriteClick}
+              disabled={isFavoriteLoading}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                opacity: isFavoriteLoading ? 0.6 : 1,
+                filter: isFavorited ? "none" : "grayscale(100%)",
+                transition: "filter 0.3s ease",
+              }}
+            >
+              <img src={starBtn} alt="starBtn" />
+            </button>
             <button className={styles.feedback}>Связаться</button>
           </div>
         </div>
