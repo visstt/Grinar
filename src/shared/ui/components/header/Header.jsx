@@ -409,6 +409,7 @@ export default function Header({ darkBackground = false }) {
           <Login
             onSuccess={() => setLoginOpen(false)}
             onClose={() => setLoginOpen(false)}
+            onSwitchToRegister={handleOpenRegistration}
           />
         </div>
       )}

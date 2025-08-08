@@ -9,7 +9,7 @@ import styles from "./Login.module.css";
 import { useLogin } from "./hooks/useLogin";
 import loginBg from "/images/loginBg2.png";
 
-export default function Login({ onSuccess, onClose }) {
+export default function Login({ onSuccess, onClose, onSwitchToRegister }) {
   const handleClose = () => {
     if (onClose) onClose();
   };
@@ -152,6 +152,17 @@ export default function Login({ onSuccess, onClose }) {
         <button className={styles.submit_btn} disabled={loading}>
           {loading ? "Входим..." : "Войти"}
         </button>
+
+        {/* Надпись для мобильных устройств */}
+        <div className={styles.register_link}>
+          Ещё нет аккаунта?{" "}
+          <span
+            onClick={() => onSwitchToRegister && onSwitchToRegister()}
+            className={styles.register_link_text}
+          >
+            Зарегистрироваться
+          </span>
+        </div>
       </form>
     </div>
   );

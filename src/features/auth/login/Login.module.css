@@ -147,12 +147,6 @@
     align-items: center;
     text-align: center;
   }
-  .form h3,
-  .form p,
-  .form label,
-  .form .error {
-    text-align: center;
-  }
   .submit_btn {
     align-self: center;
   }
@@ -205,4 +199,35 @@
 .error_block svg {
   min-width: 24px;
   min-height: 24px;
+}
+
+/* Ссылка на регистрацию для мобильных устройств */
+.register_link {
+  display: none;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  color: #767575;
+  font-family: Manrope;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.register_link_text {
+  color: #195ee6;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.register_link_text:hover {
+  color: #0d4bb8;
+}
+
+/* Показываем ссылку только на экранах менее 600px */
+@media (max-width: 600px) {
+  .register_link {
+    display: block;
+  }
 }
