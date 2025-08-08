@@ -68,7 +68,7 @@ export default function RegistrationStep2({ email, onSuccess }) {
             style={{
               display: "flex",
               gap: "12px",
-              justifyContent: "center",
+
               margin: "30px 0",
             }}
           >

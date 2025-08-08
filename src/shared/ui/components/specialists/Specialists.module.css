@@ -52,7 +52,7 @@
   width: 48px;
   height: 48px;
 }
-.hero__btn button {
+.feedback {
   width: 120px;
   height: 48px;
   border: none;
@@ -174,6 +174,21 @@
     gap: 20px;
   }
 
+  .specialist_wrapper__hero {
+    align-items: center;
+    gap: 10px;
+  }
+  .feedback {
+    width: 100px;
+  }
+  .hero__info {
+    gap: 10px;
+  }
+
+  .hero__btn {
+    gap: 10px;
+  }
+
   .photo_wrapper {
     flex-direction: column;
     align-items: center;
@@ -182,17 +197,14 @@
 
   .photo_card {
     width: 100%;
-    align-items: center;
   }
 
   .photo_card img {
     width: 100%;
-    max-width: 270px;
   }
 
   .categories {
     flex-wrap: wrap;
-    justify-content: center;
     align-items: center;
     gap: 8px;
   }
@@ -205,36 +217,36 @@
 
   .rating_wrapper {
     flex-wrap: wrap;
-    justify-content: center;
     align-items: center;
     gap: 8px;
   }
 
-  .rating_wrapper p {
-    flex-direction: column;
-  }
   .info__text h3 {
     font-size: 16px;
   }
 }
 @media (max-width: 380px) {
   .hero__info img {
-    width: 40px;
+    width: 50px;
     height: auto;
   }
   .hero__info p {
-    font-size: 14px;
+    font-size: 12px;
   }
-
+  .info__text h3 {
+    font-size: 14px;
+    line-height: normal;
+  }
   .info__text img {
     width: 15px;
   }
-  .hero__btn button {
+  .feedback {
     width: 100px;
     height: 40px;
+    font-size: 12px;
   }
   .hero__btn img {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 }

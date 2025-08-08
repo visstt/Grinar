@@ -15,6 +15,10 @@
   height: 1px;
   margin: 20px 0px;
 }
+a {
+  color: #fff;
+  text-decoration: none;
+}
 
 @media (max-width: 768px) {
   .containerXS {

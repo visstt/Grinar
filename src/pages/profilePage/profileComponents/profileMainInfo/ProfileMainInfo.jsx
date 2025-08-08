@@ -35,37 +35,39 @@ export default function ProfileMainInfo() {
                 {info.website || "—"}
               </div>
 
-              <div className={styles.social}>
-                <p>Социальные сети:</p>
-                <div className={styles.icons}>
-                  {info.vk && (
-                    <a
-                      href={
-                        info.vk.startsWith("http")
-                          ? info.vk
-                          : `https://vk.com/${info.vk}`
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <img src="/icons/vk.svg" alt="vk" />
-                    </a>
-                  )}
-                  {info.telegram && (
-                    <a
-                      href={
-                        info.telegram.startsWith("http")
-                          ? info.telegram
-                          : `https://t.me/${info.telegram.replace("@", "")}`
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <img src="/icons/telegram.svg" alt="telegram" />
-                    </a>
-                  )}
+              {(info.vk || info.telegram) && (
+                <div className={styles.social}>
+                  <p>Социальные сети:</p>
+                  <div className={styles.icons}>
+                    {info.vk && (
+                      <a
+                        href={
+                          info.vk.startsWith("http")
+                            ? info.vk
+                            : `https://vk.com/${info.vk}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img src="/icons/vk.svg" alt="vk" />
+                      </a>
+                    )}
+                    {info.telegram && (
+                      <a
+                        href={
+                          info.telegram.startsWith("http")
+                            ? info.telegram
+                            : `https://t.me/${info.telegram.replace("@", "")}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img src="/icons/telegram.svg" alt="telegram" />
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -76,7 +78,13 @@ export default function ProfileMainInfo() {
             <div className={styles.line_wrapper}>
               <div className={styles.line_city}>
                 <h4>Город:</h4>
-                <p>{info.city || profile.city || "—"}</p>
+                <p>
+                  {info.city && info.city !== "Город не указан"
+                    ? info.city
+                    : profile.city && profile.city !== "Город не указан"
+                      ? profile.city
+                      : "—"}
+                </p>
               </div>
               <div className={styles.line_city}>
                 <h4>Опыт работы:</h4>
@@ -88,11 +96,7 @@ export default function ProfileMainInfo() {
               </div>
               <div className={styles.line_city}>
                 <h4>На сайте:</h4>
-                <p>
-                  {info.createdAt
-                    ? new Date(info.createdAt).toLocaleDateString()
-                    : "—"}
-                </p>
+                <p>{info.createdAt || "—"}</p>
               </div>
             </div>
           </div>

@@ -154,7 +154,7 @@ export default function Header({ darkBackground = false }) {
 
   return (
     <div
-      className={`${styles.header} ${darkBackground ? styles.darkHeader : ""}`}
+      className={`${styles.header} ${darkBackground ? styles.darkHeader : ""} ${isMobile ? styles.mobileHeader : ""}`}
     >
       <div className="container">
         <div className={styles.header_wrapper}>
@@ -162,14 +162,6 @@ export default function Header({ darkBackground = false }) {
             <Link to="/">
               <img src={mainLogo} alt="mainLogo" className={styles.logo} />
             </Link>
-          </div>
-
-          <div
-            className={`${styles.burger} ${menuOpen ? styles.open : ""}`}
-            onClick={() => setMenuOpen(!menuOpen)}
-            style={{ display: isMobile ? "block" : "none" }}
-          >
-            <span></span>
           </div>
 
           {!isMobile && (
@@ -211,65 +203,88 @@ export default function Header({ darkBackground = false }) {
                   </ul>
                 </div>
               </nav>
-              <div className={styles.header_wrapper__buttons}>
-                {user ? (
-                  <>
-                    <Button
-                      variant="secondary"
-                      className={styles.header_wrapper__addProject}
-                      onClick={() => navigate("/create-project")}
-                    >
-                      Добавить проект
-                    </Button>
-                    <img
-                      src={getUserLogoUrl(user.logoFileName)}
-                      alt="user"
-                      className={styles.userLogo}
-                      style={{
-                        width: 50,
-                        height: 50,
-                        borderRadius: "20%",
-                        marginLeft: 16,
-                        objectFit: "cover",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => navigate("/profile")}
-                      title="Профиль"
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      variant="primary"
-                      className={styles.header_wrapper__login}
-                      onClick={() => {
-                        handleOpenLogin();
-                        setMenuOpen(false);
-                      }}
-                    >
-                      Войти
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      className={styles.header_wrapper__registration}
-                      onClick={() => {
-                        handleOpenRegistration();
-                        setMenuOpen(false);
-                      }}
-                    >
-                      Зарегистрироваться
-                    </Button>
-                  </>
-                )}
-              </div>
             </>
+          )}
+
+          <div className={styles.header_wrapper__buttons}>
+            {user ? (
+              <>
+                {!isMobile && (
+                  <Button
+                    variant="secondary"
+                    className={styles.header_wrapper__addProject}
+                    onClick={() => navigate("/create-project")}
+                  >
+                    Добавить проект
+                  </Button>
+                )}
+                <img
+                  src={getUserLogoUrl(user.logoFileName)}
+                  alt="user"
+                  className={styles.userLogo}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: "20%",
+                    marginLeft: isMobile ? 0 : 16,
+                    objectFit: "cover",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => navigate("/profile")}
+                  title="Профиль"
+                />
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="primary"
+                  className={styles.header_wrapper__login}
+                  onClick={() => {
+                    handleOpenLogin();
+                    setMenuOpen(false);
+                  }}
+                >
+                  Войти
+                </Button>
+                {!isMobile && (
+                  <Button
+                    variant="secondary"
+                    className={styles.header_wrapper__registration}
+                    onClick={() => {
+                      handleOpenRegistration();
+                      setMenuOpen(false);
+                    }}
+                  >
+                    Зарегистрироваться
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
+
+          {isMobile && (
+            <div
+              className={`${styles.burger} ${menuOpen ? styles.open : ""}`}
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <span></span>
+            </div>
           )}
 
           {isMobile && menuOpen && (
             <nav className={`${styles.header_wrapper__nav} ${styles.open}`}>
               <div className={styles.navContentWrapper}>
                 <ul>
-                  <li>Главная</li>
+                  <li>
+                    <Link
+                      to="/"
+                      style={{ color: "inherit", textDecoration: "none" }}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Главная
+                    </Link>
+                  </li>
+                  <div className={styles.stripe}></div>
                   <li
                     onClick={() => {
                       handleProjectsClick();
@@ -279,6 +294,7 @@ export default function Header({ darkBackground = false }) {
                   >
                     Проекты
                   </li>
+                  <div className={styles.stripe}></div>
                   <li
                     onClick={() => {
                       handleSpecialistsClick();
@@ -288,68 +304,19 @@ export default function Header({ darkBackground = false }) {
                   >
                     Специалисты
                   </li>
+                  <div className={styles.stripe}></div>
                   <li>Работа</li>
+                  <div className={styles.stripe}></div>
                   <li>
-                    <Link to="/payment">Подписка</Link>
+                    <Link
+                      to="/payment"
+                      style={{ color: "inherit", textDecoration: "none" }}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Подписка
+                    </Link>
                   </li>
                 </ul>
-                <div
-                  className={styles.header_wrapper__buttons}
-                  style={{ marginTop: 32 }}
-                >
-                  {user ? (
-                    <>
-                      <Button
-                        variant="secondary"
-                        className={styles.header_wrapper__addProject}
-                        onClick={() => {
-                          navigate("/create-project");
-                          setMenuOpen(false);
-                        }}
-                      >
-                        Добавить проект
-                      </Button>
-                      <img
-                        src={getUserLogoUrl(user.logoFileName)}
-                        alt="user"
-                        className={styles.userLogo}
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: "50%",
-                          marginLeft: 16,
-                          objectFit: "cover",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => navigate("/profile")}
-                        title="Профиль"
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        variant="primary"
-                        className={styles.header_wrapper__login}
-                        onClick={() => {
-                          handleOpenLogin();
-                          setMenuOpen(false);
-                        }}
-                      >
-                        Войти
-                      </Button>
-                      <Button
-                        variant="secondary"
-                        className={styles.header_wrapper__registration}
-                        onClick={() => {
-                          handleOpenRegistration();
-                          setMenuOpen(false);
-                        }}
-                      >
-                        Зарегистрироваться
-                      </Button>
-                    </>
-                  )}
-                </div>
               </div>
             </nav>
           )}

@@ -91,10 +91,12 @@ export default function Specialists({ specialist }) {
             />
             <div className={styles.info__text}>
               <h3>{specialist.fullName}</h3>
-              <p>
-                <img src={location} alt="location" />
-                {specialist.city}
-              </p>
+              {specialist.city && specialist.city !== "Город не указан" && (
+                <p>
+                  <img src={location} alt="location" />
+                  {specialist.city}
+                </p>
+              )}
             </div>
           </div>
           <div className={styles.hero__btn}>

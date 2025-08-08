@@ -25,37 +25,39 @@ export default function UserProfileMainInfo({ userProfile }) {
                 {info.website || "—"}
               </div>
 
-              <div className={styles.social}>
-                <p>Социальные сети:</p>
-                <div className={styles.icons}>
-                  {info.vk && (
-                    <a
-                      href={
-                        info.vk.startsWith("http")
-                          ? info.vk
-                          : `https://vk.com/${info.vk}`
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <img src="/icons/vk.svg" alt="vk" />
-                    </a>
-                  )}
-                  {info.telegram && (
-                    <a
-                      href={
-                        info.telegram.startsWith("http")
-                          ? info.telegram
-                          : `https://t.me/${info.telegram.replace("@", "")}`
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <img src="/icons/telegram.svg" alt="telegram" />
-                    </a>
-                  )}
+              {(info.vk || info.telegram) && (
+                <div className={styles.social}>
+                  <p>Социальные сети:</p>
+                  <div className={styles.icons}>
+                    {info.vk && (
+                      <a
+                        href={
+                          info.vk.startsWith("http")
+                            ? info.vk
+                            : `https://vk.com/${info.vk}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img src="/icons/vk.svg" alt="vk" />
+                      </a>
+                    )}
+                    {info.telegram && (
+                      <a
+                        href={
+                          info.telegram.startsWith("http")
+                            ? info.telegram
+                            : `https://t.me/${info.telegram.replace("@", "")}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img src="/icons/telegram.svg" alt="telegram" />
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

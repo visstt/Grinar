@@ -66,8 +66,13 @@ export default function UserProfileTitle({ userProfile }) {
           <div className={styles.user_info}>
             <h1>{userProfile.fullName}</h1>
             <div className={styles.user_info__details}>
-              <p>{userProfile.specialization}</p>
-              <p>{userProfile.city}</p>
+              {userProfile.specialization &&
+                userProfile.specialization !== "Специализации не указаны" && (
+                  <p>{userProfile.specialization}</p>
+                )}
+              {userProfile.city && userProfile.city !== "Город не указан" && (
+                <p>{userProfile.city}</p>
+              )}
             </div>
           </div>
           <div className={styles.user_logo}>

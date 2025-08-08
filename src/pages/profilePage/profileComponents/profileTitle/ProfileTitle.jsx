@@ -40,8 +40,13 @@ export default function ProfileTitle() {
           <div className={styles.user_info}>
             <h1>{profile.fullName}</h1>
             <div className={styles.user_info__details}>
-              <p>{profile.specialization}</p>
-              <p>{profile.city}</p>
+              {profile.specialization &&
+                profile.specialization !== "Специализации не указаны" && (
+                  <p>{profile.specialization}</p>
+                )}
+              {profile.city && profile.city !== "Город не указан" && (
+                <p>{profile.city}</p>
+              )}
             </div>
           </div>
           <div className={styles.user_logo}>
@@ -72,7 +77,13 @@ export default function ProfileTitle() {
               </Button>
             </div>
           </div>
-          <div className={styles.btn_container}>
+          <div
+            className={`${styles.btn_container} ${
+              !profile.city || profile.city === "Город не указан"
+                ? styles.btn_container_no_city
+                : ""
+            }`}
+          >
             <Button
               variant={activeTab === "projects" ? "primary" : "default"}
               onClick={() => navigate("/profile/projects")}

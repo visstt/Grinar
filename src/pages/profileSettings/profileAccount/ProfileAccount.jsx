@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 import Button from "../../../shared/ui/components/button/Button";
 import Input from "../../../shared/ui/components/input/Input";
+import useMyProfile from "../../profilePage/hooks/useMyProfile";
 import ProfileSettingsHeader from "../../profilePage/profileComponents/profileSettingsHeader/ProfileSettingsHeader";
 import ChangeLoginModal from "./ChangeLoginModal";
 import styles from "./ProfileAccount.module.css";
@@ -13,6 +14,7 @@ import useChangePassword from "./hooks/useChangePassword";
 import useChangePhone from "./hooks/useChangePhone";
 
 export default function ProfileAccount() {
+  const { profile } = useMyProfile();
   const [loginInput, setLoginInput] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [emailInput, setEmailInput] = useState("");
@@ -199,7 +201,7 @@ export default function ProfileAccount() {
                         label="Логин"
                         id="login"
                         autoComplete="off"
-                        placeholder={"Введите новый логин"}
+                        placeholder={profile?.login || "Введите новый логин"}
                         value={loginInput}
                         onChange={(e) => setLoginInput(e.target.value)}
                       />
@@ -223,7 +225,9 @@ export default function ProfileAccount() {
                         label="Электронная почта"
                         id="email"
                         autoComplete="off"
-                        placeholder={"Введите новую почту"}
+                        placeholder={
+                          profile?.info?.email || "Введите новую почту"
+                        }
                         value={emailInput}
                         onChange={(e) => setEmailInput(e.target.value)}
                       />
