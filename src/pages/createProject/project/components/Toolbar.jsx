@@ -12,6 +12,7 @@ import {
   Underline,
   Unlink,
 } from "lucide-react";
+import { HexColorPicker } from "react-colorful";
 import { Editor, Element as SlateElement, Transforms } from "slate";
 import { useSlate } from "slate-react";
 
@@ -23,6 +24,7 @@ const Toolbar = () => {
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
   const [sizeDropdownOpen, setSizeDropdownOpen] = useState(false);
   const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
+  const [customColorValue, setCustomColorValue] = useState("#000000");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isSmallMobile, setIsSmallMobile] = useState(window.innerWidth <= 480);
 
@@ -109,6 +111,13 @@ const Toolbar = () => {
     setColorDropdownOpen(false);
   };
 
+  const handleCustomColorChange = (color) => {
+    setCustomColorValue(color);
+    if (editor.selection) {
+      Editor.addMark(editor, "color", color);
+    }
+  };
+
   const insertLink = () => {
     const url = window.prompt("Введите URL:");
     if (!url) return;
@@ -155,21 +164,93 @@ const Toolbar = () => {
   const sizes = [12, 14, 16, 18, 20, 24, 28, 32, 36, 48];
 
   const colors = [
-    "#ffffff",
+    // Основные цвета
     "#000000",
-    "#ff0000",
-    "#00ff00",
-    "#0000ff",
-    "#ffff00",
-    "#ff00ff",
-    "#00ffff",
-    "#ffa500",
-    "#800080",
-    "#ffc0cb",
-    "#a52a2a",
+    "#1a1a1a",
+    "#333333",
+    "#4d4d4d",
+    "#666666",
     "#808080",
-    "#008000",
-    "#000080",
+    "#999999",
+    "#cccccc",
+    "#ffffff",
+    "#f5f5f5",
+    "#e6e6e6",
+    "#d9d9d9",
+    "#cccccc",
+    "#bfbfbf",
+    "#b3b3b3",
+    "#a6a6a6",
+
+    // Красные оттенки
+    "#ff0000",
+    "#ff3333",
+    "#ff6666",
+    "#ff9999",
+    "#ffcccc",
+    "#cc0000",
+    "#990000",
+    "#660000",
+
+    // Синие оттенки
+    "#0000ff",
+    "#3333ff",
+    "#6666ff",
+    "#9999ff",
+    "#ccccff",
+    "#0000cc",
+    "#000099",
+    "#000066",
+
+    // Зеленые оттенки
+    "#00ff00",
+    "#33ff33",
+    "#66ff66",
+    "#99ff99",
+    "#ccffcc",
+    "#00cc00",
+    "#009900",
+    "#006600",
+
+    // Желтые оттенки
+    "#ffff00",
+    "#ffff33",
+    "#ffff66",
+    "#ffff99",
+    "#ffffcc",
+    "#cccc00",
+    "#999900",
+    "#666600",
+
+    // Фиолетовые оттенки
+    "#ff00ff",
+    "#ff33ff",
+    "#ff66ff",
+    "#ff99ff",
+    "#ffccff",
+    "#cc00cc",
+    "#990099",
+    "#660066",
+
+    // Циановые оттенки
+    "#00ffff",
+    "#33ffff",
+    "#66ffff",
+    "#99ffff",
+    "#ccffff",
+    "#00cccc",
+    "#009999",
+    "#006666",
+
+    // Оранжевые оттенки
+    "#ffa500",
+    "#ffb833",
+    "#ffcc66",
+    "#ffdd99",
+    "#ffeecc",
+    "#cc8400",
+    "#996300",
+    "#664200",
   ];
 
   return (
@@ -288,18 +369,48 @@ const Toolbar = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              {colors.map((color) => (
-                <button
-                  key={color}
-                  className={styles.colorItem}
-                  style={{ backgroundColor: color }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setTextColor(color);
-                  }}
+              <div className={styles.colorPickerHeader}>
+                <span className={styles.colorPickerTitle}>Цвет текста</span>
+              </div>
+
+              {/* Цветовой круг */}
+              <div className={styles.colorWheelSection}>
+                <HexColorPicker
+                  color={customColorValue}
+                  onChange={handleCustomColorChange}
+                  className={styles.colorWheel}
                 />
-              ))}
+              </div>
+
+              {/* Разделитель */}
+              <div className={styles.colorPickerDivider}></div>
+
+              {/* Hex input */}
+              <div className={styles.customColorSection}>
+                <label className={styles.customColorLabel}>HEX код:</label>
+                <div className={styles.customColorInputWrapper}>
+                  <div
+                    className={styles.colorPreview}
+                    style={{ backgroundColor: customColorValue }}
+                  ></div>
+                  <input
+                    type="text"
+                    value={customColorValue}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^#[0-9A-Fa-f]{0,6}$/.test(value)) {
+                        setCustomColorValue(value);
+                        if (value.length === 7) {
+                          handleCustomColorChange(value);
+                        }
+                      }
+                    }}
+                    placeholder="#000000"
+                    className={styles.customColorTextInput}
+                    maxLength={7}
+                  />
+                </div>
+              </div>
             </motion.div>
           )}
         </div>

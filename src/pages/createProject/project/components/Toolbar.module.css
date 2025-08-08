@@ -121,32 +121,144 @@
   left: 0;
   background: rgba(0, 0, 0, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 12px;
   backdrop-filter: blur(20px);
   z-index: 20002;
-  padding: 8px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 4px;
-  width: 120px;
+  padding: 16px;
+  width: 260px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   pointer-events: auto;
 }
 
+.colorPickerHeader {
+  margin-bottom: 16px;
+}
+
+.colorPickerTitle {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.colorWheelSection {
+  margin-bottom: 16px;
+}
+
+.colorWheel {
+  width: 100% !important;
+  height: 180px !important;
+}
+
+/* Кастомизация react-colorful */
+.colorWheel .react-colorful__saturation {
+  border-radius: 6px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.colorWheel .react-colorful__hue {
+  border-radius: 6px !important;
+  height: 16px !important;
+  margin-top: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.colorWheel .react-colorful__pointer {
+  width: 18px !important;
+  height: 18px !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.quickColorsSection {
+  margin-bottom: 16px;
+}
+
+.quickColorsLabel {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.8;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.basicColors {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+}
+
 .colorItem {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   transition: all 0.2s ease;
   pointer-events: auto;
   user-select: none;
+  position: relative;
 }
 
 .colorItem:hover {
   transform: scale(1.1);
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.colorPickerDivider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+}
+
+.customColorSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.customColorLabel {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.customColorInputWrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.colorPreview {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.customColorTextInput {
+  flex: 1;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 12px;
+  font-family: "Courier New", monospace;
+  transition: all 0.2s ease;
+}
+
+.customColorTextInput:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.customColorTextInput::placeholder {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .toolbarButton {
@@ -269,10 +381,33 @@
     bottom: 120px;
     left: 50%;
     transform: translateX(-50%);
-    width: 200px;
+    width: 280px;
+    max-width: 90vw;
+    padding: 16px;
+  }
+
+  .colorWheel {
+    height: 160px !important;
+  }
+
+  .basicColors {
     grid-template-columns: repeat(6, 1fr);
     gap: 8px;
-    padding: 12px;
+  }
+
+  .colorItem {
+    width: 28px;
+    height: 28px;
+  }
+
+  .customColorInputWrapper {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .colorPreview {
+    width: 36px;
+    height: 36px;
   }
 
   .colorItem {
@@ -327,16 +462,33 @@
   }
 
   .colorPicker {
-    width: 180px;
+    width: 260px;
     bottom: 100px;
+    padding: 12px;
+  }
+
+  .colorWheel {
+    height: 140px !important;
+  }
+
+  .basicColors {
     grid-template-columns: repeat(5, 1fr);
     gap: 6px;
-    padding: 10px;
   }
 
   .colorItem {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .customColorInputWrapper {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .colorPreview {
+    width: 28px;
+    height: 28px;
   }
 }
 

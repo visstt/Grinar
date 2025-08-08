@@ -14,7 +14,10 @@ const ArticleEditor = ({ onShowToolbar }) => {
   const [modalType, setModalType] = useState("image");
   const [activeLineId, setActiveLineId] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragOverElement, setDragOverElement] = useState(null);
+  const [_dragOverElement, _setDragOverElement] = useState(null);
+  const [_dragSourceElement, setDragSourceElement] = useState(null);
+  const [_draggedElementPath, setDraggedElementPath] = useState(null);
+  const [_dropIndicatorPosition, setDropIndicatorPosition] = useState(null);
   const [menuPosition, setMenuPosition] = useState({
     top: null,
     left: window.innerWidth <= 768 ? -45 : -60,
@@ -22,13 +25,11 @@ const ArticleEditor = ({ onShowToolbar }) => {
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  // Проверка мобильного устройства
   useEffect(() => {
     const handleResize = () => {
       const newIsMobile = window.innerWidth <= 768;
       setIsMobile(newIsMobile);
 
-      // Сбрасываем позицию меню при изменении типа устройства
       if (newIsMobile !== isMobile) {
         if (newIsMobile) {
           setMenuPosition({ top: null, left: -45, bottom: null });
@@ -41,7 +42,6 @@ const ArticleEditor = ({ onShowToolbar }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, [isMobile]);
 
-  // Загружаем Google Fonts
   useEffect(() => {
     const loadGoogleFonts = () => {
       if (document.querySelector('link[href*="fonts.googleapis.com"]')) return;
@@ -76,7 +76,6 @@ const ArticleEditor = ({ onShowToolbar }) => {
     loadGoogleFonts();
   }, []);
 
-  // Инициализация activeLineId для показа ContentMenu
   useEffect(() => {
     setActiveLineId("editor");
   }, []);
@@ -123,7 +122,6 @@ const ArticleEditor = ({ onShowToolbar }) => {
 
   const updateMenuPosition = useCallback(() => {
     if (isMobile) {
-      // На мобильных устройствах оставляем меню слева от курсора, но с адаптивным размером
       try {
         const { selection } = editor;
         if (!selection) {
@@ -136,14 +134,11 @@ const ArticleEditor = ({ onShowToolbar }) => {
         const editorElement = ReactEditor.toDOMNode(editor, editor);
         const editorRect = editorElement.getBoundingClientRect();
 
-        // Проверяем, корректны ли размеры rect
         if (rect.height === 0 || rect.width === 0) {
-          // Для пустых элементов используем позицию курсора
           try {
             const [, path] = Editor.node(editor, selection);
             const [parent] = Editor.parent(editor, path);
 
-            // Получаем DOM элемент параграфа
             const nodeElement = ReactEditor.toDOMNode(editor, parent);
             const nodeRect = nodeElement.getBoundingClientRect();
 
@@ -320,28 +315,38 @@ const ArticleEditor = ({ onShowToolbar }) => {
     setTimeout(() => setActiveLineId(null), 100);
   }, []);
 
-  const handleImageDragStart = useCallback(
+  // Универсальная функция для начала перетаскивания любого элемента
+  const handleElementDragStart = useCallback(
     (e, element) => {
-      if (isMobile) return; // Отключаем drag-and-drop на мобильных
+      if (isMobile) return;
       setIsDragging(true);
+      setDragSourceElement(element);
+
       try {
         const path = ReactEditor.findPath(editor, element);
+        setDraggedElementPath(path);
+
         e.dataTransfer.effectAllowed = "move";
         e.dataTransfer.dropEffect = "move";
+
         const elementData = JSON.stringify({
           type: element.type,
-          url: element.url,
+          url: element.url || null,
           path: path,
-          dragType: "slate-media",
+          dragType: "slate-element",
         });
+
         e.dataTransfer.setData("text/plain", elementData);
         e.dataTransfer.setData("application/json", elementData);
+
+        // Создаём невидимое изображение для drag
         const dragImage = document.createElement("div");
         dragImage.style.opacity = "0";
         dragImage.style.position = "absolute";
         dragImage.style.top = "-1000px";
         document.body.appendChild(dragImage);
         e.dataTransfer.setDragImage(dragImage, 0, 0);
+
         setTimeout(() => {
           if (document.body.contains(dragImage)) {
             document.body.removeChild(dragImage);
@@ -349,130 +354,137 @@ const ArticleEditor = ({ onShowToolbar }) => {
         }, 0);
       } catch {
         setIsDragging(false);
+        setDragSourceElement(null);
+        setDraggedElementPath(null);
       }
     },
     [editor, isMobile],
   );
 
-  const handleMediaDragOver = useCallback(
+  // Обработка перетаскивания над областью редактора
+  const handleEditorDragOver = useCallback(
     (e) => {
-      if (isMobile) return; // Отключаем на мобильных
+      if (isMobile || !isDragging) return;
       e.preventDefault();
       e.dataTransfer.dropEffect = "move";
-      setDragOverElement(e.currentTarget);
-    },
-    [isMobile],
-  );
 
-  const handleMediaDragLeave = useCallback(
-    (e) => {
-      if (isMobile) return;
-      if (!e.currentTarget.contains(e.relatedTarget)) {
-        setDragOverElement(null);
+      // Получаем координаты редактора
+      const editorRect = e.currentTarget.getBoundingClientRect();
+      const relativeY = e.clientY - editorRect.top;
+
+      // Находим элемент в той позиции где находится курсор
+      const elements = Array.from(
+        e.currentTarget.querySelectorAll('[data-slate-node="element"]'),
+      );
+      let targetIndex = 0;
+
+      for (let i = 0; i < elements.length; i++) {
+        const elementRect = elements[i].getBoundingClientRect();
+        const elementY =
+          elementRect.top - editorRect.top + elementRect.height / 2;
+
+        if (relativeY > elementY) {
+          targetIndex = i + 1;
+        } else {
+          break;
+        }
       }
+
+      setDropIndicatorPosition(targetIndex);
     },
-    [isMobile],
+    [isMobile, isDragging],
   );
 
-  const handleMediaDrop = useCallback(
-    (e, targetElement) => {
+  // Обработка отпускания элемента
+  const handleEditorDrop = useCallback(
+    (e) => {
       if (isMobile) return;
       e.preventDefault();
       e.stopPropagation();
-      setDragOverElement(null);
+
+      _setDragOverElement(null);
+      setDropIndicatorPosition(null);
+
       try {
         let textData =
           e.dataTransfer.getData("text/plain") ||
           e.dataTransfer.getData("application/json");
         if (!textData) return;
+
         let parsedData;
         try {
           parsedData = JSON.parse(textData);
         } catch {
           return;
         }
-        if (!parsedData.dragType || parsedData.dragType !== "slate-media")
+
+        if (!parsedData.dragType || parsedData.dragType !== "slate-element")
           return;
         if (!parsedData.path) return;
+
         const sourcePath = parsedData.path;
-        const targetPath = ReactEditor.findPath(editor, targetElement);
-        if (!sourcePath || !targetPath) return;
-        const allowedDropTargets = [
-          "paragraph",
-          "image",
-          "video",
-          "description",
-          "title",
-          "heading",
-        ];
-        if (!allowedDropTargets.includes(targetElement.type)) return;
-        if (JSON.stringify(sourcePath) === JSON.stringify(targetPath)) return;
+
+        // Получаем координаты редактора
+        const editorRect = e.currentTarget.getBoundingClientRect();
+        const relativeY = e.clientY - editorRect.top;
+
+        // Находим позицию для вставки по Y-координате
+        const elements = Array.from(
+          e.currentTarget.querySelectorAll('[data-slate-node="element"]'),
+        );
+        let targetIndex = editor.children.length; // По умолчанию в конец
+
+        for (let i = 0; i < elements.length; i++) {
+          const elementRect = elements[i].getBoundingClientRect();
+          const elementY =
+            elementRect.top - editorRect.top + elementRect.height / 2;
+
+          if (relativeY < elementY) {
+            targetIndex = i;
+            break;
+          }
+        }
+
         const sourceIndex = sourcePath[0];
-        const targetIndex = targetPath[0];
-        if (Math.abs(sourceIndex - targetIndex) <= 1) return;
+
+        // Если источник и цель одинаковые или рядом - не делаем ничего
+        if (
+          sourceIndex === targetIndex ||
+          Math.abs(sourceIndex - targetIndex) <= 1
+        )
+          return;
+
         const [sourceNode] = Editor.node(editor, sourcePath);
-        const insertAtIndex = targetPath[0] + 1;
-        if (insertAtIndex < 0 || insertAtIndex > editor.children.length) return;
+
+        // Удаляем исходный элемент
         Transforms.removeNodes(editor, { at: sourcePath });
-        const adjustedInsertIndex =
-          sourcePath[0] < insertAtIndex ? insertAtIndex - 1 : insertAtIndex;
+
+        // Вычисляем скорректированный индекс для вставки
+        const adjustedTargetIndex =
+          sourceIndex < targetIndex ? targetIndex - 1 : targetIndex;
+
         try {
           Editor.withoutNormalizing(editor, () => {
             Transforms.insertNodes(editor, sourceNode, {
-              at: [adjustedInsertIndex],
+              at: [adjustedTargetIndex],
             });
           });
         } catch {
+          // Fallback: вставляем в конец
           try {
             Editor.withoutNormalizing(editor, () => {
               Transforms.insertNodes(editor, sourceNode);
             });
           } catch {
-            try {
-              Editor.withoutNormalizing(editor, () => {
-                Transforms.insertNodes(editor, sourceNode, { at: sourcePath });
-              });
-            } catch {
-              // Silent catch
-            }
+            // Silent catch если и это не сработало
           }
         }
       } catch {
         // Silent catch
-      }
-    },
-    [editor, isMobile],
-  );
-
-  const handleVideoDragStart = useCallback(
-    (e, element) => {
-      if (isMobile) return;
-      setIsDragging(true);
-      try {
-        const path = ReactEditor.findPath(editor, element);
-        e.dataTransfer.effectAllowed = "move";
-        e.dataTransfer.dropEffect = "move";
-        const elementData = JSON.stringify({
-          type: element.type,
-          url: element.url,
-          path: path,
-          dragType: "slate-media",
-        });
-        e.dataTransfer.setData("text/plain", elementData);
-        e.dataTransfer.setData("application/json", elementData);
-        const dragImage = document.createElement("div");
-        dragImage.style.opacity = "0";
-        dragImage.style.position = "absolute";
-        dragImage.style.top = "-1000px";
-        document.body.appendChild(dragImage);
-        e.dataTransfer.setDragImage(dragImage, 0, 0);
-        setTimeout(() => {
-          if (document.body.contains(dragImage)) {
-            document.body.removeChild(dragImage);
-          }
-        }, 0);
-      } catch {
+      } finally {
         setIsDragging(false);
+        setDragSourceElement(null);
+        setDraggedElementPath(null);
       }
     },
     [editor, isMobile],
@@ -485,18 +497,92 @@ const ArticleEditor = ({ onShowToolbar }) => {
           const isTitleDefault =
             props.element.children?.[0]?.text === "Здесь может быть заголовок";
           return (
-            <h1
-              className={`${styles.title} ${isTitleDefault ? styles.placeholderText : ""}`}
-              {...props.attributes}
-              style={{ textAlign: props.element.align || "left" }}
-              onDragOver={isMobile ? undefined : handleMediaDragOver}
-              onDragLeave={isMobile ? undefined : handleMediaDragLeave}
-              onDrop={
-                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
-              }
-            >
-              {props.children}
-            </h1>
+            <div className={styles.titleWrapper} {...props.attributes}>
+              {!isMobile && (
+                <div className={styles.textDragHandle}>
+                  <div
+                    className={styles.dragIcon}
+                    draggable={true}
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      handleElementDragStart(e, props.element);
+                    }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onDragEnd={(e) => {
+                      e.stopPropagation();
+                      setIsDragging(false);
+                      setDragSourceElement(null);
+                      setDraggedElementPath(null);
+                    }}
+                    title="Перетащите для изменения порядка"
+                    style={{ userSelect: "none", cursor: "grab" }}
+                  >
+                    <svg
+                      width="29"
+                      height="28"
+                      viewBox="0 0 29 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="8.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              )}
+              <h1
+                className={`${styles.title} ${isTitleDefault ? styles.placeholderText : ""}`}
+                style={{ textAlign: props.element.align || "left" }}
+              >
+                {props.children}
+              </h1>
+            </div>
           );
         }
         case "description": {
@@ -504,48 +590,265 @@ const ArticleEditor = ({ onShowToolbar }) => {
             props.element.children?.[0]?.text ===
             "Здесь можно добавить описание";
           return (
-            <p
-              className={`${styles.editableDescription} ${isDescriptionDefault ? styles.placeholderText : ""}`}
-              {...props.attributes}
-              style={{ textAlign: props.element.align || "left" }}
-              onDragOver={isMobile ? undefined : handleMediaDragOver}
-              onDragLeave={isMobile ? undefined : handleMediaDragLeave}
-              onDrop={
-                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
-              }
-            >
-              {props.children}
-            </p>
+            <div className={styles.descriptionWrapper} {...props.attributes}>
+              {!isMobile && (
+                <div className={styles.textDragHandle}>
+                  <div
+                    className={styles.dragIcon}
+                    draggable={true}
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      handleElementDragStart(e, props.element);
+                    }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onDragEnd={(e) => {
+                      e.stopPropagation();
+                      setIsDragging(false);
+                      setDragSourceElement(null);
+                      setDraggedElementPath(null);
+                    }}
+                    title="Перетащите для изменения порядка"
+                    style={{ userSelect: "none", cursor: "grab" }}
+                  >
+                    <svg
+                      width="29"
+                      height="28"
+                      viewBox="0 0 29 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="8.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              )}
+              <p
+                className={`${styles.editableDescription} ${isDescriptionDefault ? styles.placeholderText : ""}`}
+                style={{ textAlign: props.element.align || "left" }}
+              >
+                {props.children}
+              </p>
+            </div>
           );
         }
         case "heading":
           return (
-            <h2
-              className={styles.heading}
-              {...props.attributes}
-              style={{ textAlign: props.element.align || "left" }}
-              onDragOver={isMobile ? undefined : handleMediaDragOver}
-              onDragLeave={isMobile ? undefined : handleMediaDragLeave}
-              onDrop={
-                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
-              }
-            >
-              {props.children}
-            </h2>
+            <div className={styles.headingWrapper} {...props.attributes}>
+              {!isMobile && (
+                <div className={styles.textDragHandle}>
+                  <div
+                    className={styles.dragIcon}
+                    draggable={true}
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      handleElementDragStart(e, props.element);
+                    }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onDragEnd={(e) => {
+                      e.stopPropagation();
+                      setIsDragging(false);
+                      setDragSourceElement(null);
+                      setDraggedElementPath(null);
+                    }}
+                    title="Перетащите для изменения порядка"
+                    style={{ userSelect: "none", cursor: "grab" }}
+                  >
+                    <svg
+                      width="29"
+                      height="28"
+                      viewBox="0 0 29 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="8.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              )}
+              <h2
+                className={styles.heading}
+                style={{ textAlign: props.element.align || "left" }}
+              >
+                {props.children}
+              </h2>
+            </div>
           );
         case "paragraph": {
           const isEmpty = props.element.children?.[0]?.text === "";
-          const isDropTarget = dragOverElement === props.element;
           return (
-            <div
-              className={`${styles.paragraphWrapper} ${isDropTarget ? styles.dropTarget : ""}`}
-              {...props.attributes}
-              onDragOver={isMobile ? undefined : handleMediaDragOver}
-              onDragLeave={isMobile ? undefined : handleMediaDragLeave}
-              onDrop={
-                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
-              }
-            >
+            <div className={styles.paragraphWrapper} {...props.attributes}>
+              {!isMobile && (
+                <div className={styles.textDragHandle}>
+                  <div
+                    className={styles.dragIcon}
+                    draggable={true}
+                    onDragStart={(e) => {
+                      e.stopPropagation();
+                      handleElementDragStart(e, props.element);
+                    }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onDragEnd={(e) => {
+                      e.stopPropagation();
+                      setIsDragging(false);
+                      setDragSourceElement(null);
+                      setDraggedElementPath(null);
+                    }}
+                    title="Перетащите для изменения порядка"
+                    style={{ userSelect: "none", cursor: "grab" }}
+                  >
+                    <svg
+                      width="29"
+                      height="28"
+                      viewBox="0 0 29 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="8.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="5"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="12"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="8.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                      <rect
+                        x="16.5"
+                        y="19"
+                        width="4"
+                        height="4"
+                        rx="2"
+                        fill="#195EE6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              )}
               <p
                 className={styles.paragraph}
                 style={{ textAlign: props.element.align || "left" }}
@@ -558,14 +861,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
         }
         case "image":
           return (
-            <div
-              className={styles.imageWrapper}
-              {...props.attributes}
-              onDragOver={isMobile ? undefined : handleMediaDragOver}
-              onDrop={
-                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
-              }
-            >
+            <div className={styles.imageWrapper} {...props.attributes}>
               {!isMobile && (
                 <div className={styles.imageDragHandle}>
                   <div
@@ -573,12 +869,14 @@ const ArticleEditor = ({ onShowToolbar }) => {
                     draggable={true}
                     onDragStart={(e) => {
                       e.stopPropagation();
-                      handleImageDragStart(e, props.element);
+                      handleElementDragStart(e, props.element);
                     }}
                     onMouseDown={(e) => e.stopPropagation()}
                     onDragEnd={(e) => {
                       e.stopPropagation();
                       setIsDragging(false);
+                      setDragSourceElement(null);
+                      setDraggedElementPath(null);
                     }}
                     title="Перетащите для изменения порядка"
                     style={{ userSelect: "none", cursor: "grab" }}
@@ -655,14 +953,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
           );
         case "video":
           return (
-            <div
-              className={styles.videoWrapper}
-              {...props.attributes}
-              onDragOver={isMobile ? undefined : handleMediaDragOver}
-              onDrop={
-                isMobile ? undefined : (e) => handleMediaDrop(e, props.element)
-              }
-            >
+            <div className={styles.videoWrapper} {...props.attributes}>
               {!isMobile && (
                 <div className={styles.videoDragHandle}>
                   <div
@@ -670,12 +961,14 @@ const ArticleEditor = ({ onShowToolbar }) => {
                     draggable={true}
                     onDragStart={(e) => {
                       e.stopPropagation();
-                      handleVideoDragStart(e, props.element);
+                      handleElementDragStart(e, props.element);
                     }}
                     onMouseDown={(e) => e.stopPropagation()}
                     onDragEnd={(e) => {
                       e.stopPropagation();
                       setIsDragging(false);
+                      setDragSourceElement(null);
+                      setDraggedElementPath(null);
                     }}
                     title="Перетащите для изменения порядка"
                     style={{ userSelect: "none", cursor: "grab" }}
@@ -796,15 +1089,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
           return <p {...props.attributes}>{props.children}</p>;
       }
     },
-    [
-      handleMediaDragOver,
-      handleImageDragStart,
-      handleVideoDragStart,
-      handleMediaDrop,
-      handleMediaDragLeave,
-      dragOverElement,
-      isMobile,
-    ],
+    [handleElementDragStart, isMobile],
   );
 
   const renderLeaf = useCallback((props) => {
@@ -940,7 +1225,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
   }, []);
 
   return (
-    <div className="containerXS">
+    <div className="container-xs">
       <div className={styles.editorContainer}>
         <div className={styles.editorWrapper}>
           <Editable
@@ -953,6 +1238,8 @@ const ArticleEditor = ({ onShowToolbar }) => {
             onBlur={handleEditorBlur}
             onClick={handleEditorClick}
             onKeyDown={handleKeyDown}
+            onDragOver={isMobile ? undefined : handleEditorDragOver}
+            onDrop={isMobile ? undefined : handleEditorDrop}
           />
           {activeLineId === "editor" && (
             <div

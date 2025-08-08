@@ -212,18 +212,56 @@
   border-radius: 4px;
 }
 
+.titleWrapper {
+  position: relative;
+  margin: 24px 0;
+  transition: all 0.2s ease;
+}
+
+.titleWrapper:hover {
+  background: rgba(59, 130, 246, 0.02);
+  border-radius: 8px;
+}
+
+.descriptionWrapper {
+  position: relative;
+  margin: 16px 0;
+  transition: all 0.2s ease;
+}
+
+.descriptionWrapper:hover {
+  background: rgba(59, 130, 246, 0.02);
+  border-radius: 8px;
+}
+
+.headingWrapper {
+  position: relative;
+  margin: 20px 0;
+  transition: all 0.2s ease;
+}
+
+.headingWrapper:hover {
+  background: rgba(59, 130, 246, 0.02);
+  border-radius: 8px;
+}
+
 .videoDragHandle,
-.imageDragHandle {
+.imageDragHandle,
+.textDragHandle {
   position: absolute;
   top: 8px;
   left: -45px;
   z-index: 20;
-  opacity: 1;
+  opacity: 0;
   transition: opacity 0.2s ease;
 }
 
 .videoWrapper:hover .videoDragHandle,
-.imageWrapper:hover .imageDragHandle {
+.imageWrapper:hover .imageDragHandle,
+.titleWrapper:hover .textDragHandle,
+.descriptionWrapper:hover .textDragHandle,
+.headingWrapper:hover .textDragHandle,
+.paragraphWrapper:hover .textDragHandle {
   opacity: 1;
 }
 
@@ -427,7 +465,8 @@
   }
 
   .videoDragHandle,
-  .imageDragHandle {
+  .imageDragHandle,
+  .textDragHandle {
     display: none; /* Отключаем drag handles на мобильных */
   }
 
