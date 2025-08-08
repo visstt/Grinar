@@ -83,15 +83,55 @@ export default function Header({ darkBackground = false }) {
   }, []);
 
   useEffect(() => {
-    if (loginOpen || registrationOpen) {
-      document.body.style.overflow = "hidden";
+    if (loginOpen || registrationOpen || menuOpen) {
+      // Сохраняем текущую позицию скролла
+      const scrollY = window.scrollY;
+
+      // Добавляем класс для блокировки скролла
+      document.body.classList.add("no-scroll");
+      document.documentElement.classList.add("no-scroll");
+
+      // Сохраняем позицию
+      document.body.setAttribute("data-scroll-y", scrollY.toString());
+
+      // Применяем стили через JavaScript для большей надежности
+      document.body.style.cssText = `
+        position: fixed !important;
+        top: -${scrollY}px !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
+      `;
+
+      document.documentElement.style.cssText = `
+        overflow: hidden !important;
+        height: 100% !important;
+      `;
     } else {
-      document.body.style.overflow = "unset";
+      // Восстанавливаем
+      const savedScrollY = document.body.getAttribute("data-scroll-y");
+
+      document.body.classList.remove("no-scroll");
+      document.documentElement.classList.remove("no-scroll");
+
+      document.body.style.cssText = "";
+      document.documentElement.style.cssText = "";
+
+      if (savedScrollY) {
+        window.scrollTo(0, parseInt(savedScrollY));
+        document.body.removeAttribute("data-scroll-y");
+      }
     }
+
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.classList.remove("no-scroll");
+      document.documentElement.classList.remove("no-scroll");
+      document.body.style.cssText = "";
+      document.documentElement.style.cssText = "";
+      document.body.removeAttribute("data-scroll-y");
     };
-  }, [loginOpen, registrationOpen]);
+  }, [loginOpen, registrationOpen, menuOpen]);
 
   const handleRegistrationSuccess = (email) => {
     setRegistrationEmail(email);
@@ -179,17 +219,21 @@ export default function Header({ darkBackground = false }) {
                         Главная
                       </Link>
                     </li>
-                    <li
-                      onClick={handleProjectsClick}
-                      style={{ cursor: "pointer" }}
-                    >
-                      Проекты
+                    <li>
+                      <Link
+                        to="/projects"
+                        style={{ color: "inherit", textDecoration: "none" }}
+                      >
+                        Проекты
+                      </Link>
                     </li>
-                    <li
-                      onClick={handleSpecialistsClick}
-                      style={{ cursor: "pointer" }}
-                    >
-                      Специалисты
+                    <li>
+                      <Link
+                        to="/specialists"
+                        style={{ color: "inherit", textDecoration: "none" }}
+                      >
+                        Специалисты
+                      </Link>
                     </li>
                     <li>Работа</li>
                     <li>

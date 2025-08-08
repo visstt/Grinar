@@ -1,7 +1,9 @@
 import React, { useRef, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import Button from "../../../shared/ui/components/button/Button";
 import styles from "./Registration.module.css";
 import { useVerifyEmail } from "./hooks/useVerifyEmail";
 
@@ -9,6 +11,7 @@ export default function RegistrationStep2({ email, onSuccess }) {
   const inputs = Array.from({ length: 6 }, () => useRef(null));
   const [code, setCode] = useState(Array(6).fill(""));
   const { verifyEmail, loading, error } = useVerifyEmail();
+  const navigate = useNavigate();
 
   const handleChange = (e, idx) => {
     const val = e.target.value.replace(/\D/g, "");
@@ -63,6 +66,11 @@ export default function RegistrationStep2({ email, onSuccess }) {
           </div>
           Если письма нет — проверьте спам, рассылки или нежелательную почту.
         </p>
+        <div className={styles.btn_wrapper}>
+          <button className={styles.back_button} onClick={() => navigate(-1)}>
+            Назад
+          </button>
+        </div>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div
             style={{

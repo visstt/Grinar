@@ -69,12 +69,26 @@
   border-radius: 8px;
   cursor: pointer;
 }
-.form {
+.btn_wrapper {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+}
+.back_button {
+  border-radius: 8px;
+  padding: 14px 24px;
+  width: 90px;
+  height: 48px;
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.05);
+
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  outline: none;
+  border: none;
+}
+.form {
+  width: 100%;
   text-align: left;
 }
 .input_wrapper {

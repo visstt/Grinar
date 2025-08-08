@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
+
 import Header from "../../../../shared/ui/components/header/Header";
 import styles from "./HomeTitle.module.css";
 
 export default function HomeTitle() {
+  const navigate = useNavigate();
   const today = new Date();
   const formattedDate = today.toLocaleDateString("ru-RU", {
     day: "numeric",
@@ -15,7 +18,9 @@ export default function HomeTitle() {
         <div className={styles.wrapper}>
           <h1>Лучшее на BENTY</h1>
           <p>{formattedDate}</p>
-          <button>Найти специалиста</button>
+          <button onClick={() => navigate("/specialists")}>
+            Найти специалиста
+          </button>
         </div>
       </div>
     </div>
