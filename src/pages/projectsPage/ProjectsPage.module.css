@@ -1,0 +1,207 @@
+.pageContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-family: Unbounded;
+  font-weight: 800;
+  font-size: 36px;
+  color: #141414;
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.searchWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.searchInput {
+  border: 1px solid rgba(25, 94, 230, 0.1);
+  border-radius: 8px;
+  padding: 14px 12px 14px 40px;
+  width: 590px;
+  height: 48px;
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.searchInput::placeholder {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  color: #141414;
+}
+
+.filterSelect {
+  border: 1px solid rgba(25, 94, 230, 0.1);
+  border-radius: 8px;
+  padding: 14px 12px;
+  width: 219px;
+  height: 48px;
+  font-size: 16px;
+  outline: none;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  color: #141414;
+}
+
+.filterSelect:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Адаптивные стили для фильтров */
+@media (max-width: 1200px) {
+  .searchInput {
+    width: 400px;
+  }
+
+  .filterSelect {
+    width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 28px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+  }
+
+  .filters {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .searchWrapper {
+    width: 100%;
+  }
+
+  .searchInput {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .filterSelect {
+    width: 100%;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 24px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .searchInput,
+  .filterSelect {
+    height: 44px;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .searchInput {
+    padding-left: 36px;
+  }
+
+  .searchIcon {
+    left: 10px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.cardContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.loadingMessage {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.noProjects {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  color: #999;
+}
+
+.noResults {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.resultsCount {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+@media (max-width: 1200px) {
+  .cardContainer {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardContainer {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

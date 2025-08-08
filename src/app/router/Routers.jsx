@@ -12,6 +12,8 @@ import ProfileInfo from "../../pages/profileSettings/profileInfo/ProfileInfo";
 import ProfileNotifications from "../../pages/profileSettings/profileNotifications/ProfileNotifications";
 import UserProfilePage from "../../pages/userProfile/UserProfile";
 import DocsPage from "../../pages/docsPage/DocsPage";
+import ProjectsPage from "../../pages/projectsPage/ProjectsPage";
+import SpecialistsPage from "../../pages/specialistsPage/SpecialistsPage";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +59,14 @@ export const router = createBrowserRouter([
   {
     path: "/payment",
     element: <PaymentPage />,
+  },
+  {
+    path: "/projects",
+    element: <ProjectsPage />,
+  },
+  {
+    path: "/specialists",
+    element: <SpecialistsPage />,
   },
   {
     path: "/user/:userId",
