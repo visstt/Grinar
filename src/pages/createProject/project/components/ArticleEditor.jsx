@@ -1225,7 +1225,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
   }, []);
 
   return (
-    <div className="container-xs">
+    <div className="containerXS">
       <div className={styles.editorContainer}>
         <div className={styles.editorWrapper}>
           <Editable

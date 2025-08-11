@@ -37,3 +37,8 @@
   cursor: pointer;
   z-index: 2200;
 }
+@media (max-width: 600px) {
+  .modal {
+    padding: 24px;
+  }
+}

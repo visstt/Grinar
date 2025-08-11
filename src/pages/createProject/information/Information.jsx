@@ -109,18 +109,22 @@ export default function Information() {
             <div className="stripe2"></div>
             <div className={styles.form}>
               <div className={styles.img_form}>
-                <img
-                  src={
-                    projectData.coverImagePreview ||
-                    projectData.coverImageBase64 ||
-                    "/images/projectPhoto.png"
-                  }
-                  alt="Sample_Project_Icon"
-                  className={styles.coverImage}
-                />
+                {projectData.coverImagePreview ||
+                projectData.coverImageBase64 ? (
+                  <img
+                    src={
+                      projectData.coverImagePreview ||
+                      projectData.coverImageBase64
+                    }
+                    alt="Project Cover"
+                    className={styles.coverImage}
+                  />
+                ) : (
+                  <div className={styles.coverImagePlaceholder}></div>
+                )}
                 <label style={{ color: "#141414", opacity: 0.5 }}>
                   Рекомендуемый размер <br />
-                  320x320 px
+                  600x400 px
                 </label>
               </div>
               <div className={styles.btn_container}>

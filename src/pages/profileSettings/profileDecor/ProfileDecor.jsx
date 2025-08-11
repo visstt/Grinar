@@ -45,7 +45,7 @@ export default function ProfileDecor() {
                   />
                   <label style={{ color: "rgba(255, 255, 255, 0.5)" }}>
                     Рекомендуемый размер <br />
-                    320x320 px
+                    512x512 px
                   </label>
                 </div>
                 <div className={styles.btn_container}>
@@ -90,7 +90,7 @@ export default function ProfileDecor() {
                     className={styles.coverImage}
                   />
                   <label style={{ color: "rgba(255, 255, 255, 0.5)" }}>
-                    Рекомендуемый размер 3200x840 px
+                    Рекомендуемый размер 1920x1080 px
                   </label>
                 </div>
                 <div className={styles.btn_container}>

@@ -89,6 +89,18 @@
   object-fit: cover;
 }
 
+.coverImagePlaceholder {
+  width: 270px;
+  height: 195px;
+  border-radius: 20px;
+  margin-right: 20px;
+  background-color: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
 @media (max-width: 768px) {
   .content {
     padding: 0 16px 50px 16px;
@@ -124,6 +136,13 @@
     margin-bottom: 15px;
   }
 
+  .coverImagePlaceholder {
+    width: 200px !important;
+    height: 145px !important;
+    margin-right: 0 !important;
+    margin-bottom: 15px;
+  }
+
   .btn_container {
     align-items: center;
     margin-top: 15px;
@@ -141,6 +160,11 @@
   }
 
   .coverImage {
+    width: 100% !important;
+    height: 210px !important;
+  }
+
+  .coverImagePlaceholder {
     width: 100% !important;
     height: 210px !important;
   }
