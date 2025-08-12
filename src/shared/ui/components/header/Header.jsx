@@ -361,6 +361,16 @@ export default function Header({ darkBackground = false }) {
                   <div className={styles.stripe}></div>
                   <li>
                     <Link
+                      to="/blog"
+                      style={{ color: "inherit", textDecoration: "none" }}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Блог
+                    </Link>
+                  </li>
+                  <div className={styles.stripe}></div>
+                  <li>
+                    <Link
                       to="/payment"
                       style={{ color: "inherit", textDecoration: "none" }}
                       onClick={() => setMenuOpen(false)}
