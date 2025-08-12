@@ -76,7 +76,17 @@ export default function Card({ project }) {
             alt="authorLogo"
           />
           <div className={styles.author__text}>
-            <h3>{project.author?.name || project.fullName}</h3>
+            <div className={styles.author__name}>
+              <h3>{project.author?.name || project.fullName}</h3>
+              {project.author?.subscription &&
+                project.author.subscription !== "default" && (
+                  <span
+                    className={`${styles.subscription} ${styles[`subscription_${project.author.subscription}`]}`}
+                  >
+                    {project.author.subscription}
+                  </span>
+                )}
+            </div>
             <p>
               {project.author?.specializations?.[0] || project.specialization}
             </p>

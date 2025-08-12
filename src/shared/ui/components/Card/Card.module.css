@@ -20,6 +20,12 @@
   font-size: 16px;
   line-height: 21.86px;
   letter-spacing: 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .author {
@@ -47,6 +53,44 @@
   line-height: 19.12px;
   letter-spacing: 0px;
 }
+
+.author__name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subscription {
+  font-family: Unbounded;
+  font-weight: 700;
+  font-size: 10px;
+  color: #fff;
+  border-radius: 4px;
+  padding: 3px 6px;
+  height: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subscription_pro {
+  width: 39px;
+  background: #195ee6;
+  text-transform: uppercase;
+}
+
+.subscription_premium {
+  width: 74px;
+  text-transform: uppercase;
+  background: linear-gradient(
+    135deg,
+    #b5c1d9 0%,
+    #858afb 38%,
+    #c472ff 65%,
+    #d3bbe3 100%
+  );
+}
+
 .author__text p {
   font-family: Manrope;
   font-weight: 500;

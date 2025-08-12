@@ -23,7 +23,7 @@ export default function Footer() {
         <div className={styles.footer_content}>
           <div className={styles.logo_block}>
             <img
-              src="/public/icons/mainLogo.svg"
+              src="/icons/mainLogo.svg"
               alt="main logo"
               onClick={handleLogoClick}
               style={{ cursor: "pointer" }}

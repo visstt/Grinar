@@ -1,0 +1,19 @@
+.container {
+  min-height: 100vh;
+  background: #f8f9fa;
+  overflow: visible;
+}
+
+.toolbarSection {
+  background: transparent;
+  padding: 12px 20px;
+  overflow: visible;
+  position: relative;
+}
+
+.container-xs {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  overflow: visible;
+}

@@ -3,15 +3,22 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useUserStore } from "../../../shared/store/userStore";
 import Button from "../../../shared/ui/components/button/Button";
 import styles from "./Registration.module.css";
 import { useVerifyEmail } from "./hooks/useVerifyEmail";
 
 export default function RegistrationStep2({ email, onSuccess }) {
-  const inputs = Array.from({ length: 6 }, () => useRef(null));
+  const inputRefs = useRef([]);
   const [code, setCode] = useState(Array(6).fill(""));
   const { verifyEmail, loading, error } = useVerifyEmail();
   const navigate = useNavigate();
+  const setUser = useUserStore((state) => state.setUser);
+
+  // Инициализируем refs
+  inputRefs.current = Array(6)
+    .fill(null)
+    .map((_, i) => inputRefs.current[i] || React.createRef());
 
   const handleChange = (e, idx) => {
     const val = e.target.value.replace(/\D/g, "");
@@ -19,7 +26,7 @@ export default function RegistrationStep2({ email, onSuccess }) {
     newCode[idx] = val;
     setCode(newCode);
     if (val && idx < 5) {
-      inputs[idx + 1].current.focus();
+      inputRefs.current[idx + 1].current.focus();
     }
   };
 
@@ -30,7 +37,7 @@ export default function RegistrationStep2({ email, onSuccess }) {
         newCode[idx] = "";
         setCode(newCode);
       } else if (idx > 0) {
-        inputs[idx - 1].current.focus();
+        inputRefs.current[idx - 1].current.focus();
         const newCode = [...code];
         newCode[idx - 1] = "";
         setCode(newCode);
@@ -44,9 +51,12 @@ export default function RegistrationStep2({ email, onSuccess }) {
     const res = await verifyEmail(email, code.join(""));
     if (!res) {
       setCode(Array(6).fill(""));
-      inputs[0].current?.focus();
+      inputRefs.current[0].current?.focus();
     } else {
+      // Сохраняем полученные токены и данные пользователя в store
+      setUser(res);
       toast.success("Почта успешно подтверждена!");
+      // Закрываем окно регистрации
       if (onSuccess) onSuccess();
     }
   };
@@ -83,7 +93,7 @@ export default function RegistrationStep2({ email, onSuccess }) {
             {code.map((digit, idx) => (
               <input
                 key={idx}
-                ref={inputs[idx]}
+                ref={inputRefs.current[idx]}
                 type="text"
                 inputMode="numeric"
                 maxLength={1}

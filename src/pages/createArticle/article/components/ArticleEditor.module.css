@@ -1,0 +1,544 @@
+.descriptionSection {
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.descriptionContentMenu {
+  position: absolute;
+  left: -50px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+.editableDescription {
+  font-size: 16px;
+  font-weight: 400;
+  color: #374151;
+  margin: 0;
+  line-height: 1.6;
+  outline: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 4px 0;
+  min-height: 24px;
+}
+
+.editableDescription::placeholder {
+  color: #9ca3af;
+}
+
+.editorContainer {
+  min-height: calc(100vh - 200px);
+  background: transparent;
+  color: #333333;
+  padding: 20px 0;
+  overflow: visible;
+  position: relative;
+}
+
+.editorWrapper {
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+}
+
+.editorContentMenu {
+  position: absolute;
+  left: -50px;
+  top: 0;
+  opacity: 1;
+  z-index: 1000;
+}
+
+.titleSection {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.titleContentMenu {
+  position: absolute;
+  left: -50px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+.descriptionPlaceholder {
+  position: relative;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.placeholderText {
+  color: #9ca3af !important;
+  font-size: 16px;
+  font-weight: 400;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  transition: color 0.2s ease-in-out;
+}
+
+.editableTitle {
+  font-size: 32px;
+  font-weight: 400;
+  color: #111827;
+  margin: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.3;
+  outline: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.editableTitle::placeholder {
+  color: #9ca3af;
+}
+
+.editor {
+  background: transparent;
+  outline: none;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 200px;
+  position: relative;
+}
+
+.paragraphWrapper {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: 4px 0;
+}
+
+.contentMenuWrapper {
+  position: absolute;
+  left: -50px;
+  top: 4px;
+  opacity: 1;
+}
+
+.paragraph {
+  flex: 1;
+  font-size: 16px;
+  color: #374151;
+  margin: 0;
+  line-height: 1.6;
+  outline: none;
+  min-height: 24px;
+  width: 100%;
+  position: relative;
+}
+
+.paragraph[data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  position: absolute;
+  pointer-events: none;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 24px 0;
+  line-height: 1.2;
+  outline: none;
+  position: relative;
+}
+
+.title[data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  position: absolute;
+  pointer-events: none;
+}
+
+.editableDescription[data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  position: absolute;
+  pointer-events: none;
+}
+
+.heading {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin: 32px 0 16px 0;
+  line-height: 1.3;
+  outline: none;
+}
+
+.videoWrapper {
+  position: relative;
+  margin: 24px 0;
+  transition: all 0.2s ease;
+}
+
+.videoWrapper:hover {
+  background: rgba(59, 130, 246, 0.02);
+  border-radius: 8px;
+}
+
+.imageWrapper {
+  position: relative;
+  margin: 24px 0;
+  transition: all 0.2s ease;
+}
+
+.imageWrapper:hover {
+  background: rgba(59, 130, 246, 0.02);
+  border-radius: 8px;
+}
+
+.paragraphWrapper {
+  transition: all 0.2s ease;
+}
+
+.paragraphWrapper:hover {
+  background: rgba(59, 130, 246, 0.02);
+  border-radius: 4px;
+}
+
+.titleWrapper {
+  position: relative;
+  margin: 24px 0;
+  transition: all 0.2s ease;
+}
+
+.titleWrapper:hover {
+  background: rgba(59, 130, 246, 0.02);
+  border-radius: 8px;
+}
+
+.descriptionWrapper {
+  position: relative;
+  margin: 16px 0;
+  transition: all 0.2s ease;
+}
+
+.descriptionWrapper:hover {
+  background: rgba(59, 130, 246, 0.02);
+  border-radius: 8px;
+}
+
+.headingWrapper {
+  position: relative;
+  margin: 20px 0;
+  transition: all 0.2s ease;
+}
+
+.headingWrapper:hover {
+  background: rgba(59, 130, 246, 0.02);
+  border-radius: 8px;
+}
+
+.videoDragHandle,
+.imageDragHandle,
+.textDragHandle {
+  position: absolute;
+  top: 8px;
+  left: -45px;
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.videoWrapper:hover .videoDragHandle,
+.imageWrapper:hover .imageDragHandle,
+.titleWrapper:hover .textDragHandle,
+.descriptionWrapper:hover .textDragHandle,
+.headingWrapper:hover .textDragHandle,
+.paragraphWrapper:hover .textDragHandle {
+  opacity: 1;
+}
+
+.paragraphWrapper.dropTarget,
+.imageWrapper.dropTarget,
+.videoWrapper.dropTarget {
+  background: rgba(25, 94, 230, 0.1) !important;
+  border: 2px dashed #195ee6 !important;
+  border-radius: 8px !important;
+}
+
+.paragraphWrapper.dropTarget::after,
+.imageWrapper.dropTarget::after,
+.videoWrapper.dropTarget::after {
+  content: "Отпустите чтобы переместить сюда";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(25, 94, 230, 0.9);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.dragIcon {
+  background: transparent;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.dragIcon:active {
+  cursor: grabbing;
+  transform: scale(0.95);
+}
+
+.imageContainer {
+  text-align: center;
+  position: relative;
+}
+
+.image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.videoContainer {
+  text-align: center;
+  position: relative;
+}
+
+.video {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.editor a {
+  color: #195ee6;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.editor a:hover {
+  color: #0c4dad;
+  text-decoration: none;
+}
+
+.publishSection {
+  margin-top: 40px;
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  border-top: 1px solid #e5e7eb;
+}
+
+.publishButton {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  min-width: 140px;
+}
+
+.publishButton:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.publishButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.publishButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(156, 163, 175, 0.2);
+}
+
+.publishError {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.publishSuccess {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  max-width: 400px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .editorContainer {
+    padding: 15px 0;
+    min-height: calc(100vh - 150px);
+  }
+
+  .editorWrapper {
+    padding: 0 50px 0 10px; /* Увеличиваем левый отступ для ContentMenu */
+  }
+
+  .editor {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .title {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .editableTitle {
+    font-size: 24px;
+    padding: 6px 0;
+  }
+
+  .heading {
+    font-size: 20px;
+    margin: 24px 0 12px 0;
+  }
+
+  .editableDescription {
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 3px 0;
+  }
+
+  .paragraph {
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 3px 0;
+  }
+
+  .imageWrapper,
+  .videoWrapper {
+    margin: 16px 0;
+  }
+
+  .image,
+  .video {
+    border-radius: 8px;
+  }
+
+  .descriptionContentMenu,
+  .titleContentMenu,
+  .contentMenuWrapper {
+    left: -40px;
+  }
+
+  .videoDragHandle,
+  .imageDragHandle,
+  .textDragHandle {
+    display: none; /* Отключаем drag handles на мобильных */
+  }
+
+  .paragraphWrapper.dropTarget::after,
+  .imageWrapper.dropTarget::after,
+  .videoWrapper.dropTarget::after {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .publishSection {
+    margin-top: 30px;
+    padding: 16px 0;
+  }
+
+  .publishButton {
+    padding: 12px 24px;
+    font-size: 14px;
+    min-width: 120px;
+  }
+
+  .publishError,
+  .publishSuccess {
+    font-size: 13px;
+    padding: 10px 14px;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 600px) {
+  .editorContainer {
+    padding: 10px 0;
+  }
+
+  .editorWrapper {
+    padding: 0 45px 0 8px; /* Увеличиваем левый отступ для ContentMenu */
+  }
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .editableTitle {
+    font-size: 20px;
+    padding: 5px 0;
+  }
+
+  .heading {
+    font-size: 18px;
+    margin: 20px 0 10px 0;
+  }
+
+  .editableDescription,
+  .paragraph {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .imageWrapper,
+  .videoWrapper {
+    margin: 12px 0;
+  }
+
+  .image,
+  .video {
+    border-radius: 6px;
+  }
+
+  .publishButton {
+    padding: 10px 20px;
+    font-size: 13px;
+    min-width: 100px;
+  }
+}

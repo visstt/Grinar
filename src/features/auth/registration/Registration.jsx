@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Eye, EyeOff, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { useUserStore } from "../../../shared/store/userStore";
 import styles from "./Registration.module.css";
 import RegistrationStep2 from "./RegistrationStep2";
 import { useRegistration } from "./hooks/useRegistration";
@@ -19,7 +18,6 @@ export default function Registration({ onClose }) {
   const [policyChecked, setPolicyChecked] = useState(false);
   const [step, setStep] = useState(1);
   const { register, loading, error } = useRegistration();
-  const setUser = useUserStore((state) => state.setUser);
 
   // Функции для скачивания документов
   const downloadPrivacyPolicy = () => {
@@ -50,13 +48,12 @@ export default function Registration({ onClose }) {
       repassword,
     });
     if (res) {
-      setUser({ logoFileName: res.logoFileName });
       setStep(2);
     }
   };
 
   if (step === 2) {
-    return <RegistrationStep2 email={email} />;
+    return <RegistrationStep2 email={email} onSuccess={onClose} />;
   }
 
   return (

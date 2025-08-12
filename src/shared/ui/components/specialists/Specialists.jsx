@@ -90,7 +90,17 @@ export default function Specialists({ specialist }) {
               alt="heroAvatar"
             />
             <div className={styles.info__text}>
-              <h3>{specialist.fullName}</h3>
+              <div className={styles.name_wrapper}>
+                <h3>{specialist.fullName}</h3>
+                {specialist.subscription &&
+                  specialist.subscription !== "default" && (
+                    <span
+                      className={`${styles.subscription} ${styles[`subscription_${specialist.subscription}`]}`}
+                    >
+                      {specialist.subscription}
+                    </span>
+                  )}
+              </div>
               {specialist.city && specialist.city !== "Город не указан" && (
                 <p>
                   <img src={location} alt="location" />
