@@ -26,6 +26,7 @@
   line-clamp: 1;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+  word-break: break-all;
 }
 
 .author {
@@ -52,6 +53,13 @@
   font-size: 14px;
   line-height: 19.12px;
   letter-spacing: 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
 }
 
 .author__name {

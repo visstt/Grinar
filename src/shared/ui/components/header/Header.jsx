@@ -238,6 +238,14 @@ export default function Header({ darkBackground = false }) {
                     <li>Работа</li>
                     <li>
                       <Link
+                        to="/blog"
+                        style={{ color: "inherit", textDecoration: "none" }}
+                      >
+                        Блог
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
                         to="/payment"
                         style={{ color: "inherit", textDecoration: "none" }}
                       >

@@ -8,11 +8,10 @@ export default function Subscriptions({ subscriptions }) {
   if (!subscriptions || subscriptions.length === 0) {
     return (
       <EmptyState
-        icon="👥"
         title="Нет подписок"
         description="Вы пока ни на кого не подписаны. Найдите интересных специалистов и следите за их работами"
         actionText="Найти специалистов"
-        onAction={() => (window.location.href = "/")}
+        onAction={() => (window.location.href = "/specialists")}
       />
     );
   }

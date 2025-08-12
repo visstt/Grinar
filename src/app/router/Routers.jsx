@@ -1,8 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 
+import BlogPage from "../../pages/blogPage/BlogPage";
 import ProjectLayout from "../../pages/createProject/ProjectLayout";
 import Information from "../../pages/createProject/information/Information";
 import CreateProject from "../../pages/createProject/project/CreateProject";
+import DocsPage from "../../pages/docsPage/DocsPage";
 import HomePage from "../../pages/homePage/HomePage";
 import PaymentPage from "../../pages/paymentPage/PaymentPage";
 import ProfilePage from "../../pages/profilePage/ProfilePage";
@@ -10,10 +12,9 @@ import ProfileAccount from "../../pages/profileSettings/profileAccount/ProfileAc
 import ProfileDecor from "../../pages/profileSettings/profileDecor/ProfileDecor";
 import ProfileInfo from "../../pages/profileSettings/profileInfo/ProfileInfo";
 import ProfileNotifications from "../../pages/profileSettings/profileNotifications/ProfileNotifications";
-import UserProfilePage from "../../pages/userProfile/UserProfile";
-import DocsPage from "../../pages/docsPage/DocsPage";
 import ProjectsPage from "../../pages/projectsPage/ProjectsPage";
 import SpecialistsPage from "../../pages/specialistsPage/SpecialistsPage";
+import UserProfilePage from "../../pages/userProfile/UserProfile";
 
 export const router = createBrowserRouter([
   {
@@ -83,6 +84,10 @@ export const router = createBrowserRouter([
   {
     path: "/user/:userId/subscriptions",
     element: <UserProfilePage tab="subscriptions" />,
+  },
+  {
+    path: "/blog",
+    element: <BlogPage />,
   },
 
   {
