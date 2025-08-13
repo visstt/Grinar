@@ -26,6 +26,44 @@
   font-size: 24px;
   line-height: 100%;
 }
+
+.name_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.subscription {
+  font-family: Unbounded;
+  font-weight: 700;
+  font-size: 12px;
+  color: #fff;
+  border-radius: 4px;
+  padding: 4px 8px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subscription_pro {
+  width: 48px;
+  background: #195ee6;
+  text-transform: uppercase;
+}
+
+.subscription_premium {
+  width: 88px;
+  text-transform: uppercase;
+  background: linear-gradient(
+    135deg,
+    #b5c1d9 0%,
+    #858afb 38%,
+    #c472ff 65%,
+    #d3bbe3 100%
+  );
+}
+
 .user_info p {
   font-weight: 400;
   font-size: 16px;

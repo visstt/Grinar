@@ -18,6 +18,7 @@ export default function Header({ darkBackground = false }) {
   const [registrationStep, setRegistrationStep] = useState(1);
   const [registrationEmail, setRegistrationEmail] = useState("");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
+  const [addWorkDropdownOpen, setAddWorkDropdownOpen] = useState(false);
   const user = useUserStore((state) => state.user);
   const navigate = useNavigate();
 
@@ -26,6 +27,21 @@ export default function Header({ darkBackground = false }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Закрытие выпадающего меню при клике вне его
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        addWorkDropdownOpen &&
+        !event.target.closest(`.${styles.addWorkWrapper}`)
+      ) {
+        setAddWorkDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [addWorkDropdownOpen]);
 
   // Яндекс.Метрика
   useEffect(() => {
@@ -146,8 +162,8 @@ export default function Header({ darkBackground = false }) {
 
   const handleOpenLogin = () => {
     setRegistrationOpen(false);
-    setRegistrationStep(1); // Сбрасываем шаг регистрации
-    setRegistrationEmail(""); // Сбрасываем email
+    setRegistrationStep(1);
+    setRegistrationEmail("");
     setLoginOpen(true);
   };
 
@@ -167,10 +183,8 @@ export default function Header({ darkBackground = false }) {
   };
 
   const handleProjectsClick = () => {
-    // Если мы не на главной странице, сначала переходим на неё
     if (window.location.pathname !== "/") {
       navigate("/");
-      // Даём время на загрузку страницы перед скроллом
       setTimeout(() => {
         scrollToSection("cardsContainer");
       }, 100);
@@ -180,10 +194,8 @@ export default function Header({ darkBackground = false }) {
   };
 
   const handleSpecialistsClick = () => {
-    // Если мы не на главной странице, сначала переходим на неё
     if (window.location.pathname !== "/") {
       navigate("/");
-      // Даём время на загрузку страницы перед скроллом
       setTimeout(() => {
         scrollToSection("specialists");
       }, 100);
@@ -262,13 +274,39 @@ export default function Header({ darkBackground = false }) {
             {user ? (
               <>
                 {!isMobile && (
-                  <Button
-                    variant="secondary"
-                    className={styles.header_wrapper__addProject}
-                    onClick={() => navigate("/create-project")}
-                  >
-                    Добавить проект
-                  </Button>
+                  <div className={styles.addWorkWrapper}>
+                    <Button
+                      variant="secondary"
+                      className={styles.header_wrapper__addProject}
+                      onClick={() => {
+                        setAddWorkDropdownOpen(!addWorkDropdownOpen);
+                      }}
+                    >
+                      Добавить работу
+                    </Button>
+                    {addWorkDropdownOpen && (
+                      <div className={styles.addWorkDropdown}>
+                        <Button
+                          variant="primary"
+                          onClick={() => {
+                            navigate("/create-project");
+                            setAddWorkDropdownOpen(false);
+                          }}
+                        >
+                          Добавить проект
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          onClick={() => {
+                            navigate("/create-article");
+                            setAddWorkDropdownOpen(false);
+                          }}
+                        >
+                          Добавить статью
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 )}
                 <img
                   src={getUserLogoUrl(user.logoFileName)}

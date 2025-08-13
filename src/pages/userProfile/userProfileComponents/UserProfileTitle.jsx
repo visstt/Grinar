@@ -64,7 +64,17 @@ export default function UserProfileTitle({ userProfile }) {
       <div className="container">
         <div className={styles.wrapper}>
           <div className={styles.user_info}>
-            <h1>{userProfile.fullName}</h1>
+            <div className={styles.name_wrapper}>
+              <h1>{userProfile.fullName}</h1>
+              {userProfile.subscription &&
+                userProfile.subscription !== "default" && (
+                  <span
+                    className={`${styles.subscription} ${styles[`subscription_${userProfile.subscription}`]}`}
+                  >
+                    {userProfile.subscription}
+                  </span>
+                )}
+            </div>
             <div className={styles.user_info__details}>
               {userProfile.specialization &&
                 userProfile.specialization !== "Специализации не указаны" && (

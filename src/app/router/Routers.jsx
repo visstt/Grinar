@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import BlogPage from "../../pages/blogPage/BlogPage";
-import ProjectLayout from "../../pages/createProject/ProjectLayout";
+import CreateArticle from "../../pages/createArticle/article/CreateArticle";
+import ArticleInformation from "../../pages/createArticle/information/Information";
 import Information from "../../pages/createProject/information/Information";
 import CreateProject from "../../pages/createProject/project/CreateProject";
 import DocsPage from "../../pages/docsPage/DocsPage";
@@ -89,25 +90,20 @@ export const router = createBrowserRouter([
     path: "/blog",
     element: <BlogPage />,
   },
-
   {
     path: "/create-project",
-    element: <ProjectLayout />,
-    children: [
-      {
-        index: true,
-        element: <CreateProject />,
-      },
-    ],
+    element: <CreateProject />,
   },
   {
     path: "/project-information",
-    element: <ProjectLayout />,
-    children: [
-      {
-        index: true,
-        element: <Information />,
-      },
-    ],
+    element: <Information />,
+  },
+  {
+    path: "/create-article",
+    element: <CreateArticle />,
+  },
+  {
+    path: "/article-information",
+    element: <ArticleInformation />,
   },
 ]);

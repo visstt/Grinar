@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./HomeInfo.module.css";
 
 export default function HomeInfo() {
+  const navigate = useNavigate();
   return (
     <div className="container">
       <div className={styles.info_wrapper}>
@@ -14,7 +16,9 @@ export default function HomeInfo() {
             талантов. Просмотрите миллионы портфолио с самым высоким рейтингом,
             чтобы найти идеальную творческую пару
           </p>
-          <button>Найти специалиста</button>
+          <button onClick={() => navigate("/specialists")}>
+            Найти специалиста
+          </button>
           <p>
             Вы маркетолог? <Link>Присоединяйтесь</Link>
           </p>

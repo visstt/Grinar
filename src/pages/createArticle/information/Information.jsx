@@ -1,45 +1,109 @@
 import React, { useEffect } from "react";
 
-import { useProjectStore } from "../../../shared/store/projectStore";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { useBlogStore } from "../../../shared/store/blogStore";
 import Button from "../../../shared/ui/components/button/Button";
 import Header from "../../../shared/ui/components/header/Header";
 import Input from "../../../shared/ui/components/input/Input";
 import Select from "../../../shared/ui/components/input/Select";
 import Textarea from "../../../shared/ui/components/input/Textarea";
 import CreateArticleNav from "../CreateArticleNav";
-import { useCreateProject } from "../article/hooks/useCreateProject";
+import { useCreateBlog } from "../article/hooks/useCreateBlog";
 import styles from "./Information.module.css";
 import { useFetchOptions } from "./hooks/useFetchOptions";
 
 export default function Information() {
-  const { projectData, updateProjectData, setCoverImage, resetProject } =
-    useProjectStore();
+  const navigate = useNavigate();
   const {
-    createProject,
+    blogData,
+    updateBlogData,
+    setCoverImage,
+    resetBlog,
+    getCoverImageFile,
+  } = useBlogStore();
+  const {
+    createBlog,
     loading: createLoading,
     error: createError,
-    success,
-  } = useCreateProject();
+  } = useCreateBlog();
   const {
     specializations,
-    categories,
     loading: fetchLoading,
     error: fetchError,
   } = useFetchOptions();
 
+  // Восстанавливаем файл из base64 если он есть, но файл отсутствует
+  useEffect(() => {
+    if (blogData.coverImageBase64 && !blogData.coverImage) {
+      // Конвертируем base64 обратно в файл
+      const base64ToFile = (base64, fileName = "cover-image") => {
+        const arr = base64.split(",");
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], fileName, { type: mime });
+      };
+
+      try {
+        const file = base64ToFile(blogData.coverImageBase64);
+        setCoverImage(file);
+        console.log("Restored file from base64:", file);
+      } catch (error) {
+        console.error("Error restoring file from base64:", error);
+      }
+    }
+  }, [blogData.coverImageBase64, blogData.coverImage, setCoverImage]);
+
   // Очистка blob URL при размонтировании компонента
   useEffect(() => {
-    const currentPreview = projectData.coverImagePreview;
+    const currentPreview = blogData.coverImagePreview;
     return () => {
       if (currentPreview && currentPreview.startsWith("blob:")) {
         URL.revokeObjectURL(currentPreview);
       }
     };
-  }, [projectData.coverImagePreview]);
+  }, [blogData.coverImagePreview]);
+
+  // Отслеживаем изменения coverImage
+  useEffect(() => {
+    console.log("coverImage changed:", blogData.coverImage);
+    console.log("coverImage type:", typeof blogData.coverImage);
+    console.log(
+      "coverImage instanceof File:",
+      blogData.coverImage instanceof File,
+    );
+  }, [blogData.coverImage]);
+
+  // Очистка blob URL при размонтировании компонента
+  useEffect(() => {
+    const currentPreview = blogData.coverImagePreview;
+    return () => {
+      if (currentPreview && currentPreview.startsWith("blob:")) {
+        URL.revokeObjectURL(currentPreview);
+      }
+    };
+  }, [blogData.coverImagePreview]);
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
+    console.log("Selected file:", file);
+    console.log("File name:", file?.name);
+    console.log("File size:", file?.size);
     await setCoverImage(file);
+
+    // Даем время store обновиться
+    setTimeout(() => {
+      console.log(
+        "After setCoverImage (delayed), blogData.coverImage:",
+        blogData.coverImage,
+      );
+    }, 100);
   };
 
   const handleImageDelete = async () => {
@@ -47,41 +111,48 @@ export default function Information() {
   };
 
   const handleInputChange = (id, value) => {
-    updateProjectData({ [id]: value });
+    updateBlogData({ [id]: value });
   };
 
   const handleSelectChange = (id, option) => {
-    updateProjectData({ [id]: option.value });
+    updateBlogData({ [id]: option.value });
   };
 
   const handlePublish = async () => {
     // Валидация обязательных полей
-    if (!projectData.name) {
-      alert("Пожалуйста, введите название проекта");
+    if (!blogData.name) {
+      alert("Пожалуйста, введите название статьи");
       return;
     }
 
-    if (!projectData.description) {
-      alert("Пожалуйста, введите описание проекта");
-      return;
-    }
-
-    if (!projectData.categoryId) {
-      alert("Пожалуйста, выберите нишу");
-      return;
-    }
-
-    if (!projectData.specializationId) {
+    if (!blogData.specializationId) {
       alert("Пожалуйста, выберите направление");
       return;
     }
 
+    // Получаем файл обложки из файлового стора
+    const coverImageFile = getCoverImageFile();
+
+    // Логирование для отладки
+    console.log("Blog data before send:", blogData);
+    console.log("Cover image file:", coverImageFile);
+    console.log("Cover image file type:", typeof coverImageFile);
+    console.log("Is File instance:", coverImageFile instanceof File);
+
     try {
-      await createProject(projectData);
-      alert("Проект успешно опубликован!");
-      resetProject();
+      const blogSubmitData = {
+        name: blogData.name,
+        specializationId: blogData.specializationId,
+        content: blogData.content,
+        coverImage: coverImageFile,
+      };
+
+      await createBlog(blogSubmitData);
+      toast.success("Статья успешно опубликована!");
+      resetBlog();
+      navigate("/blog");
     } catch (err) {
-      alert(`Ошибка при публикации: ${err.message}`);
+      toast.error(`Ошибка при публикации: ${err.message}`);
     }
   };
 
@@ -99,11 +170,6 @@ export default function Information() {
               Ошибка: {createError || fetchError}
             </div>
           )}
-          {success && (
-            <div style={{ color: "green", marginBottom: "20px" }}>
-              Проект успешно опубликован!
-            </div>
-          )}
           <div className={styles.wrapper}>
             <h2>Название статьи</h2>
             <div className="stripe2"></div>
@@ -114,7 +180,7 @@ export default function Information() {
                 theme="white"
                 style={{ width: "100%" }}
                 className={styles.fullWidthInput}
-                value={projectData.name}
+                value={blogData.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
               />
             </div>
@@ -124,14 +190,12 @@ export default function Information() {
             <div className="stripe2"></div>
             <div className={styles.form}>
               <div className={styles.img_form}>
-                {projectData.coverImagePreview ||
-                projectData.coverImageBase64 ? (
+                {blogData.coverImagePreview || blogData.coverImageBase64 ? (
                   <img
                     src={
-                      projectData.coverImagePreview ||
-                      projectData.coverImageBase64
+                      blogData.coverImagePreview || blogData.coverImageBase64
                     }
-                    alt="Project Cover"
+                    alt="Blog Cover"
                     className={styles.coverImage}
                   />
                 ) : (
@@ -175,7 +239,7 @@ export default function Information() {
                 id="specializationId"
                 theme="white"
                 options={specializations}
-                value={projectData.specializationId}
+                value={blogData.specializationId}
                 onChange={(option) =>
                   handleSelectChange("specializationId", option)
                 }

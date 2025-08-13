@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import Specialists from "../../shared/ui/components/specialists/Specialists";
 import CardsContainer from "./HomeComponents/CardsContainer/CardsContainer";
 import HomeInfo from "./HomeComponents/HomeInfo/HomeInfo";
@@ -7,6 +9,7 @@ import { useBestSpecialists } from "./hooks/useBestSpecialists";
 
 export default function HomePage() {
   const { specialists, loading, error } = useBestSpecialists();
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -19,7 +22,12 @@ export default function HomePage() {
         <Specialists key={specialist.id} specialist={specialist} />
       ))}
       <div className={styles.specialist_button_wrapper}>
-        <button className={styles.specialist_button}>Все специалисты</button>
+        <button
+          onClick={() => navigate("/specialists")}
+          className={styles.specialist_button}
+        >
+          Все специалисты
+        </button>
       </div>
       <HomeInfo />
     </div>

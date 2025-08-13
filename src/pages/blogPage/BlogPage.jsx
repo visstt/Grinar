@@ -5,14 +5,68 @@ import { Link } from "react-router-dom";
 import Header from "../../shared/ui/components/header/Header";
 import { useFetchOptions } from "../createProject/information/hooks/useFetchOptions";
 import styles from "./BlogPage.module.css";
+import BlogCard from "./components/BlogCard";
+import { useAllBlogs } from "./hooks/useAllBlogs";
 
 export default function BlogPage() {
-  const { specializations, categories, loading, error } = useFetchOptions();
+  const {
+    specializations,
+    categories,
+    loading: optionsLoading,
+    error: optionsError,
+  } = useFetchOptions();
+  const { blogs, loading: blogsLoading, error: blogsError } = useAllBlogs();
 
   // Состояние для фильтров
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialization, setSelectedSpecialization] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+
+  // Фильтрация блогов
+  const filteredBlogs = useMemo(() => {
+    // Логирование для отладки структуры данных
+    if (blogs.length > 0) {
+      console.log("Blog sample:", blogs[0]);
+      console.log("Available specializations:", specializations);
+      console.log("Available categories:", categories);
+    }
+
+    return blogs.filter((blog) => {
+      const matchesSearch =
+        blog.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blog.author.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesSpecialization = selectedSpecialization
+        ? blog.specialization?.id === parseInt(selectedSpecialization)
+        : true;
+
+      const matchesCategory = selectedCategory
+        ? blog.category?.id === parseInt(selectedCategory)
+        : true;
+
+      console.log(`Blog "${blog.name}":`, {
+        matchesSearch,
+        matchesSpecialization,
+        matchesCategory,
+        blogSpecialization: blog.specialization,
+        blogCategory: blog.category,
+        selectedSpecialization,
+        selectedCategory,
+      });
+
+      return matchesSearch && matchesSpecialization && matchesCategory;
+    });
+  }, [
+    blogs,
+    searchQuery,
+    selectedSpecialization,
+    selectedCategory,
+    specializations,
+    categories,
+  ]);
+
+  const loading = optionsLoading || blogsLoading;
+  const error = optionsError || blogsError;
 
   return (
     <div>
@@ -57,7 +111,7 @@ export default function BlogPage() {
             >
               <option value="">Все специализации</option>
               {specializations.map((specialization) => (
-                <option key={specialization.value} value={specialization.label}>
+                <option key={specialization.value} value={specialization.value}>
                   {specialization.label}
                 </option>
               ))}
@@ -79,132 +133,21 @@ export default function BlogPage() {
           </div>
 
           <div className={styles.cardContainer}>
-            <div className={styles.blog_card}>
-              <img
-                src="https://storage.yandexcloud.net/storage.yasno.media/nat-geo/images/2020/6/25/0fc978aba29e466e8eb4ffc946532d5e.max-1200x800.jpg"
-                alt=""
-              />
-              <div className={styles.info_block}>
-                <p>16/12/2025</p>
-                <h2>
-                  Половина россиян не доверяет вопросы управления своими
-                  финансами искусственному интеллекту.
-                </h2>
-                <h4>
-                  С помощью ИИ я выявила статьи, которые поглощают больше всего
-                  денег, и категории, на которых можно сэкономить.
-                </h4>
-                <p>
-                  Автор: <Link to="#">Александр Морозов</Link>
-                </p>
-              </div>
-            </div>
+            {loading && (
+              <div className={styles.loadingMessage}>Загрузка блогов...</div>
+            )}
 
-            {/*  */}
-            <div className={styles.blog_card}>
-              <img
-                src="https://storage.yandexcloud.net/storage.yasno.media/nat-geo/images/2020/6/25/0fc978aba29e466e8eb4ffc946532d5e.max-1200x800.jpg"
-                alt=""
-              />
-              <div className={styles.info_block}>
-                <p>16/12/2025</p>
-                <h2>
-                  Половина россиян не доверяет вопросы управления своими
-                  финансами искусственному интеллекту.
-                </h2>
-                <h4>
-                  С помощью ИИ я выявила статьи, которые поглощают больше всего
-                  денег, и категории, на которых можно сэкономить.
-                </h4>
-                <p>
-                  Автор: <Link to="#">Александр Морозов</Link>
-                </p>
-              </div>
-            </div>
-            {/*  */}
-            <div className={styles.blog_card}>
-              <img
-                src="https://storage.yandexcloud.net/storage.yasno.media/nat-geo/images/2020/6/25/0fc978aba29e466e8eb4ffc946532d5e.max-1200x800.jpg"
-                alt=""
-              />
-              <div className={styles.info_block}>
-                <p>16/12/2025</p>
-                <h2>
-                  Половина россиян не доверяет вопросы управления своими
-                  финансами искусственному интеллекту.
-                </h2>
-                <h4>
-                  С помощью ИИ я выявила статьи, которые поглощают больше всего
-                  денег, и категории, на которых можно сэкономить.
-                </h4>
-                <p>
-                  Автор: <Link to="#">Александр Морозов</Link>
-                </p>
-              </div>
-            </div>
-            {/*  */}
-            <div className={styles.blog_card}>
-              <img
-                src="https://storage.yandexcloud.net/storage.yasno.media/nat-geo/images/2020/6/25/0fc978aba29e466e8eb4ffc946532d5e.max-1200x800.jpg"
-                alt=""
-              />
-              <div className={styles.info_block}>
-                <p>16/12/2025</p>
-                <h2>
-                  Половина россиян не доверяет вопросы управления своими
-                  финансами искусственному интеллекту.
-                </h2>
-                <h4>
-                  С помощью ИИ я выявила статьи, которые поглощают больше всего
-                  денег, и категории, на которых можно сэкономить.
-                </h4>
-                <p>
-                  Автор: <Link to="#">Александр Морозов</Link>
-                </p>
-              </div>
-            </div>
-            {/*  */}
-            <div className={styles.blog_card}>
-              <img
-                src="https://storage.yandexcloud.net/storage.yasno.media/nat-geo/images/2020/6/25/0fc978aba29e466e8eb4ffc946532d5e.max-1200x800.jpg"
-                alt=""
-              />
-              <div className={styles.info_block}>
-                <p>16/12/2025</p>
-                <h2>
-                  Половина россиян не доверяет вопросы управления своими
-                  финансами искусственному интеллекту.
-                </h2>
-                <h4>
-                  С помощью ИИ я выявила статьи, которые поглощают больше всего
-                  денег, и категории, на которых можно сэкономить.
-                </h4>
-                <p>
-                  Автор: <Link to="#">Александр Морозов</Link>
-                </p>
-              </div>
-            </div>
-            {/*  */}
-            <div className={styles.blog_card}>
-              <img
-                src="https://storage.yandexcloud.net/storage.yasno.media/nat-geo/images/2020/6/25/0fc978aba29e466e8eb4ffc946532d5e.max-1200x800.jpg"
-                alt=""
-              />
-              <div className={styles.info_block}>
-                <p>16/12/2025</p>
-                <h2>
-                  Половина россиян не доверяет вопросы управления своими
-                  финансами искусственному интеллекту.
-                </h2>
-                <h4>
-                  С помощью ИИ я выявила статьи, которые поглощают больше всего
-                  денег, и категории, на которых можно сэкономить.
-                </h4>
-                <p>
-                  Автор: <Link to="#">Александр Морозов</Link>
-                </p>
-              </div>
-            </div>
+            {error && <div className={styles.errorMessage}>{error}</div>}
+
+            {!loading && !error && filteredBlogs.length === 0 && (
+              <div className={styles.emptyMessage}>Блоги не найдены</div>
+            )}
+
+            {!loading &&
+              !error &&
+              filteredBlogs.map((blog) => (
+                <BlogCard key={blog.id} blog={blog} />
+              ))}
           </div>
         </div>
       </div>

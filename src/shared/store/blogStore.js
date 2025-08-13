@@ -1,55 +1,52 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-// Отдельный стор для файлов (не персистентный)
-export const useProjectFileStore = create((set, get) => ({
+// Отдельный стор для файлов блога (не персистентный)
+export const useBlogFileStore = create((set, get) => ({
   coverImageFile: null,
   setCoverImageFile: (file) => {
-    console.log("Setting coverImageFile:", file);
+    console.log("Blog: Setting coverImageFile:", file);
     set({ coverImageFile: file });
   },
   getCoverImageFile: () => get().coverImageFile,
   clearCoverImageFile: () => set({ coverImageFile: null }),
 }));
 
-export const useProjectStore = create(
+export const useBlogStore = create(
   persist(
     (set, get) => ({
-      // Данные проекта
-      projectData: {
+      // Данные блога/статьи
+      blogData: {
         name: "",
         description: "",
-        categoryId: null,
         specializationId: null,
-        firstLink: "",
-        secondLink: "",
         content: null,
-        coverImage: null, // Оставляем для совместимости, но файл будет в отдельном сторе
+        coverImage: null, // Для совместимости, но файл будет в отдельном сторе
         coverImagePreview: null,
         coverImageBase64: null,
       },
 
-      // Действия для обновления данных проекта
-      updateProjectData: (newData) =>
+      // Действия для обновления данных блога
+      updateBlogData: (newData) =>
         set((state) => ({
-          projectData: { ...state.projectData, ...newData },
+          blogData: { ...state.blogData, ...newData },
         })),
 
-      // Установка обложки проекта
+      // Установка обложки блога
       setCoverImage: async (file) => {
-        console.log("setCoverImage called with:", file);
+        console.log("Blog: setCoverImage called with:", file);
 
         // Сохраняем файл в отдельном файловом сторе
-        useProjectFileStore.getState().setCoverImageFile(file);
+        useBlogFileStore.getState().setCoverImageFile(file);
 
         if (file) {
           // Очищаем старый blob URL если он был
           const currentState = get();
           if (
-            currentState.projectData.coverImagePreview &&
-            currentState.projectData.coverImagePreview.startsWith("blob:")
+            currentState.blogData.coverImagePreview &&
+            currentState.blogData.coverImagePreview.startsWith("blob:")
           ) {
-            URL.revokeObjectURL(currentState.projectData.coverImagePreview);
+            URL.revokeObjectURL(currentState.blogData.coverImagePreview);
           }
 
           // Создаем blob URL для немедленного отображения
@@ -62,11 +59,11 @@ export const useProjectStore = create(
             reader.readAsDataURL(file);
           });
 
-          console.log("About to set state with file:", file);
+          console.log("Blog: About to set state with file:", file);
 
           set((state) => ({
-            projectData: {
-              ...state.projectData,
+            blogData: {
+              ...state.blogData,
               coverImage: file, // Для совместимости, но может быть затерт
               coverImagePreview: previewUrl,
               coverImageBase64: base64Preview, // Для сохранения в localStorage
@@ -74,20 +71,20 @@ export const useProjectStore = create(
           }));
 
           console.log(
-            "State updated, new coverImage:",
-            get().projectData.coverImage,
+            "Blog: State updated, new coverImage:",
+            get().blogData.coverImage,
           );
         } else {
           // Очистка
-          useProjectFileStore.getState().clearCoverImageFile();
+          useBlogFileStore.getState().clearCoverImageFile();
           // Очистка старого URL если он был
-          const currentPreview = get().projectData.coverImagePreview;
+          const currentPreview = get().blogData.coverImagePreview;
           if (currentPreview && currentPreview.startsWith("blob:")) {
             URL.revokeObjectURL(currentPreview);
           }
           set((state) => ({
-            projectData: {
-              ...state.projectData,
+            blogData: {
+              ...state.blogData,
               coverImage: null,
               coverImagePreview: null,
               coverImageBase64: null,
@@ -98,29 +95,24 @@ export const useProjectStore = create(
 
       // Получение файла обложки
       getCoverImageFile: () => {
-        const fileFromStore = useProjectFileStore
-          .getState()
-          .getCoverImageFile();
-        console.log("getCoverImageFile returning:", fileFromStore);
+        const fileFromStore = useBlogFileStore.getState().getCoverImageFile();
+        console.log("Blog: getCoverImageFile returning:", fileFromStore);
         return fileFromStore;
       },
 
-      // Сброс всех данных проекта
-      resetProject: () => {
-        const currentPreview = get().projectData.coverImagePreview;
+      // Сброс всех данных блога
+      resetBlog: () => {
+        const currentPreview = get().blogData.coverImagePreview;
         if (currentPreview && currentPreview.startsWith("blob:")) {
           URL.revokeObjectURL(currentPreview);
         }
         // Очищаем файловый стор
-        useProjectFileStore.getState().clearCoverImageFile();
+        useBlogFileStore.getState().clearCoverImageFile();
         set({
-          projectData: {
+          blogData: {
             name: "",
             description: "",
-            categoryId: null,
             specializationId: null,
-            firstLink: "",
-            secondLink: "",
             content: null,
             coverImage: null,
             coverImagePreview: null,
@@ -129,15 +121,15 @@ export const useProjectStore = create(
         });
       },
 
-      // Получение всех данных проекта
-      getProjectData: () => get().projectData,
+      // Получение всех данных блога
+      getBlogData: () => get().blogData,
     }),
     {
-      name: "project-draft-storage",
+      name: "blog-draft-storage",
       // Сохраняем все кроме файла и blob URL
       partialize: (state) => ({
-        projectData: {
-          ...state.projectData,
+        blogData: {
+          ...state.blogData,
           coverImage: undefined, // Полностью исключаем из сохранения
           coverImagePreview: null, // Blob URL не сохраняем (невалиден после перезагрузки)
           // coverImageBase64 сохраняется для восстановления превью
@@ -145,10 +137,10 @@ export const useProjectStore = create(
       }),
       // Восстанавливаем превью после загрузки из localStorage
       onRehydrateStorage: () => (state) => {
-        if (state?.projectData?.coverImageBase64) {
-          // Используем base64 как источник превью вместо blob URL
-          state.projectData.coverImagePreview =
-            state.projectData.coverImageBase64;
+        if (state?.blogData?.coverImageBase64) {
+          console.log("Blog: Restoring preview from base64");
+          // Восстанавливаем превью из base64 при загрузке страницы
+          state.blogData.coverImagePreview = state.blogData.coverImageBase64;
         }
       },
     },
