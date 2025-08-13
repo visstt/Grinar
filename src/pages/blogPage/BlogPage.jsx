@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { Link } from "react-router-dom";
 
+import EmptyState from "../../shared/ui/components/emptyState/EmptyState";
 import Header from "../../shared/ui/components/header/Header";
 import { useFetchOptions } from "../createProject/information/hooks/useFetchOptions";
 import styles from "./BlogPage.module.css";
@@ -140,7 +141,9 @@ export default function BlogPage() {
             {error && <div className={styles.errorMessage}>{error}</div>}
 
             {!loading && !error && filteredBlogs.length === 0 && (
-              <div className={styles.emptyMessage}>Блоги не найдены</div>
+              <div className={styles.emptyMessage}>
+                <EmptyState />
+              </div>
             )}
 
             {!loading &&
