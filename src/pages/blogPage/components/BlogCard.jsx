@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { getPhotoUrl } from "../../../shared/utils/getProjectImageUrl";
+import { getBlogPhotoUrl } from "../../../shared/utils/getProjectImageUrl";
 import styles from "../BlogPage.module.css";
 
 export default function BlogCard({ blog }) {
@@ -14,16 +14,15 @@ export default function BlogCard({ blog }) {
   };
 
   const handleImageError = (e) => {
-    e.target.src = "/images/projectPhoto.png"; // fallback изображение
+    console.log("Image failed to load:", e.target.src);
+    e.target.src = "/images/projectPhoto.png";
   };
+
+  const imageUrl = getBlogPhotoUrl(blog.coverImage);
 
   return (
     <div className={styles.blog_card}>
-      <img
-        src={getPhotoUrl("cover", blog.coverImage)}
-        alt={blog.name}
-        onError={handleImageError}
-      />
+      <img src={imageUrl} alt={blog.name} onError={handleImageError} />
       <div className={styles.info_block}>
         <p>{formatDate(blog.createdAt)}</p>
         <h2>{blog.name}</h2>

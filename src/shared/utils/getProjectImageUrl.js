@@ -15,6 +15,9 @@ export function getPhotoUrl(type, filename) {
 export function getProjectPhotoUrl(filename) {
   return getPhotoUrl("project", filename);
 }
+export function getBlogPhotoUrl(filename) {
+  return getPhotoUrl("blog", filename);
+}
 
 export function getUserLogoUrl(filename) {
   return getPhotoUrl("avatar", filename);
