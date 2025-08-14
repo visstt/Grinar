@@ -14,7 +14,7 @@ export default function ChatPage() {
       <Header darkBackground={true} />
       <ChatProvider contactUserId={contactUserId}>
         <div className={styles.chatPage}>
-          <ChatContent />
+          <ChatContent initialShowSidebar={window.innerWidth > 700} />
         </div>
       </ChatProvider>
     </div>

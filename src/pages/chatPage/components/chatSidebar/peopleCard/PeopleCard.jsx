@@ -2,7 +2,7 @@ import { getUserLogoUrl } from "../../../../../shared/utils/getProjectImageUrl";
 import { useChat } from "../../../context/ChatContext";
 import styles from "./PeopleCard.module.css";
 
-export default function PeopleCard({ chat }) {
+export default function PeopleCard({ chat, onChatSelect }) {
   const { selectChat, selectedChat } = useChat();
 
   const formatTime = (dateString) => {
@@ -15,6 +15,10 @@ export default function PeopleCard({ chat }) {
 
   const handleClick = () => {
     selectChat(chat);
+    // Если передана функция onChatSelect, вызываем её (для мобильных устройств)
+    if (onChatSelect) {
+      onChatSelect(chat);
+    }
   };
 
   const isSelected = selectedChat?.id === chat.id;

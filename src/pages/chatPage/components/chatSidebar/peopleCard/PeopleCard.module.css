@@ -1,18 +1,35 @@
+@media (max-width: 700px) {
+  .peopleCard {
+    width: 320px;
+    min-width: 0;
+    max-width: 100vw;
+    margin-bottom: 16px;
+    border-radius: 0;
+    padding-left: 12px;
+    padding-right: 12px;
+    justify-content: space-between;
+  }
+  .info {
+    width: 100%;
+  }
+}
 .peopleCard {
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 264px;
   margin-bottom: 24px;
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+
+
 .avatar {
   width: 44px;
   height: 44px;
 }
+
 .peopleCard:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
@@ -20,28 +37,33 @@
 .peopleCard.selected {
   background-color: rgba(25, 94, 230, 0.1);
 }
+
 .name {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .time {
   font-weight: 600;
   font-size: 10px;
   color: rgba(255, 255, 255, 0.4);
 }
+
 .info {
   width: 200px;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
+
 .info h2 {
   font-weight: 600;
   font-size: 14px;
   color: #fff;
 }
+
 .info p {
   font-weight: 400;
   font-size: 12px;
@@ -56,4 +78,23 @@
 .lastMessage {
   width: 100%;
   min-width: 0;
+}
+
+/* Адаптивность для планшетов */
+@media (max-width: 768px) {
+  .info {
+    width: 176px;
+  }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 700px) {
+  .peopleCard {
+    margin-bottom: 16px;
+  }
+
+  .info {
+    width: calc(100% - 60px);
+    flex: 1;
+  }
 }

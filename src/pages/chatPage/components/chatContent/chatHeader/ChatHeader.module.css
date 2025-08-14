@@ -8,26 +8,56 @@
   display: flex;
   align-items: center;
   flex-shrink: 0; /* Не сжимается */
+  gap: 12px;
 }
+
+.backButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .user {
   display: flex;
   gap: 10px;
   align-items: center;
 }
+
 .userText {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
+
 .userName h2 {
   font-weight: 400;
   font-size: 14px;
   color: #fff;
   font-family: "Geologica", sans-serif;
 }
+
 .userStatus p {
   font-weight: 300;
   font-size: 14px;
   color: #195ee6;
   font-family: "Geologica", sans-serif;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 500px) {
+  .chatHeader {
+    padding: 16px 20px;
+  }
 }

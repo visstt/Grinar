@@ -5,7 +5,7 @@ import useChats from "../../hooks/useChats";
 import styles from "./ChatSidebar.module.css";
 import PeopleCard from "./peopleCard/PeopleCard";
 
-export default function ChatSidebar() {
+export default function ChatSidebar({ onChatSelect }) {
   const [searchQuery, setSearchQuery] = useState("");
   const { chats, loading, error, refreshChats } = useChats();
   const { setRefreshChats } = useChat();
@@ -76,7 +76,11 @@ export default function ChatSidebar() {
       <div className={styles.chatsList}>
         {filteredChats.length > 0
           ? filteredChats.map((chat) => (
-              <PeopleCard key={chat.id} chat={chat} />
+              <PeopleCard
+                key={chat.id}
+                chat={chat}
+                onChatSelect={onChatSelect}
+              />
             ))
           : !loading && <div className={styles.noChats}>Чаты не найдены</div>}
       </div>
