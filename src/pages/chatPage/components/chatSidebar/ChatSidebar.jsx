@@ -1,12 +1,30 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
+import { useChat } from "../../context/ChatContext";
 import useChats from "../../hooks/useChats";
 import styles from "./ChatSidebar.module.css";
 import PeopleCard from "./peopleCard/PeopleCard";
 
 export default function ChatSidebar() {
   const [searchQuery, setSearchQuery] = useState("");
-  const { chats, loading, error } = useChats();
+  const { chats, loading, error, refreshChats } = useChats();
+  const { setRefreshChats } = useChat();
+  const refreshChatsRef = useRef(refreshChats);
+
+  // Обновляем ref при изменении функции
+  useEffect(() => {
+    refreshChatsRef.current = refreshChats;
+  }, [refreshChats]);
+
+  // Регистрируем стабильную функцию в контексте только один раз
+  useEffect(() => {
+    const stableRefreshChats = () => {
+      if (refreshChatsRef.current) {
+        refreshChatsRef.current();
+      }
+    };
+    setRefreshChats(stableRefreshChats);
+  }, [setRefreshChats]);
 
   // Фильтрация чатов по поисковому запросу
   const filteredChats = useMemo(() => {

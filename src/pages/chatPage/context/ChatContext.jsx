@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const ChatContext = createContext();
 
@@ -6,19 +12,33 @@ export function ChatProvider({ children, contactUserId }) {
   const [selectedChat, setSelectedChat] = useState(null);
   const [currentReceiver, setCurrentReceiver] = useState(contactUserId || null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [refreshChatsCallback, setRefreshChatsCallback] = useState(null);
 
-  const selectChat = (chat) => {
-    // Обновляем если ID отличается, currentReceiver отличается, или если данные пользователя изменились
-    if (
-      selectedChat?.id !== chat.id ||
-      currentReceiver !== chat.id ||
-      selectedChat?.fullName !== chat.fullName ||
-      selectedChat?.logoFileName !== chat.logoFileName
-    ) {
-      setSelectedChat(chat);
-      setCurrentReceiver(chat.id);
+  const selectChat = useCallback(
+    (chat) => {
+      // Обновляем если ID отличается, currentReceiver отличается, или если данные пользователя изменились
+      if (
+        selectedChat?.id !== chat.id ||
+        currentReceiver !== chat.id ||
+        selectedChat?.fullName !== chat.fullName ||
+        selectedChat?.logoFileName !== chat.logoFileName
+      ) {
+        setSelectedChat(chat);
+        setCurrentReceiver(chat.id);
+      }
+    },
+    [selectedChat, currentReceiver],
+  );
+
+  const setRefreshChats = useCallback((callback) => {
+    setRefreshChatsCallback(() => callback);
+  }, []);
+
+  const refreshChats = useCallback(() => {
+    if (refreshChatsCallback) {
+      refreshChatsCallback();
     }
-  };
+  }, [refreshChatsCallback]);
 
   // Если передан contactUserId, автоматически устанавливаем его как получателя только при первой загрузке
   useEffect(() => {
@@ -41,6 +61,8 @@ export function ChatProvider({ children, contactUserId }) {
         selectChat,
         setSelectedChat,
         setCurrentReceiver,
+        setRefreshChats,
+        refreshChats,
       }}
     >
       {children}

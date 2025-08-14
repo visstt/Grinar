@@ -12,7 +12,7 @@ import headerStyles from "./chatContent/chatHeader/ChatHeader.module.css";
 import ChatSidebar from "./chatSidebar/ChatSidebar";
 
 export default function ChatContent() {
-  const { selectedChat, currentReceiver, selectChat } = useChat();
+  const { selectedChat, currentReceiver, selectChat, refreshChats } = useChat();
   const { user } = useUserStore();
   const { messages, setMessages, loading } = useConversation(currentReceiver);
   const messagesEndRef = useRef(null);
@@ -47,6 +47,12 @@ export default function ChatContent() {
         message.receiverId === currentReceiver
       ) {
         setMessages((prevMessages) => [...prevMessages, message]);
+        // Обновляем список чатов при получении нового сообщения
+        setTimeout(() => {
+          if (refreshChats) {
+            refreshChats();
+          }
+        }, 100);
       }
     };
 
@@ -60,6 +66,7 @@ export default function ChatContent() {
     subscribeToMessages,
     unsubscribeFromMessages,
     setMessages,
+    refreshChats,
   ]);
 
   // Автоскролл к последнему сообщению
@@ -72,6 +79,12 @@ export default function ChatContent() {
   const handleSendMessage = (content) => {
     if (currentReceiver && content.trim()) {
       sendMessage(currentReceiver, content.trim());
+      // Обновляем список чатов через небольшую задержку, чтобы сообщение успело сохраниться
+      setTimeout(() => {
+        if (refreshChats) {
+          refreshChats();
+        }
+      }, 500);
     }
   };
 

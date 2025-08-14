@@ -29,6 +29,7 @@ export default function PeopleCard({ chat }) {
           src={getUserLogoUrl(chat.logoFileName)}
           alt="Avatar"
           width={44}
+          height={44}
           style={{ borderRadius: 8 }}
         />
       </div>
