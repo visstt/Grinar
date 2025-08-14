@@ -54,8 +54,7 @@ export default function UserProfileTitle({ userProfile }) {
   };
 
   const handleContact = () => {
-    // TODO: Реализовать связь с пользователем
-    console.log("Связаться с пользователем:", userId);
+    navigate(`/chat`, { state: { contactUserId: userId } });
   };
 
   return (

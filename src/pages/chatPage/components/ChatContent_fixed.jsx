@@ -90,72 +90,81 @@ export default function ChatContent() {
 
     if (match) {
       const [, fileName, filePath] = match;
-      const fileExtension = fileName.split(".").pop().toLowerCase();
+      const fileUrl = `${import.meta.env.VITE_API_URL}${filePath}`;
 
-      // Если это изображение, показываем превью
-      if (["jpg", "jpeg", "png"].includes(fileExtension)) {
+      // Определяем тип файла по расширению
+      const fileExtension = fileName.split(".").pop()?.toLowerCase();
+      const isImage = ["jpg", "jpeg", "png", "gif", "webp"].includes(
+        fileExtension,
+      );
+
+      if (isImage) {
         return (
-          <div>
+          <div className={styles.fileMessage}>
             <img
-              src={`${window.location.origin}${filePath}`}
+              src={fileUrl}
               alt={fileName}
-              style={{
-                maxWidth: "200px",
-                maxHeight: "200px",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
-              onClick={() =>
-                window.open(`${window.location.origin}${filePath}`, "_blank")
-              }
+              className={styles.messageImage}
+              onClick={() => window.open(fileUrl, "_blank")}
             />
-            <p style={{ fontSize: "12px", marginTop: "4px", opacity: 0.7 }}>
-              {fileName}
-            </p>
+            <p className={styles.fileName}>{fileName}</p>
           </div>
         );
       } else {
-        // Для других файлов показываем ссылку для скачивания
         return (
-          <div>
+          <div className={styles.fileMessage}>
             <a
-              href={`${window.location.origin}${filePath}`}
-              download={fileName}
-              style={{
-                color: "#195ee6",
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
+              href={fileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.fileLink}
             >
-              � {fileName}
+              📎 {fileName}
             </a>
           </div>
         );
       }
     }
 
-    // Обычное текстовое сообщение
     return <p>{content}</p>;
   };
 
-  return (
-    <>
-      <ChatSidebar />
+  if (loading) {
+    return (
       <div className={styles.chatContent}>
-        {selectedChat ? (
-          <>
-            <ChatHeader selectedChat={selectedChat} />
-            <div className={styles.messages}>
-              {loading ? (
-                <div className={styles.loading}>Загрузка сообщений...</div>
-              ) : messages.length === 0 ? (
-                <div className={styles.noMessages}>
-                  <p>Нет сообщений. Начните беседу!</p>
-                </div>
-              ) : (
-                messages.map((message) => {
+        <ChatSidebar />
+        <div className={styles.mainContent}>
+          <div className={styles.loadingState}>Загрузка сообщений...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentReceiver) {
+    return (
+      <div className={styles.chatContent}>
+        <ChatSidebar />
+        <div className={styles.mainContent}>
+          <div className={styles.emptyState}>
+            Выберите пользователя для начала чата
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.chatContent}>
+      <ChatSidebar />
+      <div className={styles.mainContent}>
+        <div className={styles.chatHeader}>
+          <ChatHeader selectedChat={selectedChat} />
+        </div>
+        <div className={styles.messagesContainer}>
+          <div className={styles.messages}>
+            {messages.length > 0 ? (
+              <>
+                {messages.map((message) => {
                   const userId = user?.id;
                   const isMyMessage =
                     Number(message.senderId) === Number(userId);
@@ -168,35 +177,26 @@ export default function ChatContent() {
                         }
                       >
                         {renderMessageContent(message.content)}
+                        <small className={styles.messageTime}>
+                          {formatTime(message.createdAt)}
+                        </small>
                       </div>
-                      <span className={styles.messageTime}>
-                        {formatTime(message.createdAt)}
-                      </span>
                     </div>
                   );
-                })
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-            <MessageInput onSendMessage={handleSendMessage} disabled={false} />
-          </>
-        ) : (
-          <>
-            <div className={headerStyles.chatHeader}>
-              <div className={styles.emptyHeader}>
-                <h2>Выберите чат</h2>
-                <p>Выберите пользователя из списка слева для начала общения</p>
+                })}
+                <div ref={messagesEndRef} />
+              </>
+            ) : (
+              <div className={styles.noMessages}>
+                <p>Нет сообщений. Начните переписку!</p>
               </div>
-            </div>
-            <div className={styles.messages}>
-              <div className={styles.noChatSelected}>
-                <p>Здесь будут отображаться сообщения</p>
-              </div>
-            </div>
-            <MessageInput onSendMessage={() => {}} disabled={true} />
-          </>
-        )}
+            )}
+          </div>
+        </div>
+        <div className={headerStyles.sticky_input_wrapper}>
+          <MessageInput onSendMessage={handleSendMessage} />
+        </div>
       </div>
-    </>
+    </div>
   );
 }

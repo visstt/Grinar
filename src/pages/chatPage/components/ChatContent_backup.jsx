@@ -1,4 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect,   const { user: contactUser } = useUserById(userIdToFetch);
+  const { sendMessage, subscribeToMessages, unsubscribeFromMessages } =
+    useSocket();
+
+  // Обновляем информацию о чате когда загружается пользователь "react";
 
 import { useUserStore } from "../../../shared/store/userStore";
 import styles from "../ChatPage.module.css";
@@ -22,14 +26,36 @@ export default function ChatContent() {
   const { sendMessage, subscribeToMessages, unsubscribeFromMessages } =
     useSocket();
 
+  // Временное логирование для отладки
+  console.log("Debug info:", {
+    currentReceiver,
+    userIdToFetch,
+    contactUser: contactUser?.fullName,
+    selectedChat: selectedChat?.fullName,
+  });
+
   // Обновляем информацию о чате когда загружается пользователь
   useEffect(() => {
+    console.log("useEffect check:", {
+      contactUser: contactUser?.fullName,
+      currentReceiver,
+      contactUserId: contactUser?.id,
+      condition1: !!contactUser,
+      condition2: !!currentReceiver,
+      condition3: contactUser?.id === currentReceiver,
+      condition4: selectedChat?.fullName !== contactUser?.fullName,
+    });
+
     if (
       contactUser &&
       currentReceiver &&
       contactUser.id === currentReceiver &&
       selectedChat?.fullName !== contactUser.fullName
     ) {
+      console.log(
+        "Updating selectedChat with user data:",
+        contactUser.fullName,
+      );
       selectChat({
         id: contactUser.id,
         fullName: contactUser.fullName,
@@ -129,7 +155,7 @@ export default function ChatContent() {
                 gap: "8px",
               }}
             >
-              � {fileName}
+              📄 {fileName}
             </a>
           </div>
         );
@@ -149,7 +175,9 @@ export default function ChatContent() {
             <ChatHeader selectedChat={selectedChat} />
             <div className={styles.messages}>
               {loading ? (
-                <div className={styles.loading}>Загрузка сообщений...</div>
+                <div className={styles.loading}>
+                  Загрузка сообщений... (receiverId: {currentReceiver})
+                </div>
               ) : messages.length === 0 ? (
                 <div className={styles.noMessages}>
                   <p>Нет сообщений. Начните беседу!</p>

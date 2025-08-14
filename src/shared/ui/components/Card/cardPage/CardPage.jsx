@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import api from "../../../../api/api";
 import { getUserLogoUrl } from "../../../../utils/getProjectImageUrl";
 import Card from "../Card";
@@ -9,6 +11,7 @@ import like from "/icons/like.svg";
 import location from "/icons/location.svg";
 
 export default function CardPage({ project: initialProject }) {
+  const navigate = useNavigate();
   const { project, loading, error } = useFetchProject(initialProject?.id);
   const [isLiked, setIsLiked] = useState(false);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
@@ -40,6 +43,13 @@ export default function CardPage({ project: initialProject }) {
       console.error("Ошибка при лайке проекта:", error);
     } finally {
       setIsLikeLoading(false);
+    }
+  };
+
+  // Функция для связи с автором проекта
+  const handleContact = () => {
+    if (currentProject?.user?.id) {
+      navigate(`/chat`, { state: { contactUserId: currentProject.user.id } });
     }
   };
 
@@ -111,7 +121,9 @@ export default function CardPage({ project: initialProject }) {
             >
               <img src={like} alt="like" />
             </button>
-            <button className={styles.contactBtn}>Связаться</button>
+            <button className={styles.contactBtn} onClick={handleContact}>
+              Связаться
+            </button>
           </div>
         </div>
       )}

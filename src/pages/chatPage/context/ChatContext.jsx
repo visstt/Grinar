@@ -8,8 +8,13 @@ export function ChatProvider({ children, contactUserId }) {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const selectChat = (chat) => {
-    // Избегаем ненужных обновлений, если чат уже выбран
-    if (selectedChat?.id !== chat.id || currentReceiver !== chat.id) {
+    // Обновляем если ID отличается, currentReceiver отличается, или если данные пользователя изменились
+    if (
+      selectedChat?.id !== chat.id ||
+      currentReceiver !== chat.id ||
+      selectedChat?.fullName !== chat.fullName ||
+      selectedChat?.logoFileName !== chat.logoFileName
+    ) {
       setSelectedChat(chat);
       setCurrentReceiver(chat.id);
     }
