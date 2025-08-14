@@ -1,0 +1,31 @@
+.chatHeader {
+  background: #141414;
+  height: 60px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px 40px 16px 24px;
+
+  display: flex;
+  align-items: center;
+}
+.user {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.userText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.userName h2 {
+  font-weight: 400;
+  font-size: 14px;
+  color: #fff;
+  font-family: "Geologica", sans-serif;
+}
+.userStatus p {
+  font-weight: 300;
+  font-size: 14px;
+  color: #195ee6;
+  font-family: "Geologica", sans-serif;
+}

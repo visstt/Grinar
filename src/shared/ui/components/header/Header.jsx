@@ -247,7 +247,7 @@ export default function Header({ darkBackground = false }) {
                         Специалисты
                       </Link>
                     </li>
-                    <li>Работа</li>
+                    <li style={{ opacity: 0.5, cursor: "default" }}>Работа</li>
                     <li>
                       <Link
                         to="/blog"
@@ -395,7 +395,7 @@ export default function Header({ darkBackground = false }) {
                     Специалисты
                   </li>
                   <div className={styles.stripe}></div>
-                  <li>Работа</li>
+                  <li style={{ opacity: 0.5, cursor: "default" }}>Работа</li>
                   <div className={styles.stripe}></div>
                   <li>
                     <Link
@@ -429,7 +429,6 @@ export default function Header({ darkBackground = false }) {
           )}
         </div>
       </div>
-      <div className={styles.stripe}></div>
 
       {loginOpen && (
         <div

@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Unbounded:wght@200..900&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +10,6 @@ body {
   font-family: "Manrope", serif;
 }
 
-/* Класс для блокировки скролла */
 body.no-scroll,
 html.no-scroll {
   overflow: hidden !important;

@@ -1,0 +1,58 @@
+.chatSidebar {
+  display: flex;
+  flex-direction: column;
+  max-width: 330px;
+  justify-content: center;
+  align-items: center;
+
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 0px 20px 16px;
+  background: #141414;
+  color: #fff;
+}
+
+.searchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 264px;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 12px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.searchIcon path {
+  fill: #fff;
+}
+
+.searchInput {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px 40px 12px 12px;
+  width: 264px;
+  height: 48px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.searchInput::placeholder {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.searchInput:focus {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+}

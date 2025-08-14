@@ -11,6 +11,7 @@
 
 .darkHeader {
   background-color: #141414;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .mobileHeader {
