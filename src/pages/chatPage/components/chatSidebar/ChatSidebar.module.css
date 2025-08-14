@@ -2,10 +2,8 @@
   display: flex;
   flex-direction: column;
   width: 330px;
-  height: calc(100vh - 120px);
   justify-content: flex-start;
   align-items: center;
-
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   padding: 20px 0px 20px 16px;
   background: #141414;
@@ -56,4 +54,41 @@
 .searchInput:focus {
   border-color: rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.08);
+}
+
+.chatsList {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+
+  /* Скрытие скроллбара */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* Скрытие скроллбара для Webkit браузеров */
+.chatsList::-webkit-scrollbar {
+  display: none;
+}
+
+.loading {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 20px;
+  font-size: 14px;
+}
+
+.error {
+  text-align: center;
+  color: #ff6b6b;
+  padding: 20px;
+  font-size: 14px;
+}
+
+.noChats {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 20px;
+  font-size: 14px;
 }

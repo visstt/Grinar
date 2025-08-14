@@ -35,6 +35,7 @@
     "slate-dom": "^0.117.4",
     "slate-history": "^0.113.1",
     "slate-react": "^0.117.4",
+    "socket.io-client": "^4.8.1",
     "zustand": "^5.0.6"
   },
   "devDependencies": {

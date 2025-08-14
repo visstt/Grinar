@@ -42,6 +42,10 @@ export default function SpecialistsPageCard({ specialist }) {
     navigate(`/user/${specialist.id}`);
   };
 
+  const handleContactClick = () => {
+    navigate(`/chat`, { state: { contactUserId: specialist.id } });
+  };
+
   const handleFavoriteClick = async (e) => {
     e.stopPropagation(); // Предотвращаем переход в профиль
     if (isFavoriteLoading) return;
@@ -141,7 +145,9 @@ export default function SpecialistsPageCard({ specialist }) {
             >
               <img src={starBtn} alt="starBtn" />
             </button>
-            <button className={styles.feedback}>Связаться</button>
+            <button className={styles.feedback} onClick={handleContactClick}>
+              Связаться
+            </button>
           </div>
         </div>
         <div className={styles.photo_wrapper}>

@@ -21,7 +21,6 @@ export default function Specialists({ specialist }) {
   const [isFavorited, setIsFavorited] = useState(false);
   const [isFavoriteLoading, setIsFavoriteLoading] = useState(false);
 
-  // Инициализируем состояние избранного на основе данных из API
   useEffect(() => {
     if (specialist?.isFavorited !== undefined) {
       setIsFavorited(specialist.isFavorited);
@@ -42,8 +41,12 @@ export default function Specialists({ specialist }) {
     navigate(`/user/${specialist.id}`);
   };
 
+  const handleContactClick = () => {
+    navigate(`/chat`, { state: { contactUserId: specialist.id } });
+  };
+
   const handleFavoriteClick = async (e) => {
-    e.stopPropagation(); // Предотвращаем переход в профиль
+    e.stopPropagation();
     if (isFavoriteLoading) return;
 
     setIsFavoriteLoading(true);
@@ -124,7 +127,9 @@ export default function Specialists({ specialist }) {
             >
               <img src={starBtn} alt="starBtn" />
             </button>
-            <button className={styles.feedback}>Связаться</button>
+            <button className={styles.feedback} onClick={handleContactClick}>
+              Связаться
+            </button>
           </div>
         </div>
         <div className={styles.photo_wrapper}>

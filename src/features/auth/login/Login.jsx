@@ -81,7 +81,10 @@ export default function Login({ onSuccess, onClose, onSwitchToRegister }) {
           e.preventDefault();
           const res = await login(email, password);
           if (res) {
-            setUser({ logoFileName: res.logoFileName });
+            setUser({
+              id: res.id,
+              logoFileName: res.userLogo?.logoFileName,
+            });
             toast.success("Успешная авторизация!");
             if (onSuccess) onSuccess();
           }

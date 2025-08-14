@@ -1,11 +1,13 @@
 .chatHeader {
   background: #141414;
   height: 60px;
+  min-height: 60px;
+  max-height: 60px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding: 16px 40px 16px 24px;
-
   display: flex;
   align-items: center;
+  flex-shrink: 0; /* Не сжимается */
 }
 .user {
   display: flex;

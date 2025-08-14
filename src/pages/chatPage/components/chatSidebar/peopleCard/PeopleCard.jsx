@@ -1,11 +1,32 @@
+import { getUserLogoUrl } from "../../../../../shared/utils/getProjectImageUrl";
+import { useChat } from "../../../context/ChatContext";
 import styles from "./PeopleCard.module.css";
 
-export default function PeopleCard() {
+export default function PeopleCard({ chat }) {
+  const { selectChat, selectedChat } = useChat();
+
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const handleClick = () => {
+    selectChat(chat);
+  };
+
+  const isSelected = selectedChat?.id === chat.id;
+
   return (
-    <div className={styles.peopleCard}>
+    <div
+      className={`${styles.peopleCard} ${isSelected ? styles.selected : ""}`}
+      onClick={handleClick}
+    >
       <div className={styles.avatar}>
         <img
-          src="/icons/Sample_User_Icon.png"
+          src={getUserLogoUrl(chat.logoFileName)}
           alt="Avatar"
           width={44}
           style={{ borderRadius: 8 }}
@@ -13,11 +34,13 @@ export default function PeopleCard() {
       </div>
       <div className={styles.info}>
         <div className={styles.name}>
-          <h2>Имя Фамилия</h2>
-          <div className={styles.time}>14:23</div>
+          <h2>{chat.fullName}</h2>
+          <div className={styles.time}>
+            {chat.lastMessage ? formatTime(chat.lastMessage.createdAt) : ""}
+          </div>
         </div>
         <div className={styles.lastMessage}>
-          <p>Последнее сообщение</p>
+          <p>{chat.lastMessage ? chat.lastMessage.content : "Нет сообщений"}</p>
         </div>
       </div>
     </div>
