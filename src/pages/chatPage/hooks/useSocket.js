@@ -13,7 +13,9 @@ export default function useSocket() {
     if (!user) return;
 
     socketRef.current = io(`${import.meta.env.VITE_API_WS_URL}/chat`, {
+      path: "/socket.io",
       withCredentials: true,
+      secure: true,
       transports: ["websocket"],
     });
 
@@ -25,8 +27,7 @@ export default function useSocket() {
       setIsConnected(false);
     });
 
-    socketRef.current.on("error", () => {
-    });
+    socketRef.current.on("error", () => {});
 
     return () => {
       if (socketRef.current) {
