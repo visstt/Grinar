@@ -188,8 +188,7 @@ export default function ChatContent({ initialShowSidebar = true }) {
             }}
             aria-label={`Скачать файл ${fileName}`}
           >
-            <img src="/icons/chat/Skrepkkasvg.svg" alt="" width={35} />{" "}
-            {fileName}
+            <img src="/icons/chat/file.svg" alt="" width={20} /> {fileName}
           </a>
         </div>
       );
