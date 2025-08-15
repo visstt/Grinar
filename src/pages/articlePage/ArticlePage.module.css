@@ -1,0 +1,337 @@
+.backButton {
+  margin-top: 40px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.backButton p {
+  margin: 0;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.backButton img {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+.user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+.userInfo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.user {
+  border: 1px solid rgba(25, 94, 230, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  background: #fbfcfd;
+  margin-bottom: 24px;
+}
+.userName {
+  display: flex;
+  gap: 6px;
+}
+.userName p {
+  font-weight: 600;
+  font-size: 14px;
+  color: #141414;
+}
+.userStatus p {
+  font-weight: 700;
+  font-size: 10px;
+  color: #fff;
+  font-family: Unbounded;
+}
+.userStatus {
+  border-radius: 4px;
+  padding: 3px 6px;
+  background: #195ee6;
+}
+.date p {
+  font-weight: 500;
+  font-size: 12px;
+  color: #141414;
+}
+
+/* Состояния загрузки и ошибок */
+.loading,
+.error {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  margin-top: 40px;
+}
+
+.loading {
+  color: #666;
+}
+
+.error {
+  color: #e74c3c;
+}
+
+/* Контент статьи */
+.articleContent {
+  margin-top: 24px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #141414;
+  margin: 0 0 24px 0;
+  font-family: Unbounded;
+}
+
+.imageContainer {
+  margin: 24px 0;
+}
+
+.articleImage {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+.content {
+  margin: 24px 0;
+}
+
+.content p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  margin: 0 0 16px 0;
+  text-align: left;
+}
+
+/* Футер */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(25, 94, 230, 0.1);
+  margin-bottom: 20px;
+}
+
+.metrics {
+  display: flex;
+  align-items: center;
+}
+
+.viewCount {
+  color: #666;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.reportButton {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 12px;
+}
+
+/* Блок с лайками */
+.likesSection {
+  margin-top: 40px;
+  padding: 24px;
+  background: #fbfcfd;
+  border: 1px solid rgba(25, 94, 230, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.likeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.likeIcon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.likesTitle {
+  font-family: Unbounded;
+  font-weight: 700;
+  font-size: 16px;
+  color: #141414;
+  margin: 0;
+  margin-right: 8px;
+}
+
+.likedUsers {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.likedUserAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.likedUserAvatar:hover {
+  transform: scale(1.1);
+  z-index: 1;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .likesSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .likedUsers {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .likedUserAvatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .likesTitle {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .backButton {
+    margin-top: 20px;
+    gap: 8px;
+  }
+
+  .backButton p {
+    font-size: 14px;
+  }
+
+  .backButton img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .user {
+    flex-direction: row;
+  }
+  /* Контент статьи */
+  .articleContent {
+    margin-top: 16px;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .imageContainer {
+    margin: 16px 0;
+  }
+
+  .content {
+    margin: 16px 0;
+  }
+
+  .content p {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  /* Футер */
+  .footer {
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 16px;
+  }
+
+  .viewCount {
+    font-size: 13px;
+  }
+
+  .reportButton {
+    font-size: 13px;
+    padding: 6px 10px;
+    align-self: flex-end;
+  }
+
+  /* Состояния загрузки и ошибок */
+  .loading,
+  .error {
+    padding: 30px 15px;
+    font-size: 15px;
+    margin-top: 20px;
+  }
+}
+
+/* Дополнительные стили для очень маленьких экранов */
+@media (max-width: 480px) {
+  .backButton {
+    margin-top: 15px;
+  }
+
+  .user {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .content p {
+    font-size: 14px;
+  }
+
+  .footer {
+    gap: 12px;
+  }
+
+  .likesSection {
+    padding: 12px;
+  }
+
+  .likedUserAvatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .likesTitle {
+    font-size: 15px;
+  }
+}

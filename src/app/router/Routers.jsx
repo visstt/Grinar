@@ -1,5 +1,6 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 
+import ArticlePage from "../../pages/articlePage/ArticlePage";
 import BlogPage from "../../pages/blogPage/BlogPage";
 import ChatPage from "../../pages/chatPage/ChatPage";
 import CreateArticle from "../../pages/createArticle/article/CreateArticle";
@@ -108,6 +109,10 @@ export const router = createBrowserRouter([
       {
         path: "blog",
         element: <BlogPage />,
+      },
+      {
+        path: "blog/blog-by-id/:blogId",
+        element: <ArticlePage />,
       },
       {
         path: "create-project",
