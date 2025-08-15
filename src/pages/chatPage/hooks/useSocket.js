@@ -13,7 +13,7 @@ export default function useSocket() {
     if (!user) return;
 
     // Создаем подключение к WebSocket
-    socketRef.current = io(`${import.meta.env.VITE_API_URL}/chat`, {
+    socketRef.current = io(`${import.meta.env.VITE_API_WS_URL}/chat`, {
       withCredentials: true,
       transports: ["websocket"],
     });
