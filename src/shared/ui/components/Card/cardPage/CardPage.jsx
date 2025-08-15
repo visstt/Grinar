@@ -49,7 +49,9 @@ export default function CardPage({ project: initialProject }) {
   // Функция для связи с автором проекта
   const handleContact = () => {
     if (currentProject?.user?.id) {
-      navigate(`/chat`, { state: { contactUserId: currentProject.user.id } });
+      navigate(`/chat-page`, {
+        state: { contactUserId: currentProject.user.id },
+      });
     }
   };
 

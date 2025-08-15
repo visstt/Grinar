@@ -40,14 +40,12 @@ export function ChatProvider({ children, contactUserId }) {
     }
   }, [refreshChatsCallback]);
 
-  // Если передан contactUserId, автоматически устанавливаем его как получателя только при первой загрузке
   useEffect(() => {
     if (contactUserId && !isInitialized) {
       setCurrentReceiver(contactUserId);
-      // Создаем временный объект чата для отображения
       setSelectedChat({
         id: contactUserId,
-        fullName: "Загрузка...", // Имя будет обновлено когда загрузятся данные
+        fullName: "Загрузка...",
       });
       setIsInitialized(true);
     }

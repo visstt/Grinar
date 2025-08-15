@@ -128,7 +128,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/chat",
+    path: "/chat-page",
     element: <LayoutWithoutFooter />,
     children: [
       {

@@ -138,6 +138,33 @@
   width: 100%;
 }
 
+/* Стили для иконок уведомлений */
+.notificationIcons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: 16px;
+}
+
+.notificationIcon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 950px) {
+  .notificationIcons {
+    margin-left: 8px;
+    gap: 12px;
+  }
+
+  .notificationIcon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 .header_wrapper__login:hover {
   background-color: #353535;
 }

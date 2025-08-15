@@ -54,7 +54,7 @@ export default function UserProfileTitle({ userProfile }) {
   };
 
   const handleContact = () => {
-    navigate(`/chat`, { state: { contactUserId: userId } });
+    navigate(`/chat-page`, { state: { contactUserId: userId } });
   };
 
   return (

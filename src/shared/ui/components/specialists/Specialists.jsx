@@ -42,7 +42,7 @@ export default function Specialists({ specialist }) {
   };
 
   const handleContactClick = () => {
-    navigate(`/chat`, { state: { contactUserId: specialist.id } });
+    navigate(`/chat-page`, { state: { contactUserId: specialist.id } });
   };
 
   const handleFavoriteClick = async (e) => {
