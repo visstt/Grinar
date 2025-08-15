@@ -14,7 +14,6 @@ export default function useChats() {
       const response = await api.get("/chat/chats");
       setChats(response.data);
     } catch (err) {
-      console.error("Ошибка при загрузке чатов:", err);
       setError(err.response?.data?.message || "Ошибка при загрузке чатов");
     } finally {
       setLoading(false);
@@ -25,8 +24,8 @@ export default function useChats() {
     try {
       const response = await api.get("/chat/chats");
       setChats(response.data);
-    } catch (err) {
-      console.error("Ошибка при обновлении чатов:", err);
+    } catch {
+      // Error handling without logging
     }
   }, []);
 

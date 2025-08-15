@@ -46,8 +46,7 @@ export function useFileUpload(onFileMessage) {
       // Отправляем сообщение с файлом
       const fileMessage = `[Файл: ${file.name}](${response.data.filePath})`;
       onFileMessage(fileMessage);
-    } catch (error) {
-      console.error("Ошибка загрузки файла:", error);
+    } catch {
       alert("Ошибка при загрузке файла");
     } finally {
       setUploading(false);

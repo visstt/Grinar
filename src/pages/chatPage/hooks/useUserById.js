@@ -24,8 +24,6 @@ export function useUserById(userId) {
         const response = await api.get(`/user/user-profile/${userId}`);
         setUser(response.data);
       } catch (err) {
-        console.error("Ошибка при загрузке пользователя:", err);
-
         // Если пользователь не найден (404), это не критическая ошибка
         if (err.response?.status === 404) {
           setError(null); // Не устанавливаем ошибку для 404

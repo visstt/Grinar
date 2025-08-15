@@ -135,23 +135,12 @@ export default function ChatContent({ initialShowSidebar = true }) {
       const [, fileName, filePath] = match;
       const fileExtension = fileName.split(".").pop()?.toLowerCase() || "";
 
-      console.log("Debug - fileName:", fileName, "filePath:", filePath);
-
       if (["jpg", "jpeg", "png"].includes(fileExtension)) {
         // Извлекаем реальное имя файла из filePath
         const realFileName = filePath.includes("/")
           ? filePath.split("/").pop()
           : filePath;
         const imageUrl = getChatPhotoUrl(realFileName);
-
-        console.log(
-          "Debug - fileName:",
-          fileName,
-          "realFileName:",
-          realFileName,
-          "imageUrl:",
-          imageUrl,
-        );
 
         return (
           <div>
@@ -166,13 +155,6 @@ export default function ChatContent({ initialShowSidebar = true }) {
               }}
               onClick={() => setModalImage({ url: imageUrl, name: fileName })}
               onError={(e) => {
-                console.error("Ошибка загрузки изображения:", imageUrl);
-                console.error(
-                  "Оригинальные данные - fileName:",
-                  fileName,
-                  "filePath:",
-                  filePath,
-                );
                 e.currentTarget.style.display = "none";
               }}
             />

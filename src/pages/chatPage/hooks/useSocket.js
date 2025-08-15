@@ -26,8 +26,8 @@ export default function useSocket() {
       setIsConnected(false);
     });
 
-    socketRef.current.on("error", (error) => {
-      console.error("Socket error:", error);
+    socketRef.current.on("error", () => {
+      // Socket error handling without logging
     });
 
     return () => {

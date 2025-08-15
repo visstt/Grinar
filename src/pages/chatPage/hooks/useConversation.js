@@ -23,7 +23,6 @@ export default function useConversation(receiverId) {
         );
         setMessages(response.data);
       } catch (err) {
-        console.error("Ошибка при загрузке истории сообщений:", err);
         setError(
           err.response?.data?.message || "Ошибка при загрузке сообщений",
         );
