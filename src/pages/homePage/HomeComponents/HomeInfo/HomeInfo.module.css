@@ -85,7 +85,7 @@
 .info_wrapper_text a {
   color: #195ee6;
 }
-@media (max-width: 405px) {
+@media (max-width: 500px) {
   .info_wrapper_text h2 {
     font-size: 26px;
   }

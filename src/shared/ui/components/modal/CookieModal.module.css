@@ -1,0 +1,103 @@
+.overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background: transparent;
+}
+
+.modal {
+  border: 1px solid rgba(25, 94, 230, 0.05);
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 763px;
+  box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.05);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  animation: slideUp 0.3s ease-out;
+}
+
+.text {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  color: #141414;
+  margin: 0;
+  flex: 1;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.buttons button {
+  height: 48px;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    padding: 15px;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 88px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 16px;
+  }
+
+  .text {
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .buttons {
+    width: 100%;
+    flex-direction: row-reverse;
+  }
+  .accept {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    padding: 14px;
+  }
+
+  .text {
+    font-size: 12px;
+  }
+
+  .buttons {
+    gap: 10px;
+  }
+
+  .buttons button {
+    font-size: 13px;
+    padding: 8px 16px;
+  }
+}

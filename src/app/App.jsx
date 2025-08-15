@@ -2,6 +2,7 @@ import { RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import CookieModal from "../shared/ui/components/modal/CookieModal";
 import "./App.css";
 import { router } from "./router/Routers";
 import useAuthTokenGuard from "./useAuthTokenGuard";
@@ -12,6 +13,7 @@ function App() {
     <>
       <ToastContainer />
       <RouterProvider router={router} />
+      <CookieModal />
     </>
   );
 }

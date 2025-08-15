@@ -12,7 +12,6 @@ export default function useSocket() {
   useEffect(() => {
     if (!user) return;
 
-    // Создаем подключение к WebSocket
     socketRef.current = io(`${import.meta.env.VITE_API_WS_URL}/chat`, {
       withCredentials: true,
       transports: ["websocket"],
@@ -27,7 +26,6 @@ export default function useSocket() {
     });
 
     socketRef.current.on("error", () => {
-      // Socket error handling without logging
     });
 
     return () => {
