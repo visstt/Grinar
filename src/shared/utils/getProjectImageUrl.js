@@ -22,3 +22,6 @@ export function getBlogPhotoUrl(filename) {
 export function getUserLogoUrl(filename) {
   return getPhotoUrl("avatar", filename);
 }
+export function getChatPhotoUrl(filename) {
+  return getPhotoUrl("chat", filename);
+}

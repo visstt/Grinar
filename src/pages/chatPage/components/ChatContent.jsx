@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { useUserStore } from "../../../shared/store/userStore";
+import { getChatPhotoUrl } from "../../../shared/utils/getProjectImageUrl";
 import styles from "../ChatPage.module.css";
 import { useChat } from "../context/ChatContext";
 import useConversation from "../hooks/useConversation";
@@ -15,6 +16,7 @@ export default function ChatContent({ initialShowSidebar = true }) {
   const { selectedChat, currentReceiver, selectChat, refreshChats } = useChat();
   const [isNarrow, setIsNarrow] = useState(window.innerWidth < 700);
   const [showSidebar, setShowSidebar] = useState(initialShowSidebar);
+  const [modalImage, setModalImage] = useState(null); // Для модального окна изображения
   const { user } = useUserStore();
   const { messages, setMessages, loading } = useConversation(currentReceiver);
   const messagesEndRef = useRef(null);
@@ -88,6 +90,17 @@ export default function ChatContent({ initialShowSidebar = true }) {
     refreshChats,
   ]);
 
+  // Handle Escape key for modal
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape" && modalImage) {
+        setModalImage(null);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [modalImage]);
+
   // Handle chat selection
   const handleChatSelect = (chat) => {
     selectChat(chat);
@@ -121,23 +134,47 @@ export default function ChatContent({ initialShowSidebar = true }) {
     if (match) {
       const [, fileName, filePath] = match;
       const fileExtension = fileName.split(".").pop()?.toLowerCase() || "";
-      const baseUrl = window.location.origin;
-      const fullUrl = `${baseUrl}${filePath}`;
+
+      console.log("Debug - fileName:", fileName, "filePath:", filePath);
 
       if (["jpg", "jpeg", "png"].includes(fileExtension)) {
+        // Извлекаем реальное имя файла из filePath
+        const realFileName = filePath.includes("/")
+          ? filePath.split("/").pop()
+          : filePath;
+        const imageUrl = getChatPhotoUrl(realFileName);
+
+        console.log(
+          "Debug - fileName:",
+          fileName,
+          "realFileName:",
+          realFileName,
+          "imageUrl:",
+          imageUrl,
+        );
+
         return (
           <div>
             <img
-              src={fullUrl}
+              src={imageUrl}
               alt={`Изображение: ${fileName}`}
               style={{
-                maxWidth: "200px",
+                maxWidth: "300px",
                 maxHeight: "200px",
                 borderRadius: "8px",
                 cursor: "pointer",
               }}
-              onClick={() => window.open(fullUrl, "_blank")}
-              onError={(e) => (e.currentTarget.src = "/fallback-image.png")} // Fallback for broken images
+              onClick={() => setModalImage({ url: imageUrl, name: fileName })}
+              onError={(e) => {
+                console.error("Ошибка загрузки изображения:", imageUrl);
+                console.error(
+                  "Оригинальные данные - fileName:",
+                  fileName,
+                  "filePath:",
+                  filePath,
+                );
+                e.currentTarget.style.display = "none";
+              }}
             />
             <p style={{ fontSize: "12px", marginTop: "4px", opacity: 0.7 }}>
               {fileName}
@@ -145,6 +182,16 @@ export default function ChatContent({ initialShowSidebar = true }) {
           </div>
         );
       }
+      // Для других файлов используем оригинальный путь
+      let fullUrl;
+      if (filePath.startsWith("http")) {
+        fullUrl = filePath;
+      } else if (filePath.startsWith("/")) {
+        fullUrl = `${window.location.origin}${filePath}`;
+      } else {
+        fullUrl = `${window.location.origin}/uploads/${filePath}`;
+      }
+
       return (
         <div>
           <a
@@ -234,6 +281,82 @@ export default function ChatContent({ initialShowSidebar = true }) {
               <MessageInput onSendMessage={() => {}} disabled={true} />
             </>
           )}
+        </div>
+      )}
+
+      {/* Модальное окно для просмотра изображений */}
+      {modalImage && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.9)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+            cursor: "pointer",
+          }}
+          onClick={() => setModalImage(null)}
+        >
+          <div
+            style={{
+              position: "relative",
+              maxWidth: "90vw",
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              style={{
+                position: "fixed",
+                top: "20px",
+                right: "20px",
+                background: "rgba(0, 0, 0, 0.5)",
+                border: "none",
+                color: "white",
+                fontSize: "24px",
+                cursor: "pointer",
+                padding: "5px",
+                borderRadius: "50%",
+                width: "35px",
+                height: "35px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 10000,
+              }}
+              onClick={() => setModalImage(null)}
+            >
+              ✕
+            </button>
+            <img
+              src={modalImage.url}
+              alt={modalImage.name}
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "contain",
+                borderRadius: "8px",
+              }}
+            />
+            <p
+              style={{
+                color: "white",
+                marginTop: "10px",
+                fontSize: "14px",
+                textAlign: "center",
+              }}
+            >
+              {modalImage.name}
+            </p>
+          </div>
         </div>
       )}
     </div>
