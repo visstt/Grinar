@@ -215,11 +215,18 @@
   }
 
   .specialist_wrapper__hero {
+    flex-direction: column;
     align-items: center;
     gap: 10px;
   }
+  .hero__info {
+    width: 100%;
+  }
+  .hero__btn {
+    width: 100%;
+  }
   .feedback {
-    width: 100px;
+    width: 200px;
   }
   .hero__info {
     gap: 10px;
@@ -281,7 +288,6 @@
     width: 15px;
   }
   .feedback {
-    width: 100px;
     height: 40px;
     font-size: 12px;
   }

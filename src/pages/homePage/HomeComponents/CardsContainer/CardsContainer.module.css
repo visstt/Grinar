@@ -44,10 +44,6 @@
   .cardContainer__popular {
     justify-content: space-evenly;
   }
-  .title {
-    text-align: center;
-    padding: 30px;
-  }
 }
 @media (max-width: 1110px) {
   .cardContainer > :nth-child(n + 7) {

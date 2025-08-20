@@ -308,25 +308,6 @@ export default function Header({ darkBackground = false }) {
                     )}
                   </div>
                 )}
-
-                {/* Иконки уведомлений и почты */}
-                <div className={styles.notificationIcons}>
-                  <img
-                    src="/icons/mail.svg"
-                    alt="mail"
-                    className={styles.notificationIcon}
-                    onClick={() => navigate("/chat-page")}
-                    title="Сообщения"
-                  />
-                  <img
-                    src="/icons/bell.svg"
-                    alt="notifications"
-                    className={styles.notificationIcon}
-                    title="Уведомления"
-                    style={{ opacity: 0.5 }}
-                  />
-                </div>
-
                 <img
                   src={getUserLogoUrl(user.logoFileName)}
                   alt="user"

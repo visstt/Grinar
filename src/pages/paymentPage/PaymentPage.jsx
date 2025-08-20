@@ -18,7 +18,10 @@ export default function PaymentPage() {
               </div>
               <div className={styles.main}>
                 <div className={styles.line}>
-                  <img src="/icons/payment/user.svg" alt="user" />
+                  <img
+                    src="/icons/payment/tick-square-pro.svg"
+                    alt="tick-square-pro"
+                  />
                   <p>
                     <b>Выделяющийся профиль</b> — станете заметнее среди
                     конкурентов.
@@ -26,7 +29,10 @@ export default function PaymentPage() {
                 </div>
                 <div className="stripe3"></div>
                 <div className={styles.line}>
-                  <img src="/icons/payment/wallet.svg" alt="wallet" />
+                  <img
+                    src="/icons/payment/tick-square-pro.svg"
+                    alt="tick-square-pro"
+                  />
                   <p>
                     <b>Эксклюзивные заказы более 50 тыс. руб</b> — привлекайте
                     крупных клиентов.
@@ -34,7 +40,10 @@ export default function PaymentPage() {
                 </div>
                 <div className="stripe3"></div>
                 <div className={styles.line}>
-                  <img src="/icons/payment/top.svg" alt="top" />
+                  <img
+                    src="/icons/payment/tick-square-pro.svg"
+                    alt="tick-square-pro"
+                  />
                   <p>
                     <b>Дополнительный рейтинг +10%</b> — поднимитесь выше в
                     списке исполнителей.
@@ -42,7 +51,10 @@ export default function PaymentPage() {
                 </div>
                 <div className="stripe3"></div>
                 <div className={styles.line}>
-                  <img src="/icons/payment/user.svg" alt="user" />
+                  <img
+                    src="/icons/payment/tick-square-pro.svg"
+                    alt="tick-square-pro"
+                  />
                   <p>
                     <b>Два направления работы</b> — укажите компетенции для
                     роста заказов.
@@ -50,14 +62,17 @@ export default function PaymentPage() {
                 </div>
                 <div className="stripe3"></div>
                 <div className={styles.line}>
-                  <img src="/icons/payment/user.svg" alt="user" />
+                  <img
+                    src="/icons/payment/tick-square-pro.svg"
+                    alt="tick-square-pro"
+                  />
                   <p>
                     Размещение большого объёма текста сверх лимита в 1024
                     символа в разделе блог.
                   </p>
                 </div>
               </div>
-                <button className={styles.btnpro}>Оформить PRO</button>
+              <button className={styles.btnpro}>Оформить PRO</button>
             </div>
 
             <div className={styles.block_premium}>
@@ -67,7 +82,10 @@ export default function PaymentPage() {
               </div>
               <div className={styles.main}>
                 <div className={styles.line}>
-                  <img src="/icons/payment/userPrem.svg" alt="user" />
+                  <img
+                    src="/icons/payment/tick-square-prem.svg"
+                    alt="tick-square-prem"
+                  />
                   <p>
                     <b>Выделяющийся профиль</b> — станете заметнее среди
                     конкурентов.
@@ -75,7 +93,10 @@ export default function PaymentPage() {
                 </div>
                 <div className="stripe3"></div>
                 <div className={styles.line}>
-                  <img src="/icons/payment/walletPrem.svg" alt="wallet" />
+                  <img
+                    src="/icons/payment/tick-square-prem.svg"
+                    alt="tick-square-prem"
+                  />
                   <p>
                     <b>Эксклюзивные заказы более 100 тыс. руб</b> — привлекайте
                     крупных клиентов.
@@ -83,7 +104,10 @@ export default function PaymentPage() {
                 </div>
                 <div className="stripe3"></div>
                 <div className={styles.line}>
-                  <img src="/icons/payment/topPrem.svg" alt="top" />
+                  <img
+                    src="/icons/payment/tick-square-prem.svg"
+                    alt="tick-square-prem"
+                  />
                   <p>
                     <b>Дополнительный рейтинг +20%</b> — поднимитесь выше в
                     списке исполнителей.
@@ -91,7 +115,10 @@ export default function PaymentPage() {
                 </div>
                 <div className="stripe3"></div>
                 <div className={styles.line}>
-                  <img src="/icons/payment/userPrem.svg" alt="user" />
+                  <img
+                    src="/icons/payment/tick-square-prem.svg"
+                    alt="tick-square-prem"
+                  />
                   <p>
                     <b>Три направления работы</b> — укажите максимум компетенций
                     для роста заказов.
@@ -99,14 +126,17 @@ export default function PaymentPage() {
                 </div>
                 <div className="stripe3"></div>
                 <div className={styles.line}>
-                  <img src="/icons/payment/userPrem.svg" alt="user" />
+                  <img
+                    src="/icons/payment/tick-square-prem.svg"
+                    alt="tick-square-prem"
+                  />
                   <p>
                     Размещение большого объёма текста сверх лимита в 4000
                     символа в разделе блог.
                   </p>
                 </div>
               </div>
-                <button className={styles.btnprem}>Оформить PREMIUM</button>
+              <button className={styles.btnprem}>Оформить PREMIUM</button>
             </div>
           </div>
         </div>
