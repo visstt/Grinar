@@ -16,7 +16,7 @@ export default function ChatContent({ initialShowSidebar = true }) {
   const { selectedChat, currentReceiver, selectChat, refreshChats } = useChat();
   const [isNarrow, setIsNarrow] = useState(window.innerWidth < 700);
   const [showSidebar, setShowSidebar] = useState(initialShowSidebar);
-  const [modalImage, setModalImage] = useState(null); // Для модального окна изображения
+  const [modalImage, setModalImage] = useState(null); 
   const { user } = useUserStore();
   const { messages, setMessages, loading } = useConversation(currentReceiver);
   const messagesEndRef = useRef(null);
@@ -24,12 +24,11 @@ export default function ChatContent({ initialShowSidebar = true }) {
   const { sendMessage, subscribeToMessages, unsubscribeFromMessages } =
     useSocket();
 
-  // Scroll to the latest message when messages change
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Handle window resize to toggle sidebar visibility
   useEffect(() => {
     const handleResize = () => {
       const narrow = window.innerWidth < 700;
@@ -46,18 +45,19 @@ export default function ChatContent({ initialShowSidebar = true }) {
     return () => window.removeEventListener("resize", handleResize);
   }, [selectedChat]);
 
-  // Hide sidebar on narrow screens when a chat is selected
   useEffect(() => {
     if (isNarrow && selectedChat) setShowSidebar(false);
   }, [selectedChat, isNarrow]);
 
-  // Update chat info when contact user data changes
   useEffect(() => {
     if (
       contactUser &&
       currentReceiver &&
-      contactUser.id === currentReceiver &&
-      selectedChat?.fullName !== contactUser.fullName
+      String(contactUser.id) === String(currentReceiver) &&
+      (!selectedChat ||
+        selectedChat.fullName === "Загрузка..." ||
+        String(selectedChat.id) !== String(contactUser.id) ||
+        selectedChat.fullName !== contactUser.fullName)
     ) {
       selectChat({
         id: contactUser.id,
@@ -69,7 +69,6 @@ export default function ChatContent({ initialShowSidebar = true }) {
     }
   }, [contactUser, currentReceiver, selectedChat, selectChat]);
 
-  // Subscribe to new messages
   useEffect(() => {
     const handleNewMessage = (message) => {
       if (
@@ -90,7 +89,6 @@ export default function ChatContent({ initialShowSidebar = true }) {
     refreshChats,
   ]);
 
-  // Handle Escape key for modal
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape" && modalImage) {
@@ -101,16 +99,13 @@ export default function ChatContent({ initialShowSidebar = true }) {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [modalImage]);
 
-  // Handle chat selection
   const handleChatSelect = (chat) => {
     selectChat(chat);
     if (isNarrow) setShowSidebar(false);
   };
 
-  // Handle back to sidebar
   const handleBackToSidebar = () => setShowSidebar(true);
 
-  // Handle sending a message
   const handleSendMessage = (content) => {
     if (currentReceiver && content.trim()) {
       sendMessage(currentReceiver, content.trim());
@@ -118,7 +113,6 @@ export default function ChatContent({ initialShowSidebar = true }) {
     }
   };
 
-  // Format message timestamp
   const formatTime = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString("ru-RU", {
@@ -127,7 +121,6 @@ export default function ChatContent({ initialShowSidebar = true }) {
     });
   };
 
-  // Render message content (text or file)
   const renderMessageContent = (content) => {
     const fileRegex = /^\[Файл: (.+)\]\((.+)\)$/;
     const match = content.match(fileRegex);
@@ -136,7 +129,6 @@ export default function ChatContent({ initialShowSidebar = true }) {
       const fileExtension = fileName.split(".").pop()?.toLowerCase() || "";
 
       if (["jpg", "jpeg", "png"].includes(fileExtension)) {
-        // Извлекаем реальное имя файла из filePath
         const realFileName = filePath.includes("/")
           ? filePath.split("/").pop()
           : filePath;
@@ -164,7 +156,6 @@ export default function ChatContent({ initialShowSidebar = true }) {
           </div>
         );
       }
-      // Для других файлов используем оригинальный путь
       let fullUrl;
       if (filePath.startsWith("http")) {
         fullUrl = filePath;
@@ -266,7 +257,6 @@ export default function ChatContent({ initialShowSidebar = true }) {
         </div>
       )}
 
-      {/* Модальное окно для просмотра изображений */}
       {modalImage && (
         <div
           style={{

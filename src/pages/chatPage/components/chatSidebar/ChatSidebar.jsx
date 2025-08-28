@@ -11,12 +11,10 @@ export default function ChatSidebar({ onChatSelect }) {
   const { setRefreshChats } = useChat();
   const refreshChatsRef = useRef(refreshChats);
 
-  // Обновляем ref при изменении функции
   useEffect(() => {
     refreshChatsRef.current = refreshChats;
   }, [refreshChats]);
 
-  // Регистрируем стабильную функцию в контексте только один раз
   useEffect(() => {
     const stableRefreshChats = () => {
       if (refreshChatsRef.current) {
@@ -26,7 +24,6 @@ export default function ChatSidebar({ onChatSelect }) {
     setRefreshChats(stableRefreshChats);
   }, [setRefreshChats]);
 
-  // Фильтрация чатов по поисковому запросу
   const filteredChats = useMemo(() => {
     if (!searchQuery.trim()) return chats;
 
