@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 import Header from "../../shared/ui/components/header/Header";
 import styles from "./PaymentPage.module.css";
@@ -23,8 +23,9 @@ export default function PaymentPage() {
 
   const handlePay = async (subscriptionId) => {
     const res = await createLink(subscriptionId);
-    if (res && res.paymentLink) {
-      window.location.href = res.paymentLink;
+    // Проверяем, что ссылка лежит в res.data.paymentLink
+    if (res && res.data && res.data.paymentLink) {
+      window.location.href = res.data.paymentLink;
     }
   };
 
