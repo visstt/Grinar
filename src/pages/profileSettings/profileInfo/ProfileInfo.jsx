@@ -19,13 +19,10 @@ export default function ProfileInfo() {
   if (loading || !form) return <div>Загрузка...</div>;
   if (error) return <div>Ошибка загрузки данных</div>;
 
-
   const specArray = Array.from(
     { length: 3 },
     (_, idx) => form.specializations?.[idx] || "",
   );
-
-
 
   return (
     <>
@@ -75,8 +72,8 @@ export default function ProfileInfo() {
                         label: s.name,
                       }))}
                       value={specId}
-                      onChange={(e) => {
-                        handleSpecializationChange(idx, Number(e.target.value));
+                      onChange={(option) => {
+                        handleSpecializationChange(idx, Number(option.value));
                       }}
                     />
                   ))}
@@ -103,7 +100,11 @@ export default function ProfileInfo() {
                       { value: "Более 6 лет", label: "Более 6 лет" },
                     ]}
                     value={form.experience || ""}
-                    onChange={handleChange}
+                    onChange={(option) =>
+                      handleChange({
+                        target: { id: "experience", value: option.value },
+                      })
+                    }
                   />
                 </div>
               </div>
