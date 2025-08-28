@@ -4,7 +4,7 @@ import { Editor, Transforms, createEditor } from "slate";
 import { withHistory } from "slate-history";
 import { Slate, withReact } from "slate-react";
 
-import { useProjectStore } from "../../../shared/store/projectStore";
+import { useBlogStore } from "../../../shared/store/blogStore";
 import Header from "../../../shared/ui/components/header/Header";
 import CreateArticleNav from "../CreateArticleNav";
 import styles from "./CreateArticle.module.css";
@@ -13,7 +13,7 @@ import Toolbar from "./components/Toolbar";
 
 export default function CreateArticle() {
   const [showToolbar, setShowToolbar] = useState(false);
-  const { projectData, updateProjectData } = useProjectStore();
+  const { blogData, updateBlogData } = useBlogStore();
 
   const insertImage = useCallback((editor, url) => {
     const image = {
@@ -21,11 +21,7 @@ export default function CreateArticle() {
       url,
       children: [{ text: "" }],
     };
-
-    // Вставляем изображение
     Transforms.insertNodes(editor, image);
-
-    // Добавляем пустой параграф после изображения для удобства редактирования
     const emptyParagraph = {
       type: "paragraph",
       children: [{ text: "" }],
@@ -36,34 +32,28 @@ export default function CreateArticle() {
   const withImages = useCallback(
     (editor) => {
       const { insertData, isVoid } = editor;
-
       editor.isVoid = (element) => {
         return element.type === "image" ? true : isVoid(element);
       };
-
       editor.insertData = (data) => {
         const { files } = data;
-
         if (files && files.length > 0) {
           for (const file of files) {
             const reader = new FileReader();
             const [mime] = file.type.split("/");
-
             if (mime === "image") {
               reader.addEventListener("load", () => {
                 const url = reader.result;
                 insertImage(editor, url);
               });
-
               reader.readAsDataURL(file);
             }
           }
-          return; // Предотвращаем дублирование
+          return;
         } else {
           insertData(data);
         }
       };
-
       return editor;
     },
     [insertImage],
@@ -74,7 +64,7 @@ export default function CreateArticle() {
     [withImages],
   );
 
-  const initialValue = projectData.content || [
+  const initialValue = blogData.content || [
     {
       type: "title",
       children: [{ text: "Здесь может быть заголовок" }],
@@ -90,7 +80,7 @@ export default function CreateArticle() {
   ];
 
   const handleEditorChange = (value) => {
-    updateProjectData({ content: value });
+    updateBlogData({ content: value });
   };
 
   return (
