@@ -1,7 +1,33 @@
+import { useEffect, useMemo } from "react";
+
 import Header from "../../shared/ui/components/header/Header";
 import styles from "./PaymentPage.module.css";
+import {
+  useCreatePaymentLink,
+  useSubscriptions,
+} from "./hooks/useSubscriptions";
 
 export default function PaymentPage() {
+  const { subscriptions, loading: subsLoading } = useSubscriptions();
+  const { createLink, loading: payLoading } = useCreatePaymentLink();
+
+  // Получаем id нужных подписок
+  const proId = useMemo(
+    () => subscriptions.find((s) => s.name?.toLowerCase() === "pro")?.id,
+    [subscriptions],
+  );
+  const premiumId = useMemo(
+    () => subscriptions.find((s) => s.name?.toLowerCase() === "premium")?.id,
+    [subscriptions],
+  );
+
+  const handlePay = async (subscriptionId) => {
+    const res = await createLink(subscriptionId);
+    if (res && res.paymentLink) {
+      window.location.href = res.paymentLink;
+    }
+  };
+
   return (
     <div>
       <Header darkBackground={true} />
@@ -72,7 +98,13 @@ export default function PaymentPage() {
                   </p>
                 </div>
               </div>
-              <button className={styles.btnpro}>Оформить PRO</button>
+              <button
+                className={styles.btnpro}
+                disabled={subsLoading || payLoading || !proId}
+                onClick={() => handlePay(proId)}
+              >
+                Оформить PRO
+              </button>
             </div>
 
             <div className={styles.block_premium}>
@@ -136,7 +168,13 @@ export default function PaymentPage() {
                   </p>
                 </div>
               </div>
-              <button className={styles.btnprem}>Оформить PREMIUM</button>
+              <button
+                className={styles.btnprem}
+                disabled={subsLoading || payLoading || !premiumId}
+                onClick={() => handlePay(premiumId)}
+              >
+                Оформить PREMIUM
+              </button>
             </div>
           </div>
         </div>
