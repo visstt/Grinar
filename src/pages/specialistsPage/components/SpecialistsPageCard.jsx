@@ -179,14 +179,29 @@ export default function SpecialistsPageCard({ specialist }) {
         <div className={styles.rating_wrapper}>
           <div className={styles.group}>
             <p>Рейтинг:</p>
-            <h3>15 069</h3>
+            <h3>{specialist.info?.rating || 0}</h3>
           </div>
           <div className={styles.group}>
             <p>Подписчики:</p>
-            <h3>389</h3>
+            <h3>{specialist.info?.followers || 0}</h3>
           </div>
           <p>
-            Веб-сайт: <Link to="/">alex-smm.com</Link>
+            {specialist.info?.website && (
+              <p>
+                Веб-сайт:{" "}
+                <a
+                  href={
+                    specialist.info.website.startsWith("http")
+                      ? specialist.info.website
+                      : `https://${specialist.info.website}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {specialist.info.website}
+                </a>
+              </p>
+            )}
           </p>
         </div>
         <div className={styles.stripe}></div>

@@ -86,8 +86,6 @@ export default function SpecialistsPage() {
       <h1 className={styles.title}>Лучшие на Benty</h1>
 
       <div className="container">
-        {/* Поиск - показывается только при активном табе "Поиск" */}
-
         {specialistsError && (
           <div className={styles.errorMessage}>{specialistsError}</div>
         )}
