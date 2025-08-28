@@ -22,16 +22,6 @@ export default function ArticlePage() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ru-RU", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
-
   if (loading) {
     return (
       <>
@@ -95,7 +85,7 @@ export default function ArticlePage() {
             </div>
           </div>
           <div className={styles.date}>
-            <p>{formatDate(blog.createdAt)}</p>
+            <p>{blog.date}</p>
           </div>
         </div>
 
@@ -132,13 +122,12 @@ export default function ArticlePage() {
           <div className={styles.footer}>
             <div className={styles.metrics}>
               <span className={styles.viewCount}>
-                <Eye style={{ marginRight: "4px" }} /> {blog.contentSize || 0}
+                <Eye style={{ marginRight: "4px" }} /> {blog.views || 0}
               </span>
             </div>
             <button className={styles.reportButton}>Пожаловаться</button>
           </div>
 
-          {/* Блок с лайками */}
           {blog.likedBy && blog.likedBy.length > 0 && (
             <div className={styles.likesSection}>
               <div className={styles.likeIcon}>

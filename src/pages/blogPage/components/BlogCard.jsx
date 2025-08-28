@@ -25,7 +25,7 @@ export default function BlogCard({ blog }) {
   };
 
   const handleAuthorClick = (e) => {
-    e.stopPropagation(); // Предотвращаем открытие статьи при клике на автора
+    e.stopPropagation(); 
   };
 
   const imageUrl = getBlogPhotoUrl(blog.coverImage);

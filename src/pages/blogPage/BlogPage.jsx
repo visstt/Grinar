@@ -18,20 +18,11 @@ export default function BlogPage() {
   } = useFetchOptions();
   const { blogs, loading: blogsLoading, error: blogsError } = useAllBlogs();
 
-  // Состояние для фильтров
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSpecialization, setSelectedSpecialization] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  // Фильтрация блогов
   const filteredBlogs = useMemo(() => {
-    // Логирование для отладки структуры данных
-    if (blogs.length > 0) {
-      console.log("Blog sample:", blogs[0]);
-      console.log("Available specializations:", specializations);
-      console.log("Available categories:", categories);
-    }
-
     return blogs.filter((blog) => {
       const matchesSearch =
         blog.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -44,16 +35,6 @@ export default function BlogPage() {
       const matchesCategory = selectedCategory
         ? blog.category?.id === parseInt(selectedCategory)
         : true;
-
-      console.log(`Blog "${blog.name}":`, {
-        matchesSearch,
-        matchesSpecialization,
-        matchesCategory,
-        blogSpecialization: blog.specialization,
-        blogCategory: blog.category,
-        selectedSpecialization,
-        selectedCategory,
-      });
 
       return matchesSearch && matchesSpecialization && matchesCategory;
     });
