@@ -335,3 +335,67 @@
     font-size: 15px;
   }
 }
+
+/* Добавьте эти стили в ваш существующий CSS файл */
+
+.content h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 20px 0 12px 0;
+}
+
+.content h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 18px 0 10px 0;
+}
+
+.content p {
+  margin-bottom: 12px;
+}
+
+.content img {
+  display: block;
+  margin: 12px auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.content video {
+  display: block;
+  margin: 12px auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.noContent {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-size: 16px;
+}
+
+/* Стили для мобильной версии контента */
+@media (max-width: 768px) {
+  .content h1 {
+    font-size: 20px;
+    margin: 16px 0 10px 0;
+  }
+
+  .content h2 {
+    font-size: 18px;
+    margin: 14px 0 8px 0;
+  }
+
+  .content p {
+    margin-bottom: 10px;
+  }
+
+  .content img,
+  .content video {
+    margin: 10px auto;
+    border-radius: 6px;
+  }
+}

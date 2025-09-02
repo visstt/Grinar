@@ -22,6 +22,122 @@ export default function ArticlePage() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Функция для рендеринга текста со стилями
+  const renderText = (textNode, index) => {
+    if (!textNode?.text) return null;
+
+    let element = textNode.text;
+
+    // Применяем стили
+    if (textNode.bold) element = <strong key={index}>{element}</strong>;
+    if (textNode.italic) element = <em key={index}>{element}</em>;
+    if (textNode.underline) element = <u key={index}>{element}</u>;
+
+    // Применяем все возможные стили
+    const style = {};
+    if (textNode.color) style.color = textNode.color;
+    if (textNode.fontSize) style.fontSize = `${textNode.fontSize}px`;
+    if (textNode.fontFamily) style.fontFamily = textNode.fontFamily;
+    if (textNode.backgroundColor) style.backgroundColor = textNode.backgroundColor;
+    if (textNode.textAlign) style.textAlign = textNode.textAlign;
+    if (textNode.lineHeight) style.lineHeight = textNode.lineHeight;
+    if (textNode.letterSpacing) style.letterSpacing = textNode.letterSpacing;
+    if (textNode.textDecoration) style.textDecoration = textNode.textDecoration;
+
+    return (
+      <span key={index} style={style}>
+        {element}
+      </span>
+    );
+  };
+
+  // Функция для рендеринга контента
+  const renderContent = (contentItem, index) => {
+    if (!contentItem) return null;
+
+    // Создаем стили для элемента
+    const elementStyle = {};
+    if (contentItem.align) elementStyle.textAlign = contentItem.align;
+    if (contentItem.style) Object.assign(elementStyle, contentItem.style);
+
+    switch (contentItem.type) {
+      case "title":
+        return (
+          <h1 key={index} className={styles.title} style={elementStyle}>
+            {contentItem.children?.map((child, childIndex) =>
+              renderText(child, childIndex)
+            )}
+          </h1>
+        );
+
+      case "description":
+        return (
+          <div key={index} className={styles.description} style={elementStyle}>
+            {contentItem.children?.map((child, childIndex) =>
+              renderText(child, childIndex)
+            )}
+          </div>
+        );
+
+      case "paragraph":
+        return (
+          <p key={index} className={styles.paragraph} style={elementStyle}>
+            {contentItem.children?.map((child, childIndex) =>
+              renderText(child, childIndex)
+            )}
+          </p>
+        );
+
+      case "heading":
+        return (
+          <h2 key={index} className={styles.heading} style={elementStyle}>
+            {contentItem.children?.map((child, childIndex) =>
+              renderText(child, childIndex)
+            )}
+          </h2>
+        );
+
+      case "image":
+        return (
+          contentItem.url && (
+            <div key={index} style={elementStyle}>
+              <img
+                src={contentItem.url}
+                alt="Blog content"
+                className={styles.image}
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            </div>
+          )
+        );
+
+      case "video":
+        return (
+          contentItem.url && (
+            <div key={index} style={elementStyle}>
+              <video
+                src={contentItem.url}
+                controls
+                className={styles.video}
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            </div>
+          )
+        );
+
+      default:
+        // Для неизвестных типов пытаемся отобразить текст
+        return (
+          <div key={index} style={elementStyle}>
+            {contentItem.children?.map((child, childIndex) =>
+              renderText(child, childIndex)
+            )}
+          </div>
+        );
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -53,6 +169,20 @@ export default function ArticlePage() {
         </div>
       </>
     );
+  }
+
+  // Парсим поле content
+  let contentArray = [];
+  try {
+    contentArray =
+      typeof blog.content === "string"
+        ? JSON.parse(blog.content)
+        : Array.isArray(blog.content)
+          ? blog.content
+          : [];
+  } catch (err) {
+    console.error("Ошибка парсинга content:", err);
+    contentArray = [];
   }
 
   return (
@@ -92,20 +222,12 @@ export default function ArticlePage() {
         <div className={styles.articleContent}>
           <h1 className={styles.title}>{blog.name}</h1>
 
-          {blog.photoName && (
-            <div className={styles.imageContainer}>
-              <img
-                src={getBlogPhotoUrl(blog.photoName)}
-                alt={blog.name}
-                className={styles.articleImage}
-                onError={(e) => {
-                  e.target.style.display = "none";
-                }}
-              />
-            </div>
-          )}
 
-          {blog.content && blog.content !== "null" && (
+          {contentArray.length > 0 ? (
+            <div className={styles.content}>
+              {contentArray.map((item, index) => renderContent(item, index))}
+            </div>
+          ) : blog.content && blog.content !== "null" ? (
             <div className={styles.content}>
               {typeof blog.content === "string" ? (
                 <p>{blog.content}</p>
@@ -117,6 +239,8 @@ export default function ArticlePage() {
                 <p>{JSON.stringify(blog.content)}</p>
               )}
             </div>
+          ) : (
+            <p className={styles.noContent}>Контент блога отсутствует</p>
           )}
 
           <div className={styles.footer}>
