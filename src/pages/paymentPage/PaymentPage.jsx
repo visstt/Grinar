@@ -11,7 +11,6 @@ export default function PaymentPage() {
   const { subscriptions, loading: subsLoading } = useSubscriptions();
   const { createLink, loading: payLoading } = useCreatePaymentLink();
 
-  // Получаем id нужных подписок
   const proId = useMemo(
     () => subscriptions.find((s) => s.name?.toLowerCase() === "pro")?.id,
     [subscriptions],
@@ -23,7 +22,6 @@ export default function PaymentPage() {
 
   const handlePay = async (subscriptionId) => {
     const res = await createLink(subscriptionId);
-    // Проверяем, что ссылка лежит в res.data.paymentLink
     if (res && res.data && res.data.paymentLink) {
       window.location.href = res.data.paymentLink;
     }

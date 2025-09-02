@@ -25,7 +25,7 @@ export default function BlogCard({ blog }) {
   };
 
   const handleAuthorClick = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
   };
 
   const imageUrl = getBlogPhotoUrl(blog.coverImage);
@@ -36,10 +36,7 @@ export default function BlogCard({ blog }) {
       <div className={styles.info_block}>
         <p>{formatDate(blog.createdAt)}</p>
         <h2>{blog.name}</h2>
-        <h4>
-          описание описание описание описание описание описание описание
-          описание описание описание описание описание
-        </h4>
+        <h4>{blog.description}</h4>
         <p>
           Автор:{" "}
           <Link to={`/user/${blog.author.id}`} onClick={handleAuthorClick}>
