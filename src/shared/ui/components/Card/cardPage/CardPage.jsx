@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-
 import api from "../../../../api/api";
 import { getUserLogoUrl } from "../../../../utils/getProjectImageUrl";
 import Card from "../Card";
@@ -16,17 +14,14 @@ export default function CardPage({ project: initialProject }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
 
-  // Используем данные из хука, если они есть, иначе начальные данные
   const currentProject = project || initialProject;
 
-  // Инициализация состояния лайка из данных API
   useEffect(() => {
     if (currentProject?.isLiked !== undefined) {
       setIsLiked(currentProject.isLiked);
     }
   }, [currentProject?.isLiked]);
 
-  // Функция для обработки лайка
   const handleLike = async () => {
     if (!currentProject?.id || isLikeLoading) return;
 
@@ -46,7 +41,6 @@ export default function CardPage({ project: initialProject }) {
     }
   };
 
-  // Функция для связи с автором проекта
   const handleContact = () => {
     if (currentProject?.user?.id) {
       navigate(`/chat-page`, {
@@ -59,7 +53,7 @@ export default function CardPage({ project: initialProject }) {
   if (error) return <div className={styles.error}>Ошибка: {error}</div>;
   if (!currentProject) return null;
 
-  // Парсим поле content, если оно строка
+  // Парсим поле content
   let contentArray = [];
   try {
     contentArray =
@@ -73,29 +67,125 @@ export default function CardPage({ project: initialProject }) {
     contentArray = [];
   }
 
-  const renderContent = (contentItem, index) => {
-    if (!contentItem?.type) return null;
+  // Функция для рендеринга текста со стилями
+  // Функция для рендеринга текста со стилями
+const renderText = (textNode, index) => {
+  if (!textNode?.text) return null;
 
-    switch (contentItem.type) {
-      case "image":
-        return (
-          contentItem.url && (
+  let element = textNode.text;
+
+  // Применяем стили
+  if (textNode.bold) element = <strong key={index}>{element}</strong>;
+  if (textNode.italic) element = <em key={index}>{element}</em>;
+  if (textNode.underline) element = <u key={index}>{element}</u>;
+
+  // Применяем все возможные стили
+  const style = {};
+  if (textNode.color) style.color = textNode.color;
+  if (textNode.fontSize) style.fontSize = `${textNode.fontSize}px`;
+  if (textNode.fontFamily) style.fontFamily = textNode.fontFamily;
+  if (textNode.backgroundColor) style.backgroundColor = textNode.backgroundColor;
+  if (textNode.textAlign) style.textAlign = textNode.textAlign;
+  if (textNode.lineHeight) style.lineHeight = textNode.lineHeight;
+  if (textNode.letterSpacing) style.letterSpacing = textNode.letterSpacing;
+  if (textNode.textDecoration) style.textDecoration = textNode.textDecoration;
+
+  return (
+    <span key={index} style={style}>
+      {element}
+    </span>
+  );
+};
+
+  // Функция для рендеринга контента
+  // Функция для рендеринга контента
+const renderContent = (contentItem, index) => {
+  if (!contentItem) return null;
+
+  // Создаем стили для элемента
+  const elementStyle = {};
+  if (contentItem.align) elementStyle.textAlign = contentItem.align;
+  if (contentItem.style) Object.assign(elementStyle, contentItem.style);
+
+  switch (contentItem.type) {
+    case "title":
+      return (
+        <h1 key={index} className={styles.title} style={elementStyle}>
+          {contentItem.children?.map((child, childIndex) =>
+            renderText(child, childIndex)
+          )}
+        </h1>
+      );
+
+    case "description":
+      return (
+        <div key={index} className={styles.description} style={elementStyle}>
+          {contentItem.children?.map((child, childIndex) =>
+            renderText(child, childIndex)
+          )}
+        </div>
+      );
+
+    case "paragraph":
+      return (
+        <p key={index} className={styles.paragraph} style={elementStyle}>
+          {contentItem.children?.map((child, childIndex) =>
+            renderText(child, childIndex)
+          )}
+        </p>
+      );
+
+    case "heading":
+      return (
+        <h2 key={index} className={styles.heading} style={elementStyle}>
+          {contentItem.children?.map((child, childIndex) =>
+            renderText(child, childIndex)
+          )}
+        </h2>
+      );
+
+    case "image":
+      return (
+        contentItem.url && (
+          <div key={index} style={elementStyle}>
             <img
-              key={index}
               src={contentItem.url}
               alt="Project content"
               className={styles.image}
               style={{ maxWidth: "100%", height: "auto" }}
             />
-          )
-        );
-      default:
-        return null;
-    }
-  };
+          </div>
+        )
+      );
 
+    case "video":
+      return (
+        contentItem.url && (
+          <div key={index} style={elementStyle}>
+            <video
+              src={contentItem.url}
+              controls
+              className={styles.video}
+              style={{ maxWidth: "100%", height: "auto" }}
+            />
+          </div>
+        )
+      );
+
+    default:
+      // Для неизвестных типов пытаемся отобразить текст
+      return (
+        <div key={index} style={elementStyle}>
+          {contentItem.children?.map((child, childIndex) =>
+            renderText(child, childIndex)
+          )}
+        </div>
+      );
+  }
+};
   return (
     <div className={styles.cardPageWrapper}>
+      {/* Заголовок проекта */}
       <h2 className={styles.projectTitle}>{currentProject.name}</h2>
 
       {/* Блок с информацией о пользователе */}
@@ -130,16 +220,14 @@ export default function CardPage({ project: initialProject }) {
         </div>
       )}
 
-      {currentProject.description && (
-        <p className={styles.projectDescription}>
-          {currentProject.description}
-        </p>
-      )}
-      {contentArray.length > 0 ? (
-        contentArray.map((item, index) => renderContent(item, index))
-      ) : (
-        <p className={styles.noContent}>Контент проекта отсутствует</p>
-      )}
+      {/* Основной контент проекта */}
+      <div className={styles.projectContent}>
+        {contentArray.length > 0 ? (
+          contentArray.map((item, index) => renderContent(item, index))
+        ) : (
+          <p className={styles.noContent}>Контент проекта отсутствует</p>
+        )}
+      </div>
 
       {/* Блок с лайками */}
       {currentProject.likedBy && currentProject.likedBy.length > 0 && (
@@ -175,6 +263,7 @@ export default function CardPage({ project: initialProject }) {
           </div>
         </div>
       )}
+
       {/* Блок с другими проектами пользователя */}
       {currentProject.projects && currentProject.projects.length > 0 && (
         <div className={styles.userProjects}>
