@@ -28,24 +28,14 @@ export default function BlogPage() {
         blog.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         blog.author.name.toLowerCase().includes(searchQuery.toLowerCase());
 
+      // Фильтрация по specializationId
       const matchesSpecialization = selectedSpecialization
-        ? blog.specialization?.id === parseInt(selectedSpecialization)
+        ? String(blog.specializationId) === String(selectedSpecialization)
         : true;
 
-      const matchesCategory = selectedCategory
-        ? blog.category?.id === parseInt(selectedCategory)
-        : true;
-
-      return matchesSearch && matchesSpecialization && matchesCategory;
+      return matchesSearch && matchesSpecialization;
     });
-  }, [
-    blogs,
-    searchQuery,
-    selectedSpecialization,
-    selectedCategory,
-    specializations,
-    categories,
-  ]);
+  }, [blogs, searchQuery, selectedSpecialization]);
 
   const loading = optionsLoading || blogsLoading;
   const error = optionsError || blogsError;
@@ -95,20 +85,6 @@ export default function BlogPage() {
               {specializations.map((specialization) => (
                 <option key={specialization.value} value={specialization.value}>
                   {specialization.label}
-                </option>
-              ))}
-            </select>
-
-            <select
-              className={styles.filterSelect}
-              disabled={loading}
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="">Все ниши</option>
-              {categories.map((category) => (
-                <option key={category.value} value={category.value}>
-                  {category.label}
                 </option>
               ))}
             </select>
