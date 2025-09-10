@@ -11,8 +11,59 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
+
+.projectCard {
+  position: relative;
+}
+
+.deleteButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(128, 128, 128, 0.5);
+  border: none;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #dc3545;
+  transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.deleteButton:hover {
+  background: rgba(220, 53, 69, 0.8);
+  color: white;
+  transform: scale(1.05);
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.deleteButton svg {
+  width: 16px;
+  height: 16px;
+}
+
 @media (max-width: 600px) {
   .card_wrapper {
     justify-content: center;
+  }
+
+  .deleteButton {
+    width: 24px;
+    height: 24px;
+  }
+
+  .deleteButton svg {
+    width: 14px;
+    height: 14px;
   }
 }

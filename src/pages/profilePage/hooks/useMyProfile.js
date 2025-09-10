@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import api from "../../../shared/api/api";
 
@@ -7,7 +7,7 @@ export default function useMyProfile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const fetchProfile = useCallback(() => {
     setLoading(true);
     api
       .get("/user/get-my-profile")
@@ -16,5 +16,16 @@ export default function useMyProfile() {
       .finally(() => setLoading(false));
   }, []);
 
-  return { profile, loading, error };
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
+
+  const removeProject = useCallback((projectId) => {
+    setProfile((prev) => ({
+      ...prev,
+      projects: prev.projects.filter((project) => project.id !== projectId),
+    }));
+  }, []);
+
+  return { profile, loading, error, refetch: fetchProfile, removeProject };
 }
