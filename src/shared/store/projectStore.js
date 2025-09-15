@@ -35,6 +35,23 @@ export const useProjectStore = create(
           projectData: { ...state.projectData, ...newData },
         })),
 
+      // Установка полных данных проекта (для режима редактирования)
+      setProjectData: (projectData) =>
+        set(() => ({
+          projectData: {
+            name: projectData.name || "",
+            description: projectData.description || "",
+            categoryId: projectData.categoryId || null,
+            specializationId: projectData.specializationId || null,
+            firstLink: projectData.firstLink || "",
+            secondLink: projectData.secondLink || "",
+            content: projectData.content || null,
+            coverImage: null,
+            coverImagePreview: null,
+            coverImageBase64: null,
+          },
+        })),
+
       // Установка обложки проекта
       setCoverImage: async (file) => {
         console.log("setCoverImage called with:", file);

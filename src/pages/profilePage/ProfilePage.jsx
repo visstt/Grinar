@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import useMyProfile from "./hooks/useMyProfile";
 import Subscriptions from "./profileComponents/Subscriptions/Subscriptions";
+import MyBlogs from "./profileComponents/myBlogs/MyBlogs";
 import MyProjects from "./profileComponents/myProjects/MyProjects";
 import ProfileMainInfo from "./profileComponents/profileMainInfo/ProfileMainInfo";
 import ProfileTitle from "./profileComponents/profileTitle/ProfileTitle";
@@ -15,6 +16,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (location.pathname === "/profile/projects") setActiveTab("projects");
+    else if (location.pathname === "/profile/blogs") setActiveTab("blogs");
     else if (location.pathname === "/profile/subscriptions")
       setActiveTab("subscriptions");
     else if (
@@ -37,9 +39,9 @@ export default function ProfilePage() {
       <div style={{ marginBottom: 80 }}>
         <ProfileTitle />
       </div>
-      {/* Кнопки навигации убраны, используются только из ProfileTitle */}
       {activeTab === "main" && <ProfileMainInfo />}
       {activeTab === "projects" && <MyProjects />}
+      {activeTab === "blogs" && <MyBlogs />}
       {activeTab === "subscriptions" && (
         <Subscriptions
           subscriptions={profile.followings?.subscriptions || []}

@@ -1,4 +1,4 @@
-.projectsContainer {
+.blogsContainer {
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
@@ -6,13 +6,14 @@
   box-sizing: border-box;
   margin-top: 120px;
 }
+
 .card_wrapper {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
-.projectCard {
+.blogCard {
   position: relative;
 }
 

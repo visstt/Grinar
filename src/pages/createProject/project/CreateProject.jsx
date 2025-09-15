@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Editor, Transforms, createEditor } from "slate";
 import { withHistory } from "slate-history";
@@ -13,7 +13,23 @@ import Toolbar from "./components/Toolbar";
 
 export default function CreateProject() {
   const [showToolbar, setShowToolbar] = useState(false);
-  const { projectData, updateProjectData } = useProjectStore();
+  const { projectData, updateProjectData, setProjectData } = useProjectStore();
+
+  // Проверяем, находимся ли в режиме редактирования
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const editProjectId = urlParams.get("edit");
+
+    if (editProjectId) {
+      // Загружаем данные проекта из localStorage
+      const editingProject = localStorage.getItem("editingProject");
+      if (editingProject) {
+        const projectData = JSON.parse(editingProject);
+        setProjectData(projectData);
+        localStorage.removeItem("editingProject"); // Очищаем после загрузки
+      }
+    }
+  }, [setProjectData]);
 
   const insertImage = useCallback((editor, url) => {
     const image = {

@@ -9,10 +9,17 @@
 }
 .imageWrapper {
   position: relative;
+  width: 270px;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 10px;
 }
 .imageWrapper img {
   border-radius: 10px;
-  width: 270px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 .card h3 {
   font-family: Manrope;

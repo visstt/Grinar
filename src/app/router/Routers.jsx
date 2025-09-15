@@ -51,6 +51,10 @@ export const router = createBrowserRouter([
         element: <ProfilePage tab="projects" />,
       },
       {
+        path: "profile/blogs",
+        element: <ProfilePage tab="blogs" />,
+      },
+      {
         path: "profile/main",
         element: <ProfilePage tab="main" />,
       },

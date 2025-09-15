@@ -24,6 +24,7 @@ export default function ProfileTitle() {
   // Определяем активную вкладку по pathname
   let activeTab = "main";
   if (location.pathname === "/profile/projects") activeTab = "projects";
+  else if (location.pathname === "/profile/blogs") activeTab = "blogs";
   else if (location.pathname === "/profile/subscriptions")
     activeTab = "subscriptions";
   else if (
@@ -98,6 +99,12 @@ export default function ProfileTitle() {
               onClick={() => navigate("/profile/projects")}
             >
               Проекты
+            </Button>
+            <Button
+              variant={activeTab === "blogs" ? "primary" : "default"}
+              onClick={() => navigate("/profile/blogs")}
+            >
+              Статьи
             </Button>
             <Button
               variant={activeTab === "main" ? "primary" : "default"}

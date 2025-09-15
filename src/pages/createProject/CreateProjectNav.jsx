@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Button from "../../shared/ui/components/button/Button";
@@ -11,12 +13,24 @@ export default function CreateProjectNav({ onPublish, isLoading }) {
   const isProjectPage = location.pathname === "/create-project";
   const isInformationPage = location.pathname === "/project-information";
 
+  // Проверяем, находимся ли в режиме редактирования
+  const isEditMode = useMemo(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("edit") !== null;
+  }, []);
+
   const handleProjectClick = () => {
-    navigate("/create-project");
+    const urlParams = new URLSearchParams(window.location.search);
+    const editParam = urlParams.get("edit");
+    const editQuery = editParam ? `?edit=${editParam}` : "";
+    navigate(`/create-project${editQuery}`);
   };
 
   const handleInformationClick = () => {
-    navigate("/project-information");
+    const urlParams = new URLSearchParams(window.location.search);
+    const editParam = urlParams.get("edit");
+    const editQuery = editParam ? `?edit=${editParam}` : "";
+    navigate(`/project-information${editQuery}`);
   };
 
   const handlePublishClick = () => {
@@ -59,7 +73,13 @@ export default function CreateProjectNav({ onPublish, isLoading }) {
               onClick={handlePublishClick}
               disabled={isLoading}
             >
-              {isLoading ? "Публикуется..." : "Опубликовать"}
+              {isLoading
+                ? isEditMode
+                  ? "Сохраняется..."
+                  : "Публикуется..."
+                : isEditMode
+                  ? "Сохранить"
+                  : "Опубликовать"}
             </Button>
           )}
         </div>

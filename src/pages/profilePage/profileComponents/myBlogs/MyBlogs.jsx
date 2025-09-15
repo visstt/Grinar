@@ -1,31 +1,31 @@
 import Card from "../../../../shared/ui/components/Card/Card";
 import EmptyState from "../../../../shared/ui/components/emptyState/EmptyState";
-import { useDeleteProject } from "../../hooks/useDeleteProject";
-import { useEditProject } from "../../hooks/useEditProject";
+import { useDeleteBlog } from "../../hooks/useDeleteBlog";
+import { useEditBlog } from "../../hooks/useEditBlog";
 import useMyProfile from "../../hooks/useMyProfile";
-import styles from "./MyProjects.module.css";
+import styles from "./MyBlogs.module.css";
 
-export default function MyProjects() {
-  const { profile, loading, error, removeProject } = useMyProfile();
-  const { deleteProject, loading: deleteLoading } = useDeleteProject();
-  const { getProjectForEdit } = useEditProject();
+export default function MyBlogs() {
+  const { profile, loading, error, removeBlog } = useMyProfile();
+  const { deleteBlog, loading: deleteLoading } = useDeleteBlog();
+  const { getBlogForEdit } = useEditBlog();
 
-  const handleDeleteProject = async (projectId) => {
-    if (window.confirm("Вы уверены, что хотите удалить этот проект?")) {
-      const success = await deleteProject(projectId);
+  const handleDeleteBlog = async (blogId) => {
+    if (window.confirm("Вы уверены, что хотите удалить эту статью?")) {
+      const success = await deleteBlog(blogId);
       if (success) {
-        removeProject(projectId);
+        removeBlog(blogId);
       }
     }
   };
 
-  const handleEditProject = async (projectId) => {
-    const projectData = await getProjectForEdit(projectId);
-    if (projectData) {
-      // Передаем данные проекта в редактор через localStorage или state management
-      localStorage.setItem("editingProject", JSON.stringify(projectData));
+  const handleEditBlog = async (blogId) => {
+    const blogData = await getBlogForEdit(blogId);
+    if (blogData) {
+      // Передаем данные статьи в редактор через localStorage
+      localStorage.setItem("editingBlog", JSON.stringify(blogData));
       // Переходим на страницу редактирования
-      window.location.href = `/create-project?edit=${projectId}`;
+      window.location.href = `/create-article?edit=${blogId}`;
     }
   };
 
@@ -37,40 +37,45 @@ export default function MyProjects() {
       </div>
     );
 
-  if (!profile?.projects?.length) {
+  if (!profile?.blogs?.length) {
     return (
       <EmptyState
-        icon="📁"
-        title="Пока нет проектов"
-        description="Создайте свой первый проект и поделитесь им с сообществом"
-        actionText="Добавить проект"
-        onAction={() => (window.location.href = "/create-project")}
+        icon="📝"
+        title="Пока нет статей"
+        description="Создайте свою первую статью и поделитесь знаниями с сообществом"
+        actionText="Добавить статью"
+        onAction={() => (window.location.href = "/create-article")}
       />
     );
   }
 
   return (
-    <div className={styles.projectsContainer}>
+    <div className={styles.blogsContainer}>
       <div className={styles.card_wrapper}>
-        {profile.projects.map((project) => (
-          <div key={project.id} className={styles.projectCard}>
+        {profile.blogs.map((blog) => (
+          <div key={blog.id} className={styles.blogCard}>
             <Card
-              project={{
-                id: project.id,
-                projectPhotoName: project.photoName,
-                name: project.name,
-                userLogoPhotoName: profile.logoFileName,
-                fullName: profile.fullName,
-                specialization: profile.specialization,
-                category: project.category,
-                userId: profile.id,
+              blog={{
+                id: blog.id,
+                name: blog.name,
+                coverImage: blog.coverImage,
+                description: blog.description,
+                author: {
+                  ...blog.author,
+                  specializations: blog.author?.specializations || [],
+                },
+                likes: blog.likes,
+                views: blog.views,
+                createdAt: blog.createdAt,
+                category: blog.category || null,
               }}
+              type="blog"
             />
             <div className={styles.actionButtons}>
               <button
                 className={styles.editButton}
-                onClick={() => handleEditProject(project.id)}
-                title="Редактировать проект"
+                onClick={() => handleEditBlog(blog.id)}
+                title="Редактировать статью"
               >
                 <svg
                   width="16"
@@ -97,9 +102,9 @@ export default function MyProjects() {
               </button>
               <button
                 className={styles.deleteButton}
-                onClick={() => handleDeleteProject(project.id)}
+                onClick={() => handleDeleteBlog(blog.id)}
                 disabled={deleteLoading}
-                title="Удалить проект"
+                title="Удалить статью"
               >
                 <svg
                   width="16"

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { useProjectStore } from "../../../shared/store/projectStore";
 import Button from "../../../shared/ui/components/button/Button";
@@ -16,6 +16,7 @@ export default function Information() {
     useProjectStore();
   const {
     createProject,
+    updateProject,
     loading: createLoading,
     error: createError,
     success,
@@ -26,6 +27,14 @@ export default function Information() {
     loading: fetchLoading,
     error: fetchError,
   } = useFetchOptions();
+
+  // Проверяем, находимся ли в режиме редактирования
+  const editProjectId = useMemo(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("edit");
+  }, []);
+
+  const isEditMode = !!editProjectId;
 
   // Очистка blob URL при размонтировании компонента
   useEffect(() => {
@@ -77,11 +86,19 @@ export default function Information() {
     }
 
     try {
-      await createProject(projectData);
-      alert("Проект успешно опубликован!");
-      resetProject();
+      if (isEditMode) {
+        await updateProject(editProjectId, projectData);
+        alert("Проект успешно обновлен!");
+        window.location.href = "/profile";
+      } else {
+        await createProject(projectData);
+        alert("Проект успешно опубликован!");
+        resetProject();
+      }
     } catch (err) {
-      alert(`Ошибка при публикации: ${err.message}`);
+      alert(
+        `Ошибка при ${isEditMode ? "обновлении" : "публикации"}: ${err.message}`,
+      );
     }
   };
 

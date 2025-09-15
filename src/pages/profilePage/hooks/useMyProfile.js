@@ -27,5 +27,19 @@ export default function useMyProfile() {
     }));
   }, []);
 
-  return { profile, loading, error, refetch: fetchProfile, removeProject };
+  const removeBlog = useCallback((blogId) => {
+    setProfile((prev) => ({
+      ...prev,
+      blogs: prev.blogs.filter((blog) => blog.id !== blogId),
+    }));
+  }, []);
+
+  return {
+    profile,
+    loading,
+    error,
+    refetch: fetchProfile,
+    removeProject,
+    removeBlog,
+  };
 }
