@@ -89,6 +89,9 @@ export default function Information() {
       if (isEditMode) {
         await updateProject(editProjectId, projectData);
         alert("Проект успешно обновлен!");
+        // Очищаем store и localStorage после успешного обновления
+        resetProject();
+        localStorage.removeItem("editingProject");
         window.location.href = "/profile";
       } else {
         await createProject(projectData);

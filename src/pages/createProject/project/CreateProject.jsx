@@ -13,23 +13,60 @@ import Toolbar from "./components/Toolbar";
 
 export default function CreateProject() {
   const [showToolbar, setShowToolbar] = useState(false);
-  const { projectData, updateProjectData, setProjectData } = useProjectStore();
+  const [currentEditId, setCurrentEditId] = useState(null);
+  const { projectData, updateProjectData, setProjectData, resetProject } =
+    useProjectStore();
 
   // Проверяем, находимся ли в режиме редактирования
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const editProjectId = urlParams.get("edit");
 
+    setCurrentEditId(editProjectId);
+
     if (editProjectId) {
-      // Загружаем данные проекта из localStorage
+      // Сначала очищаем store от предыдущих данных
+      resetProject();
+
+      // Затем загружаем данные конкретного проекта из localStorage
       const editingProject = localStorage.getItem("editingProject");
       if (editingProject) {
-        const projectData = JSON.parse(editingProject);
-        setProjectData(projectData);
-        localStorage.removeItem("editingProject"); // Очищаем после загрузки
+        try {
+          const projectData = JSON.parse(editingProject);
+          // Проверяем, что данные относятся к нужному проекту
+          if (projectData.id && projectData.id.toString() === editProjectId) {
+            setProjectData(projectData);
+            console.log(`Загружены данные проекта ${editProjectId}`);
+          } else {
+            // Если данные от другого проекта - очищаем и не загружаем
+            localStorage.removeItem("editingProject");
+            console.log(
+              `Данные в localStorage относятся к проекту ${projectData.id}, а нужен ${editProjectId}, очищаем`,
+            );
+          }
+        } catch (error) {
+          console.error("Ошибка при парсинге данных проекта:", error);
+          localStorage.removeItem("editingProject");
+        }
       }
+    } else {
+      // Если не в режиме редактирования - очищаем store и localStorage
+      resetProject();
+      localStorage.removeItem("editingProject");
     }
-  }, [setProjectData]);
+  }, [setProjectData, resetProject, currentEditId]); // Добавляем currentEditId в зависимости
+
+  // Очищаем данные при размонтировании компонента (если пользователь покидает страницу)
+  useEffect(() => {
+    return () => {
+      // Очищаем только если не в режиме редактирования
+      const urlParams = new URLSearchParams(window.location.search);
+      const editProjectId = urlParams.get("edit");
+      if (!editProjectId) {
+        localStorage.removeItem("editingProject");
+      }
+    };
+  }, []);
 
   const insertImage = useCallback((editor, url) => {
     const image = {
@@ -113,6 +150,7 @@ export default function CreateProject() {
     <div className={styles.container}>
       <Header darkBackground={true} />
       <Slate
+        key={currentEditId || "new"} // Добавляем ключ для принудительного обновления редактора
         editor={editor}
         initialValue={initialValue}
         onChange={handleEditorChange}

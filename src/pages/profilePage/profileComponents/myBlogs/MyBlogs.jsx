@@ -20,6 +20,9 @@ export default function MyBlogs() {
   };
 
   const handleEditBlog = async (blogId) => {
+    // Очищаем предыдущие данные из localStorage
+    localStorage.removeItem("editingBlog");
+
     const blogData = await getBlogForEdit(blogId);
     if (blogData) {
       // Передаем данные статьи в редактор через localStorage

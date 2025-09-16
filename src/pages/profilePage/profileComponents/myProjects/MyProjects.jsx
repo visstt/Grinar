@@ -20,9 +20,12 @@ export default function MyProjects() {
   };
 
   const handleEditProject = async (projectId) => {
+    // Очищаем предыдущие данные из localStorage
+    localStorage.removeItem("editingProject");
+
     const projectData = await getProjectForEdit(projectId);
     if (projectData) {
-      // Передаем данные проекта в редактор через localStorage или state management
+      // Передаем данные проекта в редактор через localStorage
       localStorage.setItem("editingProject", JSON.stringify(projectData));
       // Переходим на страницу редактирования
       window.location.href = `/create-project?edit=${projectId}`;
