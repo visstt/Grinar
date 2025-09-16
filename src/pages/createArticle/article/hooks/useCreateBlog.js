@@ -69,5 +69,60 @@ export function useCreateBlog() {
     }
   };
 
-  return { createBlog, loading, error };
+  const updateBlog = async (
+    blogId,
+    { name, specializationId, content, coverImage },
+  ) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      console.log("useCreateBlog updateBlog - полученные данные:", {
+        name,
+        specializationId,
+        content,
+        coverImage,
+      });
+
+      const formData = new FormData();
+
+      // Обязательные поля
+      formData.append("name", name);
+      formData.append("specializationId", String(specializationId));
+
+      // Контент как строка JSON
+      formData.append("content", JSON.stringify(content));
+      console.log("Отправляемый контент (JSON):", JSON.stringify(content));
+
+      // Обложка опциональна при обновлении
+      if (coverImage) {
+        formData.append("coverImage", coverImage);
+      }
+
+      console.log("FormData для обновления:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": ", pair[1]);
+      }
+
+      const response = await api.put(`/blog/update-blog/${blogId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Ответ сервера при обновлении:", response.data);
+      return response.data;
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Ошибка при обновлении статьи",
+      );
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { createBlog, updateBlog, loading, error };
 }

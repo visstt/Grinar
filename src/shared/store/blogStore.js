@@ -17,6 +17,7 @@ export const useBlogStore = create(
     (set, get) => ({
       // Данные блога/статьи
       blogData: {
+        id: null, // ID блога для отслеживания режима редактирования
         name: "",
         description: "",
         specializationId: null,
@@ -32,7 +33,34 @@ export const useBlogStore = create(
           blogData: { ...state.blogData, ...newData },
         })),
 
-      // Установка обложки блога
+      // Полная замена данных блога (для режима редактирования)
+      setBlogData: (blogData) => {
+        // Если есть photoName, создаем превью для обложки
+        let coverImagePreview = null;
+        let coverImageBase64 = null;
+
+        if (blogData.photoName) {
+          // Используем фото из API для превью
+          const apiUrl =
+            import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+          coverImagePreview = `${apiUrl}/static/project-photos/${blogData.photoName}`;
+          // Также сохраняем как base64 для совместимости
+          coverImageBase64 = coverImagePreview;
+        }
+
+        set(() => ({
+          blogData: {
+            id: blogData.id || null, // Сохраняем ID для отслеживания режима редактирования
+            name: blogData.name || "",
+            description: blogData.description || "",
+            specializationId: blogData.specializationId || null,
+            content: blogData.content || null,
+            coverImage: null, // Файл устанавливается отдельно
+            coverImagePreview: coverImagePreview,
+            coverImageBase64: coverImageBase64,
+          },
+        }));
+      }, // Установка обложки блога
       setCoverImage: async (file) => {
         console.log("Blog: setCoverImage called with:", file);
 
@@ -110,6 +138,7 @@ export const useBlogStore = create(
         useBlogFileStore.getState().clearCoverImageFile();
         set({
           blogData: {
+            id: null,
             name: "",
             description: "",
             specializationId: null,

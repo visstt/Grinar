@@ -4,7 +4,7 @@ import Button from "../../shared/ui/components/button/Button";
 import Header from "../../shared/ui/components/header/Header";
 import styles from "./CreateArticleNav.module.css";
 
-export default function CreateArticleNav({ onPublish, isLoading }) {
+export default function CreateArticleNav({ onPublish, isLoading, isEditMode }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -12,11 +12,23 @@ export default function CreateArticleNav({ onPublish, isLoading }) {
   const isInformationPage = location.pathname === "/article-information";
 
   const handleArticleClick = () => {
-    navigate("/create-article");
+    // Сохраняем параметр edit при переходе между вкладками
+    const urlParams = new URLSearchParams(window.location.search);
+    const editParam = urlParams.get("edit");
+    const url = editParam
+      ? `/create-article?edit=${editParam}`
+      : "/create-article";
+    navigate(url);
   };
 
   const handleInformationClick = () => {
-    navigate("/article-information");
+    // Сохраняем параметр edit при переходе между вкладками
+    const urlParams = new URLSearchParams(window.location.search);
+    const editParam = urlParams.get("edit");
+    const url = editParam
+      ? `/article-information?edit=${editParam}`
+      : "/article-information";
+    navigate(url);
   };
 
   const handlePublishClick = () => {
@@ -59,7 +71,13 @@ export default function CreateArticleNav({ onPublish, isLoading }) {
               onClick={handlePublishClick}
               disabled={isLoading}
             >
-              {isLoading ? "Публикуется..." : "Опубликовать"}
+              {isLoading
+                ? isEditMode
+                  ? "Обновляется..."
+                  : "Публикуется..."
+                : isEditMode
+                  ? "Обновить"
+                  : "Опубликовать"}
             </Button>
           )}
         </div>

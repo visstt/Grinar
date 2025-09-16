@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -25,6 +25,7 @@ export default function Information() {
   } = useBlogStore();
   const {
     createBlog,
+    updateBlog,
     loading: createLoading,
     error: createError,
   } = useCreateBlog();
@@ -33,6 +34,9 @@ export default function Information() {
     loading: fetchLoading,
     error: fetchError,
   } = useFetchOptions();
+
+  // Определяем режим редактирования на основе наличия ID в данных блога
+  const isEditMode = !!blogData.id;
 
   // Восстанавливаем файл из base64 если он есть, но файл отсутствует
   useEffect(() => {
@@ -140,19 +144,40 @@ export default function Information() {
     console.log("Is File instance:", coverImageFile instanceof File);
 
     try {
-      const blogSubmitData = {
-        name: blogData.name,
-        specializationId: blogData.specializationId,
-        content: blogData.content,
-        coverImage: coverImageFile,
-      };
+      if (isEditMode) {
+        const blogUpdateData = {
+          name: blogData.name,
+          specializationId: blogData.specializationId,
+          content: blogData.content,
+          coverImage: coverImageFile,
+        };
 
-      await createBlog(blogSubmitData);
-      toast.success("Статья успешно опубликована!");
-      resetBlog();
-      navigate("/blog");
+        console.log("Данные для обновления блога:", blogUpdateData);
+        console.log("Контент для обновления:", blogUpdateData.content);
+
+        await updateBlog(blogData.id, blogUpdateData);
+        toast.success("Статья успешно обновлена!");
+        // Очищаем store и localStorage после успешного обновления
+        resetBlog();
+        localStorage.removeItem("editingBlog");
+        navigate("/profile");
+      } else {
+        const blogSubmitData = {
+          name: blogData.name,
+          specializationId: blogData.specializationId,
+          content: blogData.content,
+          coverImage: coverImageFile,
+        };
+
+        await createBlog(blogSubmitData);
+        toast.success("Статья успешно опубликована!");
+        resetBlog();
+        navigate("/blog");
+      }
     } catch (err) {
-      toast.error(`Ошибка при публикации: ${err.message}`);
+      toast.error(
+        `Ошибка при ${isEditMode ? "обновлении" : "публикации"}: ${err.message}`,
+      );
     }
   };
 
@@ -162,6 +187,7 @@ export default function Information() {
       <CreateArticleNav
         onPublish={handlePublish}
         isLoading={createLoading || fetchLoading}
+        isEditMode={isEditMode}
       />
       <div className="containerXS">
         <div className={styles.content}>

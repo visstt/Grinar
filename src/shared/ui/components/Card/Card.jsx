@@ -94,7 +94,7 @@ export default function Card({ project, blog, type = "project" }) {
 
   const handleCardClick = () => {
     if (type === "blog") {
-      navigate(`/article/${blog.id}`);
+      navigate(`/blog/blog-by-id/${blog.id}`);
     } else {
       setOpen(true);
     }

@@ -12,6 +12,8 @@ export function useEditBlog() {
       setError(null);
 
       const response = await api.get(`/blog/edit-content/${blogId}`);
+      console.log("Ответ сервера для редактирования блога:", response.data);
+      console.log("Контент из сервера:", response.data.content);
       return response.data;
     } catch (err) {
       setError(err.response?.data?.message || "Ошибка при загрузке статьи");
