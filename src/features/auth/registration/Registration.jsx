@@ -8,7 +8,6 @@ import RegistrationStep2 from "./RegistrationStep2";
 import { useRegistration } from "./hooks/useRegistration";
 
 export default function Registration({ onClose }) {
-  const [profileTypeId, setProfileTypeId] = useState(1);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [login, setLogin] = useState("");
@@ -41,7 +40,6 @@ export default function Registration({ onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await register({
-      profileTypeId,
       login,
       email,
       password,
@@ -81,23 +79,6 @@ export default function Registration({ onClose }) {
         <X color="#fff" size={20} strokeWidth={2} />
       </button>
       <h3>Регистрация</h3>
-      <p>Выберите тип профиля</p>
-      <div className={styles.btn_wrapper}>
-        <button
-          className={profileTypeId === 1 ? styles.active : styles.disactive}
-          onClick={() => setProfileTypeId(1)}
-          type="button"
-        >
-          Личный
-        </button>
-        <button
-          className={profileTypeId === 2 ? styles.active : styles.disactive}
-          onClick={() => setProfileTypeId(2)}
-          type="button"
-        >
-          Компания
-        </button>
-      </div>
       <form className={styles.form} onSubmit={handleSubmit}>
         {error && (
           <div className={styles.error_block}>

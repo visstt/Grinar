@@ -257,6 +257,7 @@
   .projectTitle {
     font-size: 20px;
     margin-bottom: 12px;
+    margin-top: 40px;
   }
 
   .userInfo {
@@ -500,4 +501,3 @@
     height: 32px;
   }
 }
-
