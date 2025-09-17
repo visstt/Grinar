@@ -152,6 +152,14 @@ export const useBlogStore = create(
 
       // Получение всех данных блога
       getBlogData: () => get().blogData,
+
+      // Сохранение данных в localStorage для режима редактирования
+      saveToLocalStorage: () => {
+        const data = get().blogData;
+        if (data.id) {
+          localStorage.setItem("editingBlog", JSON.stringify(data));
+        }
+      },
     }),
     {
       name: "blog-draft-storage",

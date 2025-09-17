@@ -11,18 +11,15 @@ import Select from "../../../shared/ui/components/input/Select";
 import Textarea from "../../../shared/ui/components/input/Textarea";
 import CreateArticleNav from "../CreateArticleNav";
 import { useCreateBlog } from "../article/hooks/useCreateBlog";
+import { useCreateArticleContext } from "../context/CreateArticleContext";
 import styles from "./Information.module.css";
 import { useFetchOptions } from "./hooks/useFetchOptions";
 
 export default function Information() {
   const navigate = useNavigate();
-  const {
-    blogData,
-    updateBlogData,
-    setCoverImage,
-    resetBlog,
-    getCoverImageFile,
-  } = useBlogStore();
+  const { blogData, updateBlogData, isEditMode, resetBlog } =
+    useCreateArticleContext();
+  const { setCoverImage, getCoverImageFile } = useBlogStore();
   const {
     createBlog,
     updateBlog,
@@ -34,9 +31,6 @@ export default function Information() {
     loading: fetchLoading,
     error: fetchError,
   } = useFetchOptions();
-
-  // Определяем режим редактирования на основе наличия ID в данных блога
-  const isEditMode = !!blogData.id;
 
   // Восстанавливаем файл из base64 если он есть, но файл отсутствует
   useEffect(() => {
@@ -94,20 +88,28 @@ export default function Information() {
     };
   }, [blogData.coverImagePreview]);
 
+  // Очищаем данные при размонтировании компонента только если покидаем весь процесс создания/редактирования статьи
+  useEffect(() => {
+    return () => {
+      // Проверяем, переходим ли мы на страницы, не связанные с созданием статьи
+      const currentPath = window.location.pathname;
+      const isArticleRelatedPage =
+        currentPath === "/create-article" ||
+        currentPath === "/article-information";
+
+      // Очищаем только если покидаем страницы создания статьи и не в режиме редактирования
+      if (!isArticleRelatedPage && !isEditMode) {
+        localStorage.removeItem("editingBlog");
+      }
+    };
+  }, [isEditMode]);
+
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
     console.log("Selected file:", file);
     console.log("File name:", file?.name);
     console.log("File size:", file?.size);
     await setCoverImage(file);
-
-    // Даем время store обновиться
-    setTimeout(() => {
-      console.log(
-        "After setCoverImage (delayed), blogData.coverImage:",
-        blogData.coverImage,
-      );
-    }, 100);
   };
 
   const handleImageDelete = async () => {

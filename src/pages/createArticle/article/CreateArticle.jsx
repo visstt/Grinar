@@ -1,21 +1,20 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import { Editor, Transforms, createEditor } from "slate";
 import { withHistory } from "slate-history";
 import { Slate, withReact } from "slate-react";
 
-import { useBlogStore } from "../../../shared/store/blogStore";
 import Header from "../../../shared/ui/components/header/Header";
 import CreateArticleNav from "../CreateArticleNav";
+import { useCreateArticleContext } from "../context/CreateArticleContext";
 import styles from "./CreateArticle.module.css";
 import ArticleEditor from "./components/ArticleEditor";
 import Toolbar from "./components/Toolbar";
 
 export default function CreateArticle() {
   const [showToolbar, setShowToolbar] = useState(false);
-  const [currentEditId, setCurrentEditId] = useState(null);
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const { blogData, updateBlogData, setBlogData, resetBlog } = useBlogStore();
+  const { blogData, updateBlogData, isDataLoaded, currentEditId } =
+    useCreateArticleContext();
 
   const insertImage = useCallback((editor, url) => {
     const image = {
@@ -29,65 +28,6 @@ export default function CreateArticle() {
       children: [{ text: "" }],
     };
     Transforms.insertNodes(editor, emptyParagraph);
-  }, []);
-
-  // Проверяем, находимся ли в режиме редактирования
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const editBlogId = urlParams.get("edit");
-
-    setCurrentEditId(editBlogId);
-
-    if (editBlogId) {
-      // Сначала очищаем store от предыдущих данных
-      resetBlog();
-
-      // Затем загружаем данные конкретного блога из localStorage
-      const editingBlog = localStorage.getItem("editingBlog");
-      if (editingBlog) {
-        try {
-          const blogData = JSON.parse(editingBlog);
-          // Проверяем, что данные относятся к нужному блогу
-          if (blogData.id && blogData.id.toString() === editBlogId) {
-            console.log("Загружаемые данные блога:", blogData);
-            console.log("Контент блога:", blogData.content);
-            setBlogData(blogData);
-            setIsDataLoaded(true);
-            console.log(`Загружены данные блога ${editBlogId}`);
-          } else {
-            // Если данные от другого блога - очищаем и не загружаем
-            localStorage.removeItem("editingBlog");
-            setIsDataLoaded(true);
-            console.log(
-              `Данные в localStorage относятся к блогу ${blogData.id}, а нужен ${editBlogId}, очищаем`,
-            );
-          }
-        } catch (error) {
-          console.error("Ошибка при парсинге данных блога:", error);
-          localStorage.removeItem("editingBlog");
-          setIsDataLoaded(true);
-        }
-      } else {
-        setIsDataLoaded(true);
-      }
-    } else {
-      // Если не в режиме редактирования - очищаем store и localStorage
-      resetBlog();
-      localStorage.removeItem("editingBlog");
-      setIsDataLoaded(true);
-    }
-  }, [setBlogData, resetBlog, currentEditId]);
-
-  // Очищаем данные при размонтировании компонента (если пользователь покидает страницу)
-  useEffect(() => {
-    return () => {
-      // Очищаем только если не в режиме редактирования
-      const urlParams = new URLSearchParams(window.location.search);
-      const editBlogId = urlParams.get("edit");
-      if (!editBlogId) {
-        localStorage.removeItem("editingBlog");
-      }
-    };
   }, []);
 
   const withImages = useCallback(

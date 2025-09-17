@@ -3,6 +3,7 @@ import { Outlet, createBrowserRouter } from "react-router-dom";
 import ArticlePage from "../../pages/articlePage/ArticlePage";
 import BlogPage from "../../pages/blogPage/BlogPage";
 import ChatPage from "../../pages/chatPage/ChatPage";
+import CreateArticleLayout from "../../pages/createArticle/CreateArticleLayout";
 import CreateArticle from "../../pages/createArticle/article/CreateArticle";
 import ArticleInformation from "../../pages/createArticle/information/Information";
 import Information from "../../pages/createProject/information/Information";
@@ -127,12 +128,39 @@ export const router = createBrowserRouter([
         element: <Information />,
       },
       {
+        path: "create-article-flow",
+        element: <CreateArticleLayout />,
+        children: [
+          {
+            path: "create-article",
+            element: <CreateArticle />,
+          },
+          {
+            path: "article-information",
+            element: <ArticleInformation />,
+          },
+        ],
+      },
+      // Добавляем для совместимости старых ссылок
+      {
         path: "create-article",
-        element: <CreateArticle />,
+        element: <CreateArticleLayout />,
+        children: [
+          {
+            index: true,
+            element: <CreateArticle />,
+          },
+        ],
       },
       {
         path: "article-information",
-        element: <ArticleInformation />,
+        element: <CreateArticleLayout />,
+        children: [
+          {
+            index: true,
+            element: <ArticleInformation />,
+          },
+        ],
       },
     ],
   },
