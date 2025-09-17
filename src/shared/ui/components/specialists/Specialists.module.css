@@ -256,11 +256,11 @@
     gap: 8px;
   }
 
-  .categories p {
+  /* .categories p {
     width: 80%;
     text-align: center;
     width: 100px;
-  }
+  } */
 
   .rating_wrapper {
     flex-wrap: wrap;
