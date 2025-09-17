@@ -1,5 +1,8 @@
 import { useMemo } from "react";
 
+import { toast } from "react-toastify";
+
+import { useUserStore } from "../../shared/store/userStore";
 import Header from "../../shared/ui/components/header/Header";
 import styles from "./PaymentPage.module.css";
 import {
@@ -8,6 +11,7 @@ import {
 } from "./hooks/useSubscriptions";
 
 export default function PaymentPage() {
+  const { user } = useUserStore();
   const { subscriptions, loading: subsLoading } = useSubscriptions();
   const { createLink, loading: payLoading } = useCreatePaymentLink();
 
@@ -21,6 +25,10 @@ export default function PaymentPage() {
   );
 
   const handlePay = async (subscriptionId) => {
+    if (!user) {
+      toast.error("Зарегистрируйтесь перед тем как оформить подписку");
+      return;
+    }
     const res = await createLink(subscriptionId);
     if (res && res.data && res.data.paymentLink) {
       window.location.href = res.data.paymentLink;
