@@ -205,17 +205,19 @@ export default function Registration({ onClose }) {
             </span>
           </p>
         </div>
-        <button
-          className={
-            !policyChecked || loading
-              ? `${styles.submit_btn} ${styles.submit_btn_disabled}`
-              : styles.submit_btn
-          }
-          disabled={!policyChecked || loading}
-          type="submit"
-        >
-          {loading ? "Создание..." : "Создать профиль"}
-        </button>
+        <div className={styles.btn_container}>
+          <button
+            className={
+              !policyChecked || loading
+                ? `${styles.submit_btn} ${styles.submit_btn_disabled}`
+                : styles.submit_btn
+            }
+            disabled={!policyChecked || loading}
+            type="submit"
+          >
+            {loading ? "Создание..." : "Создать профиль"}
+          </button>
+        </div>
       </form>
     </div>
   );
