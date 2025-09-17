@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
+import { useUserStore } from "../../../shared/store/userStore";
 import Button from "../../../shared/ui/components/button/Button";
 import Header from "../../../shared/ui/components/header/Header";
 import { getUserLogoUrl } from "../../../shared/utils/getProjectImageUrl";
@@ -12,6 +14,7 @@ export default function UserProfileTitle({ userProfile }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { userId } = useParams();
+  const { user } = useUserStore();
   const { subscribeToUser, unsubscribeFromUser, loading } =
     useUserSubscription();
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -54,6 +57,10 @@ export default function UserProfileTitle({ userProfile }) {
   };
 
   const handleContact = () => {
+    if (!user) {
+      toast.error("Зарегистрируйтесь перед тем как связаться с человеком");
+      return;
+    }
     navigate(`/chat-page`, { state: { contactUserId: userId } });
   };
 

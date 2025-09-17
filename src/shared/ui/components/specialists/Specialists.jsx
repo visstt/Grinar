@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import api from "../../../api/api";
+import { useUserStore } from "../../../store/userStore";
 import {
   getProjectPhotoUrl,
   getUserLogoUrl,
@@ -15,6 +17,7 @@ import starBtn from "/icons/starBtn.svg";
 
 export default function Specialists({ specialist }) {
   const navigate = useNavigate();
+  const { user } = useUserStore();
   const [visibleCount, setVisibleCount] = useState(specialist.projects.length);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -42,6 +45,10 @@ export default function Specialists({ specialist }) {
   };
 
   const handleContactClick = () => {
+    if (!user) {
+      toast.error("Зарегистрируйтесь перед тем как связаться с человеком");
+      return;
+    }
     navigate(`/chat-page`, { state: { contactUserId: specialist.id } });
   };
 

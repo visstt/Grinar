@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import api from "../../../../api/api";
+import { useUserStore } from "../../../../store/userStore";
 import { getUserLogoUrl } from "../../../../utils/getProjectImageUrl";
 import Card from "../Card";
 import styles from "./CardPage.module.css";
@@ -10,6 +14,7 @@ import location from "/icons/location.svg";
 
 export default function CardPage({ project: initialProject }) {
   const navigate = useNavigate();
+  const { user } = useUserStore();
   const { project, loading, error } = useFetchProject(initialProject?.id);
   const [isLiked, setIsLiked] = useState(false);
   const [isLikeLoading, setIsLikeLoading] = useState(false);
@@ -42,6 +47,10 @@ export default function CardPage({ project: initialProject }) {
   };
 
   const handleContact = () => {
+    if (!user) {
+      toast.error("Зарегистрируйтесь перед тем как связаться с человеком");
+      return;
+    }
     if (currentProject?.user?.id) {
       navigate(`/chat-page`, {
         state: { contactUserId: currentProject.user.id },
@@ -69,120 +78,121 @@ export default function CardPage({ project: initialProject }) {
 
   // Функция для рендеринга текста со стилями
   // Функция для рендеринга текста со стилями
-const renderText = (textNode, index) => {
-  if (!textNode?.text) return null;
+  const renderText = (textNode, index) => {
+    if (!textNode?.text) return null;
 
-  let element = textNode.text;
+    let element = textNode.text;
 
-  // Применяем стили
-  if (textNode.bold) element = <strong key={index}>{element}</strong>;
-  if (textNode.italic) element = <em key={index}>{element}</em>;
-  if (textNode.underline) element = <u key={index}>{element}</u>;
+    // Применяем стили
+    if (textNode.bold) element = <strong key={index}>{element}</strong>;
+    if (textNode.italic) element = <em key={index}>{element}</em>;
+    if (textNode.underline) element = <u key={index}>{element}</u>;
 
-  // Применяем все возможные стили
-  const style = {};
-  if (textNode.color) style.color = textNode.color;
-  if (textNode.fontSize) style.fontSize = `${textNode.fontSize}px`;
-  if (textNode.fontFamily) style.fontFamily = textNode.fontFamily;
-  if (textNode.backgroundColor) style.backgroundColor = textNode.backgroundColor;
-  if (textNode.textAlign) style.textAlign = textNode.textAlign;
-  if (textNode.lineHeight) style.lineHeight = textNode.lineHeight;
-  if (textNode.letterSpacing) style.letterSpacing = textNode.letterSpacing;
-  if (textNode.textDecoration) style.textDecoration = textNode.textDecoration;
+    // Применяем все возможные стили
+    const style = {};
+    if (textNode.color) style.color = textNode.color;
+    if (textNode.fontSize) style.fontSize = `${textNode.fontSize}px`;
+    if (textNode.fontFamily) style.fontFamily = textNode.fontFamily;
+    if (textNode.backgroundColor)
+      style.backgroundColor = textNode.backgroundColor;
+    if (textNode.textAlign) style.textAlign = textNode.textAlign;
+    if (textNode.lineHeight) style.lineHeight = textNode.lineHeight;
+    if (textNode.letterSpacing) style.letterSpacing = textNode.letterSpacing;
+    if (textNode.textDecoration) style.textDecoration = textNode.textDecoration;
 
-  return (
-    <span key={index} style={style}>
-      {element}
-    </span>
-  );
-};
+    return (
+      <span key={index} style={style}>
+        {element}
+      </span>
+    );
+  };
 
   // Функция для рендеринга контента
   // Функция для рендеринга контента
-const renderContent = (contentItem, index) => {
-  if (!contentItem) return null;
+  const renderContent = (contentItem, index) => {
+    if (!contentItem) return null;
 
-  // Создаем стили для элемента
-  const elementStyle = {};
-  if (contentItem.align) elementStyle.textAlign = contentItem.align;
-  if (contentItem.style) Object.assign(elementStyle, contentItem.style);
+    // Создаем стили для элемента
+    const elementStyle = {};
+    if (contentItem.align) elementStyle.textAlign = contentItem.align;
+    if (contentItem.style) Object.assign(elementStyle, contentItem.style);
 
-  switch (contentItem.type) {
-    case "title":
-      return (
-        <h1 key={index} className={styles.title} style={elementStyle}>
-          {contentItem.children?.map((child, childIndex) =>
-            renderText(child, childIndex)
-          )}
-        </h1>
-      );
+    switch (contentItem.type) {
+      case "title":
+        return (
+          <h1 key={index} className={styles.title} style={elementStyle}>
+            {contentItem.children?.map((child, childIndex) =>
+              renderText(child, childIndex),
+            )}
+          </h1>
+        );
 
-    case "description":
-      return (
-        <div key={index} className={styles.description} style={elementStyle}>
-          {contentItem.children?.map((child, childIndex) =>
-            renderText(child, childIndex)
-          )}
-        </div>
-      );
-
-    case "paragraph":
-      return (
-        <p key={index} className={styles.paragraph} style={elementStyle}>
-          {contentItem.children?.map((child, childIndex) =>
-            renderText(child, childIndex)
-          )}
-        </p>
-      );
-
-    case "heading":
-      return (
-        <h2 key={index} className={styles.heading} style={elementStyle}>
-          {contentItem.children?.map((child, childIndex) =>
-            renderText(child, childIndex)
-          )}
-        </h2>
-      );
-
-    case "image":
-      return (
-        contentItem.url && (
-          <div key={index} style={elementStyle}>
-            <img
-              src={contentItem.url}
-              alt="Project content"
-              className={styles.image}
-              style={{ maxWidth: "100%", height: "auto" }}
-            />
+      case "description":
+        return (
+          <div key={index} className={styles.description} style={elementStyle}>
+            {contentItem.children?.map((child, childIndex) =>
+              renderText(child, childIndex),
+            )}
           </div>
-        )
-      );
+        );
 
-    case "video":
-      return (
-        contentItem.url && (
+      case "paragraph":
+        return (
+          <p key={index} className={styles.paragraph} style={elementStyle}>
+            {contentItem.children?.map((child, childIndex) =>
+              renderText(child, childIndex),
+            )}
+          </p>
+        );
+
+      case "heading":
+        return (
+          <h2 key={index} className={styles.heading} style={elementStyle}>
+            {contentItem.children?.map((child, childIndex) =>
+              renderText(child, childIndex),
+            )}
+          </h2>
+        );
+
+      case "image":
+        return (
+          contentItem.url && (
+            <div key={index} style={elementStyle}>
+              <img
+                src={contentItem.url}
+                alt="Project content"
+                className={styles.image}
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            </div>
+          )
+        );
+
+      case "video":
+        return (
+          contentItem.url && (
+            <div key={index} style={elementStyle}>
+              <video
+                src={contentItem.url}
+                controls
+                className={styles.video}
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            </div>
+          )
+        );
+
+      default:
+        // Для неизвестных типов пытаемся отобразить текст
+        return (
           <div key={index} style={elementStyle}>
-            <video
-              src={contentItem.url}
-              controls
-              className={styles.video}
-              style={{ maxWidth: "100%", height: "auto" }}
-            />
+            {contentItem.children?.map((child, childIndex) =>
+              renderText(child, childIndex),
+            )}
           </div>
-        )
-      );
-
-    default:
-      // Для неизвестных типов пытаемся отобразить текст
-      return (
-        <div key={index} style={elementStyle}>
-          {contentItem.children?.map((child, childIndex) =>
-            renderText(child, childIndex)
-          )}
-        </div>
-      );
-  }
-};
+        );
+    }
+  };
   return (
     <div className={styles.cardPageWrapper}>
       {/* Заголовок проекта */}
