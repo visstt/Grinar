@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
 
 import api from "../../../../shared/api/api";
+import { useProfileDecorStore } from "../../../../shared/store/profileDecorStore";
 import { useUserStore } from "../../../../shared/store/userStore";
 
 export default function useProfileDecor() {
-  const [decor, setDecor] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { decor, loading, error, setDecor, setLoading, setError } =
+    useProfileDecorStore();
   const [uploading, setUploading] = useState(false);
   const setUser = useUserStore((s) => s.setUser);
   const getUser = useUserStore.getState;
 
   useEffect(() => {
-    setLoading(true);
-    api
-      .get("/user/get-decor-settings")
-      .then((res) => setDecor(res.data))
-      .catch((err) => setError(err))
-      .finally(() => setLoading(false));
-  }, []);
+    if (!decor) {
+      setLoading(true);
+      api
+        .get("/user/get-decor-settings")
+        .then((res) => setDecor(res.data))
+        .catch((err) => setError(err))
+        .finally(() => setLoading(false));
+    }
+  }, [decor, setDecor, setError, setLoading]);
 
   const updateAvatar = async (file) => {
     if (!file || !(file instanceof File)) {
@@ -32,8 +34,11 @@ export default function useProfileDecor() {
       await api.put("/user/update-avatar", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
+      // Получаем обновленные данные декорации
       const res = await api.get("/user/get-decor-settings");
       setDecor(res.data);
+
       if (res.data?.user) {
         setUser(res.data.user);
       }
@@ -65,8 +70,10 @@ export default function useProfileDecor() {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
+      // Получаем обновленные данные декорации и обновляем store
       const res = await api.get("/user/get-decor-settings");
       setDecor(res.data);
+
       if (res.data?.user) {
         setUser(res.data.user);
       }

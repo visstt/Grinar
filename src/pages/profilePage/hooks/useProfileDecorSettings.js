@@ -1,26 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import api from "../../../shared/api/api";
+import { useProfileDecorStore } from "../../../shared/store/profileDecorStore";
 
 export default function useProfileDecorSettings() {
-  const [coverFileName, setCoverFileName] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { decor, loading, error, setDecor, setLoading, setError } =
+    useProfileDecorStore();
 
   useEffect(() => {
-    setLoading(true);
-    api
-      .get("/user/get-decor-settings")
-      .then((res) => {
-        const coverFileName = res.data?.coverFileName;
+    if (!decor) {
+      setLoading(true);
+      api
+        .get("/user/get-decor-settings")
+        .then((res) => {
+          setDecor(res.data);
+        })
+        .catch((err) => {
+          setError(err);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [decor, setDecor, setError, setLoading]);
 
-        setCoverFileName(coverFileName || "");
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  return { coverFileName, loading, error };
+  return {
+    coverFileName: decor?.coverFileName || "",
+    logoFileName: decor?.logoFileName || "",
+    loading,
+    error,
+  };
 }

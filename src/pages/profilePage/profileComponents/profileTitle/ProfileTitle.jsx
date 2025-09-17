@@ -4,14 +4,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import Button from "../../../../shared/ui/components/button/Button";
 import Header from "../../../../shared/ui/components/header/Header";
-import { getUserLogoUrl } from "../../../../shared/utils/getProjectImageUrl";
+import {
+  getPhotoUrl,
+  getUserLogoUrl,
+} from "../../../../shared/utils/getProjectImageUrl";
 import useMyProfile from "../../hooks/useMyProfile";
+import useProfileDecorSettings from "../../hooks/useProfileDecorSettings";
 import styles from "./ProfileTtile.module.css";
 
 export default function ProfileTitle() {
   const navigate = useNavigate();
   const location = useLocation();
   const { profile, loading, error } = useMyProfile();
+  const { coverFileName, logoFileName } = useProfileDecorSettings();
 
   if (loading) return <div>Загрузка...</div>;
   if (error)
@@ -33,8 +38,22 @@ export default function ProfileTitle() {
   )
     activeTab = "main";
 
+  // Формируем url для cover
+  const coverUrl = coverFileName
+    ? getPhotoUrl("cover", coverFileName)
+    : undefined;
+
   return (
-    <div className={styles.background}>
+    <div
+      className={styles.background}
+      style={
+        coverUrl
+          ? {
+              backgroundImage: `radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 70%), linear-gradient(150deg, #141414 23%, rgba(20, 20, 20, 0) 100%), url(${coverUrl})`,
+            }
+          : {}
+      }
+    >
       <Header />
       <div className="container">
         <div className={styles.wrapper}>
@@ -60,7 +79,10 @@ export default function ProfileTitle() {
             </div>
           </div>
           <div className={styles.user_logo}>
-            <img src={getUserLogoUrl(profile.logoFileName)} alt="userLogo" />
+            <img
+              src={getUserLogoUrl(logoFileName || profile.logoFileName)}
+              alt="userLogo"
+            />
           </div>
           <div className={styles.user_stats}>
             <div className={styles.stats}>
