@@ -12,7 +12,7 @@ import { useFetchProject } from "./hooks/useFetchProject";
 import like from "/icons/like.svg";
 import location from "/icons/location.svg";
 
-export default function CardPage({ project: initialProject }) {
+export default function CardPage({ project: initialProject, onProjectUpdate }) {
   const navigate = useNavigate();
   const { user } = useUserStore();
   const { project, loading, error } = useFetchProject(initialProject?.id);
@@ -25,7 +25,13 @@ export default function CardPage({ project: initialProject }) {
     if (currentProject?.isLiked !== undefined) {
       setIsLiked(currentProject.isLiked);
     }
-  }, [currentProject?.isLiked]);
+    if (Array.isArray(currentProject?.likedBy)) {
+      setLocalLikedBy(currentProject.likedBy);
+    }
+  }, [currentProject?.isLiked, currentProject?.likedBy]);
+  const [localLikedBy, setLocalLikedBy] = useState(
+    initialProject?.likedBy || [],
+  );
 
   const handleLike = async () => {
     if (!currentProject?.id || isLikeLoading) return;
@@ -35,9 +41,23 @@ export default function CardPage({ project: initialProject }) {
       if (isLiked) {
         await api.post(`/projects/unlike-project/${currentProject.id}`);
         setIsLiked(false);
+        // Удаляем текущего пользователя из localLikedBy
+        if (user) {
+          setLocalLikedBy((prev) => prev.filter((u) => u.id !== user.id));
+        }
+        if (onProjectUpdate) {
+          onProjectUpdate(currentProject.id, { isLiked: false });
+        }
       } else {
         await api.post(`/projects/like-project/${currentProject.id}`);
         setIsLiked(true);
+        // Добавляем текущего пользователя в localLikedBy
+        if (user) {
+          setLocalLikedBy((prev) => [...prev, user]);
+        }
+        if (onProjectUpdate) {
+          onProjectUpdate(currentProject.id, { isLiked: true });
+        }
       }
     } catch (error) {
       console.error("Ошибка при лайке проекта:", error);
@@ -240,7 +260,7 @@ export default function CardPage({ project: initialProject }) {
       </div>
 
       {/* Блок с лайками */}
-      {currentProject.likedBy && currentProject.likedBy.length > 0 && (
+      {localLikedBy && localLikedBy.length > 0 && (
         <div className={styles.likesSection}>
           <div className={styles.likeIcon}>
             <svg
@@ -262,7 +282,7 @@ export default function CardPage({ project: initialProject }) {
           </div>
           <p className={styles.likesTitle}>Оценили</p>
           <div className={styles.likedUsers}>
-            {currentProject.likedBy.map((user) => (
+            {localLikedBy.map((user) => (
               <img
                 key={user.id}
                 src={getUserLogoUrl(user.logoFileName)}
