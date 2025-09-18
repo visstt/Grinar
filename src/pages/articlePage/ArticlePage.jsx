@@ -39,7 +39,8 @@ export default function ArticlePage() {
     if (textNode.color) style.color = textNode.color;
     if (textNode.fontSize) style.fontSize = `${textNode.fontSize}px`;
     if (textNode.fontFamily) style.fontFamily = textNode.fontFamily;
-    if (textNode.backgroundColor) style.backgroundColor = textNode.backgroundColor;
+    if (textNode.backgroundColor)
+      style.backgroundColor = textNode.backgroundColor;
     if (textNode.textAlign) style.textAlign = textNode.textAlign;
     if (textNode.lineHeight) style.lineHeight = textNode.lineHeight;
     if (textNode.letterSpacing) style.letterSpacing = textNode.letterSpacing;
@@ -66,7 +67,7 @@ export default function ArticlePage() {
         return (
           <h1 key={index} className={styles.title} style={elementStyle}>
             {contentItem.children?.map((child, childIndex) =>
-              renderText(child, childIndex)
+              renderText(child, childIndex),
             )}
           </h1>
         );
@@ -75,7 +76,7 @@ export default function ArticlePage() {
         return (
           <div key={index} className={styles.description} style={elementStyle}>
             {contentItem.children?.map((child, childIndex) =>
-              renderText(child, childIndex)
+              renderText(child, childIndex),
             )}
           </div>
         );
@@ -84,7 +85,7 @@ export default function ArticlePage() {
         return (
           <p key={index} className={styles.paragraph} style={elementStyle}>
             {contentItem.children?.map((child, childIndex) =>
-              renderText(child, childIndex)
+              renderText(child, childIndex),
             )}
           </p>
         );
@@ -93,7 +94,7 @@ export default function ArticlePage() {
         return (
           <h2 key={index} className={styles.heading} style={elementStyle}>
             {contentItem.children?.map((child, childIndex) =>
-              renderText(child, childIndex)
+              renderText(child, childIndex),
             )}
           </h2>
         );
@@ -131,7 +132,7 @@ export default function ArticlePage() {
         return (
           <div key={index} style={elementStyle}>
             {contentItem.children?.map((child, childIndex) =>
-              renderText(child, childIndex)
+              renderText(child, childIndex),
             )}
           </div>
         );
@@ -199,7 +200,15 @@ export default function ArticlePage() {
         </div>
 
         <div className={`${styles.user} ${isMobile ? styles.userMobile : ""}`}>
-          <div className={styles.userInfo}>
+          <div
+            className={styles.userInfo}
+            onClick={() => {
+              if (blog.user?.id) {
+                window.location.href = `/user/${blog.user.id}`;
+              }
+            }}
+            style={{ cursor: "pointer" }}
+          >
             <img
               src={getUserLogoUrl(blog.user?.logoFileName)}
               alt="user avatar"
@@ -221,7 +230,6 @@ export default function ArticlePage() {
 
         <div className={styles.articleContent}>
           <h1 className={styles.title}>{blog.name}</h1>
-
 
           {contentArray.length > 0 ? (
             <div className={styles.content}>

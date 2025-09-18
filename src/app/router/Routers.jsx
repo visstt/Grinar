@@ -23,10 +23,12 @@ import Footer from "../../shared/ui/components/footer/Footer";
 
 function LayoutWithFooter() {
   return (
-    <>
-      <Outlet />
+    <div className="layout-root">
+      <div className="main-content">
+        <Outlet />
+      </div>
       <Footer />
-    </>
+    </div>
   );
 }
 

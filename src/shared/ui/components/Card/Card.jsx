@@ -121,7 +121,11 @@ export default function Card({ project, blog, type = "project" }) {
           )}
         </div>
         <h3>{getName()}</h3>
-        <div className={styles.author} onClick={handleAuthorClick}>
+        <div
+          className={styles.author}
+          onClick={handleAuthorClick}
+          style={{ cursor: "pointer" }}
+        >
           <img src={getUserLogoUrl(getAuthor().avatar)} alt="authorLogo" />
           <div className={styles.author__text}>
             <div className={styles.author__name}>

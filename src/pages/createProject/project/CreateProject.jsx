@@ -22,39 +22,39 @@ export default function CreateProject() {
     const urlParams = new URLSearchParams(window.location.search);
     const editProjectId = urlParams.get("edit");
 
-    setCurrentEditId(editProjectId);
+    // Только если editProjectId действительно изменился
+    if (currentEditId !== editProjectId) {
+      setCurrentEditId(editProjectId);
 
-    if (editProjectId) {
-      // Сначала очищаем store от предыдущих данных
-      resetProject();
-
-      // Затем загружаем данные конкретного проекта из localStorage
-      const editingProject = localStorage.getItem("editingProject");
-      if (editingProject) {
-        try {
-          const projectData = JSON.parse(editingProject);
-          // Проверяем, что данные относятся к нужному проекту
-          if (projectData.id && projectData.id.toString() === editProjectId) {
-            setProjectData(projectData);
-            console.log(`Загружены данные проекта ${editProjectId}`);
-          } else {
-            // Если данные от другого проекта - очищаем и не загружаем
+      if (editProjectId) {
+        // Затем загружаем данные конкретного проекта из localStorage
+        const editingProject = localStorage.getItem("editingProject");
+        if (editingProject) {
+          try {
+            const projectData = JSON.parse(editingProject);
+            // Проверяем, что данные относятся к нужному проекту
+            if (projectData.id && projectData.id.toString() === editProjectId) {
+              setProjectData(projectData);
+              console.log(`Загружены данные проекта ${editProjectId}`);
+            } else {
+              // Если данные от другого проекта - очищаем и не загружаем
+              localStorage.removeItem("editingProject");
+              console.log(
+                `Данные в localStorage относятся к проекту ${projectData.id}, а нужен ${editProjectId}, очищаем`,
+              );
+            }
+          } catch (error) {
+            console.error("Ошибка при парсинге данных проекта:", error);
             localStorage.removeItem("editingProject");
-            console.log(
-              `Данные в localStorage относятся к проекту ${projectData.id}, а нужен ${editProjectId}, очищаем`,
-            );
           }
-        } catch (error) {
-          console.error("Ошибка при парсинге данных проекта:", error);
-          localStorage.removeItem("editingProject");
         }
+      } else if (currentEditId !== null) {
+        // Если переходим из режима редактирования в обычный режим - очищаем только тогда
+        resetProject();
+        localStorage.removeItem("editingProject");
       }
-    } else {
-      // Если не в режиме редактирования - очищаем store и localStorage
-      resetProject();
-      localStorage.removeItem("editingProject");
     }
-  }, [setProjectData, resetProject, currentEditId]); // Добавляем currentEditId в зависимости
+  }, [currentEditId, setProjectData, resetProject]); // Возвращаем зависимости
 
   // Очищаем данные при размонтировании компонента (если пользователь покидает страницу)
   useEffect(() => {
@@ -150,7 +150,7 @@ export default function CreateProject() {
     <div className={styles.container}>
       <Header darkBackground={true} />
       <Slate
-        key={currentEditId || "new"} // Добавляем ключ для принудительного обновления редактора
+        key="project-editor" // Используем стабильный ключ, чтобы редактор не пересоздавался
         editor={editor}
         initialValue={initialValue}
         onChange={handleEditorChange}

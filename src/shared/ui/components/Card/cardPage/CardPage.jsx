@@ -220,7 +220,15 @@ export default function CardPage({ project: initialProject, onProjectUpdate }) {
 
       {/* Блок с информацией о пользователе */}
       {currentProject.user && (
-        <div className={styles.userInfo}>
+        <div
+          className={styles.userInfo}
+          onClick={() => {
+            if (currentProject.user.id) {
+              navigate(`/user/${currentProject.user.id}`);
+            }
+          }}
+          style={{ cursor: "pointer" }}
+        >
           <div className={styles.userDetails}>
             <img
               src={getUserLogoUrl(currentProject.user.logoFileName)}
@@ -237,13 +245,22 @@ export default function CardPage({ project: initialProject, onProjectUpdate }) {
           </div>
           <div className={styles.userActions}>
             <button
-              onClick={handleLike}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleLike();
+              }}
               disabled={isLikeLoading}
               className={`${styles.likeBtn} ${isLiked ? styles.likeBtnActive : ""}`}
             >
               <img src={like} alt="like" />
             </button>
-            <button className={styles.contactBtn} onClick={handleContact}>
+            <button
+              className={styles.contactBtn}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleContact();
+              }}
+            >
               Связаться
             </button>
           </div>
