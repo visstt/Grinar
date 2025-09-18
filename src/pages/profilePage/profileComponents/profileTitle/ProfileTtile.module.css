@@ -163,6 +163,7 @@
   .background {
     height: 400px;
     padding-bottom: 30px;
+    background-position: center;
   }
   .user_info {
     flex-direction: column;
@@ -199,6 +200,10 @@
     padding: 8px 14px;
     font-size: 12px;
   }
+  .btn_container {
+    position: absolute;
+    margin-top: 50px;
+  }
   .btn_container button {
     padding: 10px 15px;
   }
@@ -208,6 +213,7 @@
   .background {
     height: auto;
     padding-bottom: 20px;
+    background-position: center;
   }
   .user_logo img {
     width: 70px;
