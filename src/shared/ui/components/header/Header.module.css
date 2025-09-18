@@ -296,7 +296,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 40px 20px 40px 20px;
+    padding: 0px 20px 20px 20px;
     z-index: 1000;
     gap: 0px;
     transform: none;
@@ -315,6 +315,53 @@
     max-width: 100%;
     margin: 0;
     gap: 32px;
+  }
+
+  .mobileMenuButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .mobileMenuButtons button {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+
+    font-family: Manrope;
+    font-weight: 600;
+    font-style: SemiBold;
+    font-size: 14px;
+  }
+
+  .legalInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .legalInfo p {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .legalInfo p:first-child:hover {
+    color: #195ee6;
+  }
+
+  .legalInfo p:last-child {
+    cursor: default;
   }
 
   .header_wrapper__nav ul {

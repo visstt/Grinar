@@ -436,6 +436,41 @@ export default function Header({ darkBackground = false }) {
                     </Link>
                   </li>
                 </ul>
+
+                {user && (
+                  <div className={styles.mobileMenuButtons}>
+                    <Button
+                      variant="primary"
+                      onClick={() => {
+                        navigate("/create-project");
+                        setMenuOpen(false);
+                      }}
+                    >
+                      Добавить проект
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        navigate("/create-article");
+                        setMenuOpen(false);
+                      }}
+                    >
+                      Добавить статью
+                    </Button>
+                  </div>
+                )}
+
+                <div className={styles.legalInfo}>
+                  <p
+                    onClick={() => {
+                      navigate("/docs");
+                      setMenuOpen(false);
+                    }}
+                  >
+                    Юридическая информация
+                  </p>
+                  <p>© 2025 Benty</p>
+                </div>
               </div>
             </nav>
           )}
