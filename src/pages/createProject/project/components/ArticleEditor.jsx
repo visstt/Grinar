@@ -20,7 +20,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
   const [_dropIndicatorPosition, setDropIndicatorPosition] = useState(null);
   const [menuPosition, setMenuPosition] = useState({
     top: null,
-    left: window.innerWidth <= 768 ? -45 : -60,
+    left: window.innerWidth <= 480 ? -10 : window.innerWidth <= 768 ? -15 : -60,
     bottom: null,
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -31,8 +31,10 @@ const ArticleEditor = ({ onShowToolbar }) => {
       setIsMobile(newIsMobile);
 
       if (newIsMobile !== isMobile) {
-        if (newIsMobile) {
-          setMenuPosition({ top: null, left: -45, bottom: null });
+        if (window.innerWidth <= 480) {
+          setMenuPosition({ top: null, left: -10, bottom: null });
+        } else if (window.innerWidth <= 768) {
+          setMenuPosition({ top: null, left: -15, bottom: null });
         } else {
           setMenuPosition({ top: null, left: -60, bottom: null });
         }
@@ -122,10 +124,11 @@ const ArticleEditor = ({ onShowToolbar }) => {
 
   const updateMenuPosition = useCallback(() => {
     if (isMobile) {
+      const leftOffset = window.innerWidth <= 480 ? -10 : -15;
       try {
         const { selection } = editor;
         if (!selection) {
-          setMenuPosition({ top: 0, left: -45, bottom: null });
+          setMenuPosition({ top: 5, left: leftOffset, bottom: null }); // Опускаем на 5px
           return;
         }
 
@@ -143,9 +146,12 @@ const ArticleEditor = ({ onShowToolbar }) => {
             const nodeRect = nodeElement.getBoundingClientRect();
 
             if (nodeRect.height > 0) {
-              const top = nodeRect.top - editorRect.top;
-              const left = -45;
-              setMenuPosition({ top: Math.max(0, top), left, bottom: null });
+              const top = nodeRect.top - editorRect.top + 5; // Опускаем на 5px
+              setMenuPosition({
+                top: Math.max(5, top), // Минимум 5px сверху
+                left: leftOffset,
+                bottom: null,
+              });
               return;
             }
           } catch {
@@ -153,11 +159,14 @@ const ArticleEditor = ({ onShowToolbar }) => {
           }
         }
 
-        const top = rect.top - editorRect.top;
-        const left = -45;
-        setMenuPosition({ top: Math.max(0, top), left, bottom: null });
+        const top = rect.top - editorRect.top + 5; // Опускаем на 5px
+        setMenuPosition({
+          top: Math.max(5, top), // Минимум 5px сверху
+          left: leftOffset,
+          bottom: null,
+        });
       } catch {
-        setMenuPosition({ top: 0, left: -45, bottom: null });
+        setMenuPosition({ top: 5, left: leftOffset, bottom: null }); // Опускаем на 5px
       }
       return;
     }

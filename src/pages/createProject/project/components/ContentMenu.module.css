@@ -1,12 +1,10 @@
 .container {
   position: absolute;
   left: -50px;
-  top: -2px;
+  top: 3px;
   display: flex;
   align-items: center;
   z-index: 100;
-  /* Временный фон для отладки */
-  /* background: rgba(255, 0, 0, 0.2); */
 }
 
 .addButton {
@@ -106,51 +104,18 @@
 /* Мобильные стили */
 @media (max-width: 768px) {
   .container {
-    left: -45px;
+    left: -15px;
   }
 
   .addButton {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     box-shadow: 0 2px 6px rgba(25, 94, 230, 0.35);
   }
 
   .addButton:hover {
     transform: scale(1.03);
     box-shadow: 0 3px 8px rgba(25, 94, 230, 0.45);
-  }
-
-  .menu {
-    height: 28px;
-    border-radius: 14px;
-    width: 28px;
-  }
-
-  .menu.open {
-    width: 88px;
-    padding: 0 0px 0 35px;
-  }
-
-  .menuItem {
-    width: 24px;
-    height: 20px;
-    margin: 0 0.5px;
-  }
-
-  .menuItem img {
-    width: 16px;
-    height: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    left: -40px;
-  }
-
-  .addButton {
-    width: 24px;
-    height: 24px;
   }
 
   .menu {
@@ -161,16 +126,49 @@
 
   .menu.open {
     width: 76px;
-    padding: 0 0px 0 30px;
+    padding: 0 0px 0 28px;
   }
 
   .menuItem {
     width: 20px;
     height: 18px;
+    margin: 0 0.5px;
   }
 
   .menuItem img {
     width: 14px;
     height: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    left: -10px;
+  }
+
+  .addButton {
+    width: 20px;
+    height: 20px;
+  }
+
+  .menu {
+    height: 20px;
+    border-radius: 10px;
+    width: 20px;
+  }
+
+  .menu.open {
+    width: 64px;
+    padding: 0 0px 0 24px;
+  }
+
+  .menuItem {
+    width: 18px;
+    height: 16px;
+  }
+
+  .menuItem img {
+    width: 12px;
+    height: 12px;
   }
 }
