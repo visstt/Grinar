@@ -172,38 +172,6 @@ export default function Header({ darkBackground = false }) {
     setRegistrationOpen(true);
   };
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
-
-  const handleProjectsClick = () => {
-    if (window.location.pathname !== "/") {
-      navigate("/");
-      setTimeout(() => {
-        scrollToSection("cardsContainer");
-      }, 100);
-    } else {
-      scrollToSection("cardsContainer");
-    }
-  };
-
-  const handleSpecialistsClick = () => {
-    if (window.location.pathname !== "/") {
-      navigate("/");
-      setTimeout(() => {
-        scrollToSection("specialists");
-      }, 100);
-    } else {
-      scrollToSection("specialists");
-    }
-  };
-
   return (
     <div
       className={`${styles.header} ${darkBackground ? styles.darkHeader : ""} ${isMobile ? styles.mobileHeader : ""}`}
@@ -394,24 +362,24 @@ export default function Header({ darkBackground = false }) {
                     </Link>
                   </li>
                   <div className={styles.stripe}></div>
-                  <li
-                    onClick={() => {
-                      handleProjectsClick();
-                      setMenuOpen(false);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    Проекты
+                  <li>
+                    <Link
+                      to="/projects"
+                      style={{ color: "inherit", textDecoration: "none" }}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Проекты
+                    </Link>
                   </li>
                   <div className={styles.stripe}></div>
-                  <li
-                    onClick={() => {
-                      handleSpecialistsClick();
-                      setMenuOpen(false);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    Специалисты
+                  <li>
+                    <Link
+                      to="/specialists"
+                      style={{ color: "inherit", textDecoration: "none" }}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Специалисты
+                    </Link>
                   </li>
                   <div className={styles.stripe}></div>
                   <li style={{ opacity: 0.5, cursor: "default" }}>Работа</li>

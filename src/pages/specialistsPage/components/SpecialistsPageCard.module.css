@@ -231,7 +231,7 @@
   }
 
   .photo_card {
-    width: 280px; /* Немного больше для планшетов */
+    width: 280px;
   }
 
   .imageWrapper img {
@@ -266,7 +266,8 @@
   }
 
   .photo_card {
-    width: 100%; /* Растягиваем на всю ширину */
+    width: 100%;
+    margin-bottom: 30px;
   }
 
   .imageWrapper img {

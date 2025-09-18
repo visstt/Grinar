@@ -314,7 +314,7 @@
     width: 100%;
     max-width: 100%;
     margin: 0;
-    gap: 32px;
+    gap: 12px;
   }
 
   .mobileMenuButtons {
@@ -440,7 +440,7 @@
     box-sizing: border-box;
   }
   .navContentWrapper {
-    margin-top: 50px;
+    margin-top: 20px;
   }
 
   .header_wrapper__login {

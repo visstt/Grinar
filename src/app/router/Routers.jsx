@@ -110,6 +110,10 @@ export const router = createBrowserRouter([
         element: <UserProfilePage tab="projects" />,
       },
       {
+        path: "user/:userId/blogs",
+        element: <UserProfilePage tab="blogs" />,
+      },
+      {
         path: "user/:userId/subscriptions",
         element: <UserProfilePage tab="subscriptions" />,
       },

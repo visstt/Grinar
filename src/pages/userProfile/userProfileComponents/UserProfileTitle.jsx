@@ -31,6 +31,7 @@ export default function UserProfileTitle({ userProfile }) {
   // Определяем активную вкладку по pathname
   let activeTab = "main";
   if (location.pathname === `/user/${userId}/projects`) activeTab = "projects";
+  else if (location.pathname === `/user/${userId}/blogs`) activeTab = "blogs";
   else if (location.pathname === `/user/${userId}/subscriptions`)
     activeTab = "subscriptions";
   else if (
@@ -137,6 +138,12 @@ export default function UserProfileTitle({ userProfile }) {
               onClick={() => navigate(`/user/${userId}/projects`)}
             >
               Проекты
+            </Button>
+            <Button
+              variant={activeTab === "blogs" ? "primary" : "default"}
+              onClick={() => navigate(`/user/${userId}/blogs`)}
+            >
+              Статьи
             </Button>
             <Button
               variant={activeTab === "main" ? "primary" : "default"}
