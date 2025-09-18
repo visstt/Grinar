@@ -286,7 +286,7 @@
   .header_wrapper__nav {
     position: fixed;
     right: -300px;
-    top: 80px;
+    top: 90px;
     left: auto;
     width: 300px;
     height: calc(100vh - 90px);
@@ -296,7 +296,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding:  0px 20px 40px 20px;
+    padding: 40px 20px 40px 20px;
     z-index: 1000;
     gap: 0px;
     transform: none;

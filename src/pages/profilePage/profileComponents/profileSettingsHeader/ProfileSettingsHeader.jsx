@@ -39,7 +39,7 @@ export default function ProfileSettingsHeader() {
       style={
         coverUrl
           ? {
-              backgroundImage: `url(${coverUrl}), radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 70%), linear-gradient(150deg, #141414 23%, rgba(20, 20, 20, 0) 100%)`,
+              backgroundImage: `radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 70%), linear-gradient(150deg, #141414 23%, rgba(20, 20, 20, 0) 100%), url(${coverUrl})`,
             }
           : {}
       }
