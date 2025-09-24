@@ -307,7 +307,7 @@ export default function Header({ darkBackground = false }) {
                     objectFit: "cover",
                     cursor: "pointer",
                   }}
-                  onClick={() => navigate("/profile")}
+                  onClick={() => navigate(`/user/${user.id}`)}
                   title="Профиль"
                 />
               </>

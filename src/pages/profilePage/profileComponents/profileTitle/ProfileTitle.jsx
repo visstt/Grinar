@@ -15,7 +15,7 @@ import styles from "./ProfileTtile.module.css";
 export default function ProfileTitle() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { profile, loading, error } = useMyProfile();
+  const { profile, loading, error, userId } = useMyProfile();
   const { coverFileName, logoFileName } = useProfileDecorSettings();
 
   if (loading) return <div>Загрузка...</div>;
@@ -28,13 +28,13 @@ export default function ProfileTitle() {
 
   // Определяем активную вкладку по pathname
   let activeTab = "main";
-  if (location.pathname === "/profile/projects") activeTab = "projects";
-  else if (location.pathname === "/profile/blogs") activeTab = "blogs";
-  else if (location.pathname === "/profile/subscriptions")
+  if (location.pathname.includes("/projects")) activeTab = "projects";
+  else if (location.pathname.includes("/blogs")) activeTab = "blogs";
+  else if (location.pathname.includes("/subscriptions"))
     activeTab = "subscriptions";
   else if (
-    location.pathname === "/profile/main" ||
-    location.pathname === "/profile"
+    location.pathname.includes("/main") ||
+    location.pathname === `/user/${userId}`
   )
     activeTab = "main";
 
@@ -118,25 +118,25 @@ export default function ProfileTitle() {
           >
             <Button
               variant={activeTab === "projects" ? "primary" : "default"}
-              onClick={() => navigate("/profile/projects")}
+              onClick={() => navigate(`/user/${userId}/projects`)}
             >
               Проекты
             </Button>
             <Button
               variant={activeTab === "blogs" ? "primary" : "default"}
-              onClick={() => navigate("/profile/blogs")}
+              onClick={() => navigate(`/user/${userId}/blogs`)}
             >
               Статьи
             </Button>
             <Button
               variant={activeTab === "main" ? "primary" : "default"}
-              onClick={() => navigate("/profile/main")}
+              onClick={() => navigate(`/user/${userId}/main`)}
             >
               Информация
             </Button>
             <Button
               variant={activeTab === "subscriptions" ? "primary" : "default"}
-              onClick={() => navigate("/profile/subscriptions")}
+              onClick={() => navigate(`/user/${userId}/subscriptions`)}
             >
               Подписки
             </Button>

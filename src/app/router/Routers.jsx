@@ -1,4 +1,4 @@
-import { Outlet, createBrowserRouter } from "react-router-dom";
+import { Outlet, createBrowserRouter, useParams } from "react-router-dom";
 
 import ArticlePage from "../../pages/articlePage/ArticlePage";
 import BlogPage from "../../pages/blogPage/BlogPage";
@@ -19,6 +19,7 @@ import ProfileNotifications from "../../pages/profileSettings/profileNotificatio
 import ProjectsPage from "../../pages/projectsPage/ProjectsPage";
 import SpecialistsPage from "../../pages/specialistsPage/SpecialistsPage";
 import UserProfilePage from "../../pages/userProfile/UserProfile";
+import { useUserStore } from "../../shared/store/userStore";
 import Footer from "../../shared/ui/components/footer/Footer";
 
 function LayoutWithFooter() {
@@ -36,6 +37,20 @@ function LayoutWithoutFooter() {
   return <Outlet />;
 }
 
+function ProfileRouteWrapper({ tab }) {
+  const { userId } = useParams();
+  const { user } = useUserStore();
+
+  // Проверяем, совпадает ли userId из URL с ID текущего пользователя
+  const isOwnProfile = user && userId === user.id?.toString();
+
+  if (isOwnProfile) {
+    return <ProfilePage tab={tab} />;
+  } else {
+    return <UserProfilePage tab={tab} />;
+  }
+}
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -46,39 +61,19 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "profile",
-        element: <ProfilePage />,
-      },
-      {
-        path: "profile/projects",
-        element: <ProfilePage tab="projects" />,
-      },
-      {
-        path: "profile/blogs",
-        element: <ProfilePage tab="blogs" />,
-      },
-      {
-        path: "profile/main",
-        element: <ProfilePage tab="main" />,
-      },
-      {
-        path: "profile/subscriptions",
-        element: <ProfilePage tab="subscriptions" />,
-      },
-      {
-        path: "profile/profile-info",
+        path: "profile-info",
         element: <ProfileInfo />,
       },
       {
-        path: "profile/profile-decor",
+        path: "profile-decor",
         element: <ProfileDecor />,
       },
       {
-        path: "profile/profile-notifications",
+        path: "profile-notifications",
         element: <ProfileNotifications />,
       },
       {
-        path: "profile/profile-account",
+        path: "profile-account",
         element: <ProfileAccount />,
       },
       {
@@ -99,23 +94,23 @@ export const router = createBrowserRouter([
       },
       {
         path: "user/:userId",
-        element: <UserProfilePage />,
+        element: <ProfileRouteWrapper />,
       },
       {
         path: "user/:userId/main",
-        element: <UserProfilePage tab="main" />,
+        element: <ProfileRouteWrapper tab="main" />,
       },
       {
         path: "user/:userId/projects",
-        element: <UserProfilePage tab="projects" />,
+        element: <ProfileRouteWrapper tab="projects" />,
       },
       {
         path: "user/:userId/blogs",
-        element: <UserProfilePage tab="blogs" />,
+        element: <ProfileRouteWrapper tab="blogs" />,
       },
       {
         path: "user/:userId/subscriptions",
-        element: <UserProfilePage tab="subscriptions" />,
+        element: <ProfileRouteWrapper tab="subscriptions" />,
       },
       {
         path: "blog",

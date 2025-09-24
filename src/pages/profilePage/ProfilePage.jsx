@@ -9,23 +9,22 @@ import MyProjects from "./profileComponents/myProjects/MyProjects";
 import ProfileMainInfo from "./profileComponents/profileMainInfo/ProfileMainInfo";
 import ProfileTitle from "./profileComponents/profileTitle/ProfileTitle";
 
-export default function ProfilePage() {
+export default function ProfilePage({ tab }) {
   const { profile, loading, error } = useMyProfile();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState("main");
+  const [activeTab, setActiveTab] = useState(tab || "main");
 
   useEffect(() => {
-    if (location.pathname === "/profile/projects") setActiveTab("projects");
-    else if (location.pathname === "/profile/blogs") setActiveTab("blogs");
-    else if (location.pathname === "/profile/subscriptions")
+    if (tab) {
+      setActiveTab(tab);
+    } else if (location.pathname.includes("/projects"))
+      setActiveTab("projects");
+    else if (location.pathname.includes("/blogs")) setActiveTab("blogs");
+    else if (location.pathname.includes("/subscriptions"))
       setActiveTab("subscriptions");
-    else if (
-      location.pathname === "/profile/main" ||
-      location.pathname === "/profile"
-    )
-      setActiveTab("main");
+    else if (location.pathname.includes("/main")) setActiveTab("main");
     else setActiveTab("main");
-  }, [location.pathname]);
+  }, [location.pathname, tab]);
 
   if (loading) return <div>Загрузка...</div>;
   if (error)
