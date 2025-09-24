@@ -6,7 +6,10 @@ import { toast } from "react-toastify";
 import { useUserStore } from "../../../shared/store/userStore";
 import Button from "../../../shared/ui/components/button/Button";
 import Header from "../../../shared/ui/components/header/Header";
-import { getUserLogoUrl } from "../../../shared/utils/getProjectImageUrl";
+import {
+  getPhotoUrl,
+  getUserLogoUrl,
+} from "../../../shared/utils/getProjectImageUrl";
 import { useUserSubscription } from "../hooks/useUserSubscription";
 import styles from "./UserProfileTitle.module.css";
 
@@ -65,8 +68,22 @@ export default function UserProfileTitle({ userProfile }) {
     navigate(`/chat-page`, { state: { contactUserId: userId } });
   };
 
+  // Формируем url для cover из профиля пользователя
+  const coverUrl = userProfile?.coverFileName
+    ? getPhotoUrl("cover", userProfile.coverFileName)
+    : undefined;
+
   return (
-    <div className={styles.background}>
+    <div
+      className={styles.background}
+      style={
+        coverUrl
+          ? {
+              backgroundImage: `radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 70%), linear-gradient(150deg, #141414 23%, rgba(20, 20, 20, 0) 100%), url(${coverUrl})`,
+            }
+          : {}
+      }
+    >
       <Header />
       <div className="container">
         <div className={styles.wrapper}>
