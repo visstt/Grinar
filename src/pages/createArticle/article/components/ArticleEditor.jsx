@@ -25,6 +25,11 @@ const ArticleEditor = ({ onShowToolbar }) => {
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
+  // Новые состояния для модального окна управления элементами
+  const [elementModalOpen, setElementModalOpen] = useState(false);
+  const [selectedElement, setSelectedElement] = useState(null);
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+
   useEffect(() => {
     const handleResize = () => {
       const newIsMobile = window.innerWidth <= 768;
@@ -121,6 +126,85 @@ const ArticleEditor = ({ onShowToolbar }) => {
     },
     [modalType, insertImage, insertVideo, editor],
   );
+
+  // Функции для управления элементами
+  const moveElementUp = useCallback(
+    (element) => {
+      try {
+        const path = ReactEditor.findPath(editor, element);
+        const elementIndex = path[0];
+
+        if (elementIndex > 0) {
+          const [node] = Editor.node(editor, path);
+          Editor.withoutNormalizing(editor, () => {
+            Transforms.removeNodes(editor, { at: path });
+            Transforms.insertNodes(editor, node, { at: [elementIndex - 1] });
+          });
+        }
+      } catch (error) {
+        console.error("Ошибка при перемещении элемента вверх:", error);
+      }
+      setElementModalOpen(false);
+    },
+    [editor],
+  );
+
+  const moveElementDown = useCallback(
+    (element) => {
+      try {
+        const path = ReactEditor.findPath(editor, element);
+        const elementIndex = path[0];
+        const totalElements = editor.children.length;
+
+        if (elementIndex < totalElements - 1) {
+          const [node] = Editor.node(editor, path);
+          Editor.withoutNormalizing(editor, () => {
+            Transforms.removeNodes(editor, { at: path });
+            Transforms.insertNodes(editor, node, { at: [elementIndex + 1] });
+          });
+        }
+      } catch (error) {
+        console.error("Ошибка при перемещении элемента вниз:", error);
+      }
+      setElementModalOpen(false);
+    },
+    [editor],
+  );
+
+  const removeElement = useCallback(
+    (element) => {
+      try {
+        const path = ReactEditor.findPath(editor, element);
+        Transforms.removeNodes(editor, { at: path });
+      } catch (error) {
+        console.error("Ошибка при удалении элемента:", error);
+      }
+      setElementModalOpen(false);
+    },
+    [editor],
+  );
+
+  const handleDragHandleClick = useCallback((e, element) => {
+    console.log("handleDragHandleClick вызван", element); // отладка
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Находим элемент drag-handle или используем сам target как fallback
+    const dragHandle = e.target.closest(".drag-handle") || e.currentTarget;
+    const rect = dragHandle.getBoundingClientRect();
+
+    console.log("Позиция модального окна:", {
+      top: rect.top + rect.height + 5,
+      left: rect.left,
+    }); // отладка
+
+    setModalPosition({
+      top: rect.top + rect.height + 5, // добавляем небольшой отступ
+      left: rect.left,
+    });
+    setSelectedElement(element);
+    setElementModalOpen(true);
+  }, []);
 
   const updateMenuPosition = useCallback(() => {
     if (isMobile) {
@@ -324,52 +408,6 @@ const ArticleEditor = ({ onShowToolbar }) => {
     setTimeout(() => setActiveLineId(null), 100);
   }, []);
 
-  // Универсальная функция для начала перетаскивания любого элемента
-  const handleElementDragStart = useCallback(
-    (e, element) => {
-      if (isMobile) return;
-      setIsDragging(true);
-      setDragSourceElement(element);
-
-      try {
-        const path = ReactEditor.findPath(editor, element);
-        setDraggedElementPath(path);
-
-        e.dataTransfer.effectAllowed = "move";
-        e.dataTransfer.dropEffect = "move";
-
-        const elementData = JSON.stringify({
-          type: element.type,
-          url: element.url || null,
-          path: path,
-          dragType: "slate-element",
-        });
-
-        e.dataTransfer.setData("text/plain", elementData);
-        e.dataTransfer.setData("application/json", elementData);
-
-        // Создаём невидимое изображение для drag
-        const dragImage = document.createElement("div");
-        dragImage.style.opacity = "0";
-        dragImage.style.position = "absolute";
-        dragImage.style.top = "-1000px";
-        document.body.appendChild(dragImage);
-        e.dataTransfer.setDragImage(dragImage, 0, 0);
-
-        setTimeout(() => {
-          if (document.body.contains(dragImage)) {
-            document.body.removeChild(dragImage);
-          }
-        }, 0);
-      } catch {
-        setIsDragging(false);
-        setDragSourceElement(null);
-        setDraggedElementPath(null);
-      }
-    },
-    [editor, isMobile],
-  );
-
   // Обработка перетаскивания над областью редактора
   const handleEditorDragOver = useCallback(
     (e) => {
@@ -508,23 +546,13 @@ const ArticleEditor = ({ onShowToolbar }) => {
           return (
             <div className={styles.titleWrapper} {...props.attributes}>
               {!isMobile && (
-                <div className={styles.textDragHandle}>
+                <div className={`${styles.textDragHandle} drag-handle`}>
                   <div
                     className={styles.dragIcon}
-                    draggable={true}
-                    onDragStart={(e) => {
-                      e.stopPropagation();
-                      handleElementDragStart(e, props.element);
-                    }}
+                    onClick={(e) => handleDragHandleClick(e, props.element)}
                     onMouseDown={(e) => e.stopPropagation()}
-                    onDragEnd={(e) => {
-                      e.stopPropagation();
-                      setIsDragging(false);
-                      setDragSourceElement(null);
-                      setDraggedElementPath(null);
-                    }}
-                    title="Перетащите для изменения порядка"
-                    style={{ userSelect: "none", cursor: "grab" }}
+                    title="Управление элементом"
+                    style={{ userSelect: "none", cursor: "pointer" }}
                   >
                     <svg
                       width="29"
@@ -601,23 +629,13 @@ const ArticleEditor = ({ onShowToolbar }) => {
           return (
             <div className={styles.descriptionWrapper} {...props.attributes}>
               {!isMobile && (
-                <div className={styles.textDragHandle}>
+                <div className={`${styles.textDragHandle} drag-handle`}>
                   <div
                     className={styles.dragIcon}
-                    draggable={true}
-                    onDragStart={(e) => {
-                      e.stopPropagation();
-                      handleElementDragStart(e, props.element);
-                    }}
+                    onClick={(e) => handleDragHandleClick(e, props.element)}
                     onMouseDown={(e) => e.stopPropagation()}
-                    onDragEnd={(e) => {
-                      e.stopPropagation();
-                      setIsDragging(false);
-                      setDragSourceElement(null);
-                      setDraggedElementPath(null);
-                    }}
-                    title="Перетащите для изменения порядка"
-                    style={{ userSelect: "none", cursor: "grab" }}
+                    title="Управление элементом"
+                    style={{ userSelect: "none", cursor: "pointer" }}
                   >
                     <svg
                       width="29"
@@ -691,23 +709,13 @@ const ArticleEditor = ({ onShowToolbar }) => {
           return (
             <div className={styles.headingWrapper} {...props.attributes}>
               {!isMobile && (
-                <div className={styles.textDragHandle}>
+                <div className={`${styles.textDragHandle} drag-handle`}>
                   <div
                     className={styles.dragIcon}
-                    draggable={true}
-                    onDragStart={(e) => {
-                      e.stopPropagation();
-                      handleElementDragStart(e, props.element);
-                    }}
+                    onClick={(e) => handleDragHandleClick(e, props.element)}
                     onMouseDown={(e) => e.stopPropagation()}
-                    onDragEnd={(e) => {
-                      e.stopPropagation();
-                      setIsDragging(false);
-                      setDragSourceElement(null);
-                      setDraggedElementPath(null);
-                    }}
-                    title="Перетащите для изменения порядка"
-                    style={{ userSelect: "none", cursor: "grab" }}
+                    title="Управление элементом"
+                    style={{ userSelect: "none", cursor: "pointer" }}
                   >
                     <svg
                       width="29"
@@ -781,23 +789,13 @@ const ArticleEditor = ({ onShowToolbar }) => {
           return (
             <div className={styles.paragraphWrapper} {...props.attributes}>
               {!isMobile && (
-                <div className={styles.textDragHandle}>
+                <div className={`${styles.textDragHandle} drag-handle`}>
                   <div
                     className={styles.dragIcon}
-                    draggable={true}
-                    onDragStart={(e) => {
-                      e.stopPropagation();
-                      handleElementDragStart(e, props.element);
-                    }}
+                    onClick={(e) => handleDragHandleClick(e, props.element)}
                     onMouseDown={(e) => e.stopPropagation()}
-                    onDragEnd={(e) => {
-                      e.stopPropagation();
-                      setIsDragging(false);
-                      setDragSourceElement(null);
-                      setDraggedElementPath(null);
-                    }}
-                    title="Перетащите для изменения порядка"
-                    style={{ userSelect: "none", cursor: "grab" }}
+                    title="Управление элементом"
+                    style={{ userSelect: "none", cursor: "pointer" }}
                   >
                     <svg
                       width="29"
@@ -872,23 +870,13 @@ const ArticleEditor = ({ onShowToolbar }) => {
           return (
             <div className={styles.imageWrapper} {...props.attributes}>
               {!isMobile && (
-                <div className={styles.imageDragHandle}>
+                <div className={`${styles.imageDragHandle} drag-handle`}>
                   <div
                     className={styles.dragIcon}
-                    draggable={true}
-                    onDragStart={(e) => {
-                      e.stopPropagation();
-                      handleElementDragStart(e, props.element);
-                    }}
+                    onClick={(e) => handleDragHandleClick(e, props.element)}
                     onMouseDown={(e) => e.stopPropagation()}
-                    onDragEnd={(e) => {
-                      e.stopPropagation();
-                      setIsDragging(false);
-                      setDragSourceElement(null);
-                      setDraggedElementPath(null);
-                    }}
-                    title="Перетащите для изменения порядка"
-                    style={{ userSelect: "none", cursor: "grab" }}
+                    title="Управление элементом"
+                    style={{ userSelect: "none", cursor: "pointer" }}
                   >
                     <svg
                       width="29"
@@ -964,23 +952,13 @@ const ArticleEditor = ({ onShowToolbar }) => {
           return (
             <div className={styles.videoWrapper} {...props.attributes}>
               {!isMobile && (
-                <div className={styles.videoDragHandle}>
+                <div className={`${styles.videoDragHandle} drag-handle`}>
                   <div
                     className={styles.dragIcon}
-                    draggable={true}
-                    onDragStart={(e) => {
-                      e.stopPropagation();
-                      handleElementDragStart(e, props.element);
-                    }}
+                    onClick={(e) => handleDragHandleClick(e, props.element)}
                     onMouseDown={(e) => e.stopPropagation()}
-                    onDragEnd={(e) => {
-                      e.stopPropagation();
-                      setIsDragging(false);
-                      setDragSourceElement(null);
-                      setDraggedElementPath(null);
-                    }}
-                    title="Перетащите для изменения порядка"
-                    style={{ userSelect: "none", cursor: "grab" }}
+                    title="Управление элементом"
+                    style={{ userSelect: "none", cursor: "pointer" }}
                   >
                     <svg
                       width="29"
@@ -1098,7 +1076,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
           return <p {...props.attributes}>{props.children}</p>;
       }
     },
-    [handleElementDragStart, isMobile],
+    [handleDragHandleClick, isMobile],
   );
 
   const renderLeaf = useCallback((props) => {
@@ -1234,7 +1212,7 @@ const ArticleEditor = ({ onShowToolbar }) => {
   }, []);
 
   return (
-    <div className="containerXS">
+    <div className="container-xs">
       <div className={styles.editorContainer}>
         <div className={styles.editorWrapper}>
           <Editable
@@ -1283,6 +1261,164 @@ const ArticleEditor = ({ onShowToolbar }) => {
           onUpload={handleMediaUpload}
           type={modalType}
         />
+
+        {/* Модальное окно управления элементами */}
+        {elementModalOpen && (
+          <div
+            style={{
+              position: "fixed",
+              top: modalPosition.top,
+              left: modalPosition.left,
+              width: "200px",
+              height: "100px",
+              backgroundColor: "white",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+              zIndex: 2000,
+              display: "flex",
+              flexDirection: "column",
+              padding: "8px",
+            }}
+          >
+            <button
+              onClick={() => moveElementUp(selectedElement)}
+              style={{
+                padding: "8px 12px",
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                textAlign: "left",
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+              onMouseEnter={(e) => (e.target.style.backgroundColor = "#f5f5f5")}
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = "transparent")
+              }
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18.0691 10.3199C17.8791 10.3199 17.6891 10.2499 17.5391 10.0999L11.9991 4.55994L6.45914 10.0999C6.16914 10.3899 5.68914 10.3899 5.39914 10.0999C5.10914 9.80994 5.10914 9.32994 5.39914 9.03994L11.4691 2.96994C11.7591 2.67994 12.2391 2.67994 12.5291 2.96994L18.5991 9.03994C18.8891 9.32994 18.8891 9.80994 18.5991 10.0999C18.4591 10.2499 18.2591 10.3199 18.0691 10.3199Z"
+                  fill="#2C2C2C"
+                />
+                <path
+                  d="M12 21.25C11.59 21.25 11.25 20.91 11.25 20.5V3.67004C11.25 3.26004 11.59 2.92004 12 2.92004C12.41 2.92004 12.75 3.26004 12.75 3.67004V20.5C12.75 20.91 12.41 21.25 12 21.25Z"
+                  fill="#2C2C2C"
+                />
+              </svg>
+              Переместить выше
+            </button>
+            <button
+              onClick={() => moveElementDown(selectedElement)}
+              style={{
+                padding: "8px 12px",
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                textAlign: "left",
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+              onMouseEnter={(e) => (e.target.style.backgroundColor = "#f5f5f5")}
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = "transparent")
+              }
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.9991 21.25C11.8091 21.25 11.6191 21.18 11.4691 21.03L5.39914 14.96C5.10914 14.67 5.10914 14.19 5.39914 13.9C5.68914 13.61 6.16914 13.61 6.45914 13.9L11.9991 19.44L17.5391 13.9C17.8291 13.61 18.3091 13.61 18.5991 13.9C18.8891 14.19 18.8891 14.67 18.5991 14.96L12.5291 21.03C12.3791 21.18 12.1891 21.25 11.9991 21.25Z"
+                  fill="#2C2C2C"
+                />
+                <path
+                  d="M12 21.08C11.59 21.08 11.25 20.74 11.25 20.33V3.5C11.25 3.09 11.59 2.75 12 2.75C12.41 2.75 12.75 3.09 12.75 3.5V20.33C12.75 20.74 12.41 21.08 12 21.08Z"
+                  fill="#2C2C2C"
+                />
+              </svg>
+              Переместить ниже
+            </button>
+            <button
+              onClick={() => removeElement(selectedElement)}
+              style={{
+                padding: "8px 12px",
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                textAlign: "left",
+                fontSize: "14px",
+                color: "#E21824",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+              onMouseEnter={(e) => (e.target.style.backgroundColor = "#f5f5f5")}
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = "transparent")
+              }
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20.9997 6.72998C20.9797 6.72998 20.9497 6.72998 20.9197 6.72998C15.6297 6.19998 10.3497 5.99998 5.11967 6.52998L3.07967 6.72998C2.65967 6.76998 2.28967 6.46998 2.24967 6.04998C2.20967 5.62998 2.50967 5.26998 2.91967 5.22998L4.95967 5.02998C10.2797 4.48998 15.6697 4.69998 21.0697 5.22998C21.4797 5.26998 21.7797 5.63998 21.7397 6.04998C21.7097 6.43998 21.3797 6.72998 20.9997 6.72998Z"
+                  fill="#E21824"
+                />
+                <path
+                  d="M8.50074 5.72C8.46074 5.72 8.42074 5.72 8.37074 5.71C7.97074 5.64 7.69074 5.25 7.76074 4.85L7.98074 3.54C8.14074 2.58 8.36074 1.25 10.6907 1.25H13.3107C15.6507 1.25 15.8707 2.63 16.0207 3.55L16.2407 4.85C16.3107 5.26 16.0307 5.65 15.6307 5.71C15.2207 5.78 14.8307 5.5 14.7707 5.1L14.5507 3.8C14.4107 2.93 14.3807 2.76 13.3207 2.76H10.7007C9.64074 2.76 9.62074 2.9 9.47074 3.79L9.24074 5.09C9.18074 5.46 8.86074 5.72 8.50074 5.72Z"
+                  fill="#E21824"
+                />
+                <path
+                  d="M15.2104 22.75H8.79039C5.30039 22.75 5.16039 20.82 5.05039 19.26L4.40039 9.18995C4.37039 8.77995 4.69039 8.41995 5.10039 8.38995C5.52039 8.36995 5.87039 8.67995 5.90039 9.08995L6.55039 19.16C6.66039 20.68 6.70039 21.25 8.79039 21.25H15.2104C17.3104 21.25 17.3504 20.68 17.4504 19.16L18.1004 9.08995C18.1304 8.67995 18.4904 8.36995 18.9004 8.38995C19.3104 8.41995 19.6304 8.76995 19.6004 9.18995L18.9504 19.26C18.8404 20.82 18.7004 22.75 15.2104 22.75Z"
+                  fill="#E21824"
+                />
+                <path
+                  d="M13.6601 17.25H10.3301C9.92008 17.25 9.58008 16.91 9.58008 16.5C9.58008 16.09 9.92008 15.75 10.3301 15.75H13.6601C14.0701 15.75 14.4101 16.09 14.4101 16.5C14.4101 16.91 14.0701 17.25 13.6601 17.25Z"
+                  fill="#E21824"
+                />
+                <path
+                  d="M14.5 13.25H9.5C9.09 13.25 8.75 12.91 8.75 12.5C8.75 12.09 9.09 11.75 9.5 11.75H14.5C14.91 11.75 15.25 12.09 15.25 12.5C15.25 12.91 14.91 13.25 14.5 13.25Z"
+                  fill="#E21824"
+                />
+              </svg>
+              Удалить
+            </button>
+          </div>
+        )}
+
+        {/* Overlay для закрытия модального окна при клике вне его */}
+        {elementModalOpen && (
+          <div
+            onClick={() => setElementModalOpen(false)}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 1999,
+            }}
+          />
+        )}
       </div>
     </div>
   );

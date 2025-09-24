@@ -295,7 +295,7 @@
   background: transparent;
   border-radius: 6px;
   padding: 6px;
-  cursor: grab;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -303,7 +303,6 @@
 }
 
 .dragIcon:active {
-  cursor: grabbing;
   transform: scale(0.95);
 }
 
