@@ -3,6 +3,7 @@
   flex-direction: column;
 
   width: 270px;
+
   gap: 10px;
   margin-bottom: 40px;
   cursor: pointer;
@@ -17,8 +18,8 @@
 .imageWrapper img {
   border-radius: 10px;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 180px;
+  object-fit: contain;
   object-position: center;
 }
 .card h3 {

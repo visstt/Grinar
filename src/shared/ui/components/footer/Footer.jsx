@@ -12,6 +12,10 @@ export default function Footer() {
     e.preventDefault();
     window.location.href = "/docs";
   };
+  const handleSupportClick = (e) => {
+    e.preventDefault();
+    window.open("https://t.me/benty_support_bot", "_blank");
+  };
 
   const handleNavigation = (path) => {
     window.location.href = path;
@@ -42,6 +46,12 @@ export default function Footer() {
                 style={{ cursor: "pointer", textDecoration: "underline" }}
               >
                 Пользовательское соглашение
+              </p>
+              <p
+                onClick={handleSupportClick}
+                style={{ cursor: "pointer", textDecoration: "underline" }}
+              >
+                Тех. поддержка
               </p>
             </div>
             <div className={styles.nav_block}>
