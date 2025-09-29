@@ -282,9 +282,7 @@
   }
 
   .categories p {
-    width: 80%;
     text-align: center;
-    width: 100px;
   }
 
   .rating_wrapper {
@@ -306,9 +304,13 @@
   .photo_card {
     width: 100%; /* Растягиваем на всю ширину */
   }
-
+  .imageWrapper {
+    width: 100%;
+    height: auto;
+  }
   .imageWrapper img {
     width: 100%;
+    height: auto;
   }
 }
 
