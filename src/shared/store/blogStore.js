@@ -5,7 +5,6 @@ import { persist } from "zustand/middleware";
 export const useBlogFileStore = create((set, get) => ({
   coverImageFile: null,
   setCoverImageFile: (file) => {
-    console.log("Blog: Setting coverImageFile:", file);
     set({ coverImageFile: file });
   },
   getCoverImageFile: () => get().coverImageFile,
@@ -22,9 +21,7 @@ export const useBlogStore = create(
         description: "",
         specializationId: null,
         content: null,
-        coverImage: null, // Для совместимости, но файл будет в отдельном сторе
-        coverImagePreview: null,
-        coverImageBase64: null,
+        coverImage: null, // Теперь строка (url/base64)
       },
 
       // Действия для обновления данных блога
@@ -35,107 +32,39 @@ export const useBlogStore = create(
 
       // Полная замена данных блога (для режима редактирования)
       setBlogData: (blogData) => {
-        // Если есть photoName, создаем превью для обложки
-        let coverImagePreview = null;
-        let coverImageBase64 = null;
-
+        // Если есть photoName, создаем url для coverImage
+        let coverImage = null;
         if (blogData.photoName) {
-          // Используем фото из API для превью
           const apiUrl =
             import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
-          coverImagePreview = `${apiUrl}/static/project-photos/${blogData.photoName}`;
-          // Также сохраняем как base64 для совместимости
-          coverImageBase64 = coverImagePreview;
+          coverImage = `${apiUrl}/static/project-photos/${blogData.photoName}`;
         }
-
         set(() => ({
           blogData: {
-            id: blogData.id || null, // Сохраняем ID для отслеживания режима редактирования
+            id: blogData.id || null,
             name: blogData.name || "",
             description: blogData.description || "",
             specializationId: blogData.specializationId || null,
             content: blogData.content || null,
-            coverImage: null, // Файл устанавливается отдельно
-            coverImagePreview: coverImagePreview,
-            coverImageBase64: coverImageBase64,
+            coverImage: coverImage,
           },
         }));
-      }, // Установка обложки блога
-      setCoverImage: async (file) => {
-        console.log("Blog: setCoverImage called with:", file);
-
-        // Сохраняем файл в отдельном файловом сторе
-        useBlogFileStore.getState().setCoverImageFile(file);
-
-        if (file) {
-          // Очищаем старый blob URL если он был
-          const currentState = get();
-          if (
-            currentState.blogData.coverImagePreview &&
-            currentState.blogData.coverImagePreview.startsWith("blob:")
-          ) {
-            URL.revokeObjectURL(currentState.blogData.coverImagePreview);
-          }
-
-          // Создаем blob URL для немедленного отображения
-          const previewUrl = URL.createObjectURL(file);
-
-          // Конвертируем файл в base64 для сохранения в localStorage
-          const base64Preview = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.readAsDataURL(file);
-          });
-
-          console.log("Blog: About to set state with file:", file);
-
-          set((state) => ({
-            blogData: {
-              ...state.blogData,
-              coverImage: file, // Для совместимости, но может быть затерт
-              coverImagePreview: previewUrl,
-              coverImageBase64: base64Preview, // Для сохранения в localStorage
-            },
-          }));
-
-          console.log(
-            "Blog: State updated, new coverImage:",
-            get().blogData.coverImage,
-          );
-        } else {
-          // Очистка
-          useBlogFileStore.getState().clearCoverImageFile();
-          // Очистка старого URL если он был
-          const currentPreview = get().blogData.coverImagePreview;
-          if (currentPreview && currentPreview.startsWith("blob:")) {
-            URL.revokeObjectURL(currentPreview);
-          }
-          set((state) => ({
-            blogData: {
-              ...state.blogData,
-              coverImage: null,
-              coverImagePreview: null,
-              coverImageBase64: null,
-            },
-          }));
-        }
+      },
+      setCoverImage: async (coverImageString) => {
+        // coverImageString — это строка (url или base64)
+        set((state) => ({
+          blogData: {
+            ...state.blogData,
+            coverImage: coverImageString,
+          },
+        }));
       },
 
       // Получение файла обложки
-      getCoverImageFile: () => {
-        const fileFromStore = useBlogFileStore.getState().getCoverImageFile();
-        console.log("Blog: getCoverImageFile returning:", fileFromStore);
-        return fileFromStore;
-      },
+      // getCoverImageFile больше не нужен, coverImage теперь строка
 
       // Сброс всех данных блога
       resetBlog: () => {
-        const currentPreview = get().blogData.coverImagePreview;
-        if (currentPreview && currentPreview.startsWith("blob:")) {
-          URL.revokeObjectURL(currentPreview);
-        }
-        // Очищаем файловый стор
-        useBlogFileStore.getState().clearCoverImageFile();
         set({
           blogData: {
             id: null,
@@ -144,8 +73,6 @@ export const useBlogStore = create(
             specializationId: null,
             content: null,
             coverImage: null,
-            coverImagePreview: null,
-            coverImageBase64: null,
           },
         });
       },
@@ -163,23 +90,14 @@ export const useBlogStore = create(
     }),
     {
       name: "blog-draft-storage",
-      // Сохраняем все кроме файла и blob URL
+      // Сохраняем все как есть, coverImage теперь строка
       partialize: (state) => ({
         blogData: {
           ...state.blogData,
-          coverImage: undefined, // Полностью исключаем из сохранения
-          coverImagePreview: null, // Blob URL не сохраняем (невалиден после перезагрузки)
-          // coverImageBase64 сохраняется для восстановления превью
         },
       }),
-      // Восстанавливаем превью после загрузки из localStorage
-      onRehydrateStorage: () => (state) => {
-        if (state?.blogData?.coverImageBase64) {
-          console.log("Blog: Restoring preview from base64");
-          // Восстанавливаем превью из base64 при загрузке страницы
-          state.blogData.coverImagePreview = state.blogData.coverImageBase64;
-        }
-      },
+      // Больше не нужно восстанавливать превью из base64
+      onRehydrateStorage: () => (state) => state,
     },
   ),
 );

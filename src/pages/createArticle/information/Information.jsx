@@ -19,7 +19,7 @@ export default function Information() {
   const navigate = useNavigate();
   const { blogData, updateBlogData, isEditMode, resetBlog } =
     useCreateArticleContext();
-  const { setCoverImage, getCoverImageFile } = useBlogStore();
+  const { setCoverImage } = useBlogStore();
   const {
     createBlog,
     updateBlog,
@@ -32,31 +32,7 @@ export default function Information() {
     error: fetchError,
   } = useFetchOptions();
 
-  // Восстанавливаем файл из base64 если он есть, но файл отсутствует
-  useEffect(() => {
-    if (blogData.coverImageBase64 && !blogData.coverImage) {
-      // Конвертируем base64 обратно в файл
-      const base64ToFile = (base64, fileName = "cover-image") => {
-        const arr = base64.split(",");
-        const mime = arr[0].match(/:(.*?);/)[1];
-        const bstr = atob(arr[1]);
-        let n = bstr.length;
-        const u8arr = new Uint8Array(n);
-        while (n--) {
-          u8arr[n] = bstr.charCodeAt(n);
-        }
-        return new File([u8arr], fileName, { type: mime });
-      };
-
-      try {
-        const file = base64ToFile(blogData.coverImageBase64);
-        setCoverImage(file);
-        console.log("Restored file from base64:", file);
-      } catch (error) {
-        console.error("Error restoring file from base64:", error);
-      }
-    }
-  }, [blogData.coverImageBase64, blogData.coverImage, setCoverImage]);
+  // Больше не нужно восстанавливать файл из base64, coverImage теперь строка (url/base64)
 
   // Очистка blob URL при размонтировании компонента
   useEffect(() => {
@@ -68,14 +44,9 @@ export default function Information() {
     };
   }, [blogData.coverImagePreview]);
 
-  // Отслеживаем изменения coverImage
+  // coverImage теперь строка (url/base64), можно логировать для отладки
   useEffect(() => {
-    console.log("coverImage changed:", blogData.coverImage);
-    console.log("coverImage type:", typeof blogData.coverImage);
-    console.log(
-      "coverImage instanceof File:",
-      blogData.coverImage instanceof File,
-    );
+    // ...existing code...
   }, [blogData.coverImage]);
 
   // Очистка blob URL при размонтировании компонента
@@ -106,10 +77,14 @@ export default function Information() {
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    console.log("Selected file:", file);
-    console.log("File name:", file?.name);
-    console.log("File size:", file?.size);
-    await setCoverImage(file);
+    if (!file) return;
+    // Конвертируем файл в base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result;
+      setCoverImage(base64); // Сохраняем строку base64
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleImageDelete = async () => {
@@ -136,14 +111,10 @@ export default function Information() {
       return;
     }
 
-    // Получаем файл обложки из файлового стора
-    const coverImageFile = getCoverImageFile();
+    // Получаем строку обложки (url/base64)
+    const coverImageString = blogData.coverImage;
 
-    // Логирование для отладки
-    console.log("Blog data before send:", blogData);
-    console.log("Cover image file:", coverImageFile);
-    console.log("Cover image file type:", typeof coverImageFile);
-    console.log("Is File instance:", coverImageFile instanceof File);
+    // ...existing code...
 
     try {
       if (isEditMode) {
@@ -151,11 +122,10 @@ export default function Information() {
           name: blogData.name,
           specializationId: blogData.specializationId,
           content: blogData.content,
-          coverImage: coverImageFile,
+          coverImage: coverImageString,
         };
 
-        console.log("Данные для обновления блога:", blogUpdateData);
-        console.log("Контент для обновления:", blogUpdateData.content);
+        // ...existing code...
 
         await updateBlog(blogData.id, blogUpdateData);
         toast.success("Статья успешно обновлена!");
@@ -168,7 +138,7 @@ export default function Information() {
           name: blogData.name,
           specializationId: blogData.specializationId,
           content: blogData.content,
-          coverImage: coverImageFile,
+          coverImage: coverImageString,
         };
 
         await createBlog(blogSubmitData);
@@ -218,11 +188,9 @@ export default function Information() {
             <div className="stripe2"></div>
             <div className={styles.form}>
               <div className={styles.img_form}>
-                {blogData.coverImagePreview || blogData.coverImageBase64 ? (
+                {blogData.coverImage ? (
                   <img
-                    src={
-                      blogData.coverImagePreview || blogData.coverImageBase64
-                    }
+                    src={blogData.coverImage}
                     alt="Blog Cover"
                     className={styles.coverImage}
                   />
