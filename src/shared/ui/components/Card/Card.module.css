@@ -19,7 +19,7 @@
   border-radius: 10px;
   width: 100%;
   height: 180px;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 .card h3 {
