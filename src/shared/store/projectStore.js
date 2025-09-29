@@ -5,7 +5,6 @@ import { persist } from "zustand/middleware";
 export const useProjectFileStore = create((set, get) => ({
   coverImageFile: null,
   setCoverImageFile: (file) => {
-    console.log("Setting coverImageFile:", file);
     set({ coverImageFile: file });
   },
   getCoverImageFile: () => get().coverImageFile,
@@ -36,7 +35,14 @@ export const useProjectStore = create(
         })),
 
       // Установка полных данных проекта (для режима редактирования)
-      setProjectData: (projectData) =>
+      setProjectData: (projectData) => {
+        // Если есть photoName, создаем url для coverImage
+        let coverImage = null;
+        if (projectData.photoName) {
+          const apiUrl =
+            import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+          coverImage = `${apiUrl}/static/project-photos/${projectData.photoName}`;
+        }
         set(() => ({
           projectData: {
             name: projectData.name || "",
@@ -46,90 +52,27 @@ export const useProjectStore = create(
             firstLink: projectData.firstLink || "",
             secondLink: projectData.secondLink || "",
             content: projectData.content || null,
-            coverImage: null,
-            coverImagePreview: null,
-            coverImageBase64: null,
+            coverImage: coverImage,
           },
-        })),
+        }));
+      },
 
       // Установка обложки проекта
-      setCoverImage: async (file) => {
-        console.log("setCoverImage called with:", file);
-
-        // Сохраняем файл в отдельном файловом сторе
-        useProjectFileStore.getState().setCoverImageFile(file);
-
-        if (file) {
-          // Очищаем старый blob URL если он был
-          const currentState = get();
-          if (
-            currentState.projectData.coverImagePreview &&
-            currentState.projectData.coverImagePreview.startsWith("blob:")
-          ) {
-            URL.revokeObjectURL(currentState.projectData.coverImagePreview);
-          }
-
-          // Создаем blob URL для немедленного отображения
-          const previewUrl = URL.createObjectURL(file);
-
-          // Конвертируем файл в base64 для сохранения в localStorage
-          const base64Preview = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.readAsDataURL(file);
-          });
-
-          console.log("About to set state with file:", file);
-
-          set((state) => ({
-            projectData: {
-              ...state.projectData,
-              coverImage: file, // Для совместимости, но может быть затерт
-              coverImagePreview: previewUrl,
-              coverImageBase64: base64Preview, // Для сохранения в localStorage
-            },
-          }));
-
-          console.log(
-            "State updated, new coverImage:",
-            get().projectData.coverImage,
-          );
-        } else {
-          // Очистка
-          useProjectFileStore.getState().clearCoverImageFile();
-          // Очистка старого URL если он был
-          const currentPreview = get().projectData.coverImagePreview;
-          if (currentPreview && currentPreview.startsWith("blob:")) {
-            URL.revokeObjectURL(currentPreview);
-          }
-          set((state) => ({
-            projectData: {
-              ...state.projectData,
-              coverImage: null,
-              coverImagePreview: null,
-              coverImageBase64: null,
-            },
-          }));
-        }
+      setCoverImage: async (coverImageString) => {
+        // coverImageString — это строка (url или base64)
+        set((state) => ({
+          projectData: {
+            ...state.projectData,
+            coverImage: coverImageString,
+          },
+        }));
       },
 
       // Получение файла обложки
-      getCoverImageFile: () => {
-        const fileFromStore = useProjectFileStore
-          .getState()
-          .getCoverImageFile();
-        console.log("getCoverImageFile returning:", fileFromStore);
-        return fileFromStore;
-      },
+      // getCoverImageFile больше не нужен, coverImage теперь строка
 
       // Сброс всех данных проекта
       resetProject: () => {
-        const currentPreview = get().projectData.coverImagePreview;
-        if (currentPreview && currentPreview.startsWith("blob:")) {
-          URL.revokeObjectURL(currentPreview);
-        }
-        // Очищаем файловый стор
-        useProjectFileStore.getState().clearCoverImageFile();
         set({
           projectData: {
             name: "",
@@ -140,8 +83,6 @@ export const useProjectStore = create(
             secondLink: "",
             content: null,
             coverImage: null,
-            coverImagePreview: null,
-            coverImageBase64: null,
           },
         });
       },
@@ -151,23 +92,14 @@ export const useProjectStore = create(
     }),
     {
       name: "project-draft-storage",
-      // Сохраняем все кроме файла и blob URL
+      // Сохраняем все как есть, coverImage теперь строка
       partialize: (state) => ({
         projectData: {
           ...state.projectData,
-          coverImage: undefined, // Полностью исключаем из сохранения
-          coverImagePreview: null, // Blob URL не сохраняем (невалиден после перезагрузки)
-          // coverImageBase64 сохраняется для восстановления превью
         },
       }),
-      // Восстанавливаем превью после загрузки из localStorage
-      onRehydrateStorage: () => (state) => {
-        if (state?.projectData?.coverImageBase64) {
-          // Используем base64 как источник превью вместо blob URL
-          state.projectData.coverImagePreview =
-            state.projectData.coverImageBase64;
-        }
-      },
+      // Больше не нужно восстанавливать превью из base64
+      onRehydrateStorage: () => (state) => state,
     },
   ),
 );

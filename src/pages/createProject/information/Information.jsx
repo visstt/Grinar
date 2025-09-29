@@ -48,7 +48,14 @@ export default function Information() {
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    await setCoverImage(file);
+    if (!file) return;
+    // Конвертируем файл в base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result;
+      setCoverImage(base64); // Сохраняем строку base64
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleImageDelete = async () => {
@@ -129,13 +136,9 @@ export default function Information() {
             <div className="stripe2"></div>
             <div className={styles.form}>
               <div className={styles.img_form}>
-                {projectData.coverImagePreview ||
-                projectData.coverImageBase64 ? (
+                {projectData.coverImage ? (
                   <img
-                    src={
-                      projectData.coverImagePreview ||
-                      projectData.coverImageBase64
-                    }
+                    src={projectData.coverImage}
                     alt="Project Cover"
                     className={styles.coverImage}
                   />
