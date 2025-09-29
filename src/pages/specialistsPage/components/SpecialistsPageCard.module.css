@@ -148,6 +148,7 @@
 
 .categories {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   gap: 10px;
