@@ -123,6 +123,7 @@
 
 .imageWrapper img {
   width: 243px;
+  height: 180px;
   border-radius: 10px;
 }
 .imageWrapper {
@@ -136,13 +137,12 @@
   letter-spacing: 0px;
 }
 
-
 .photo_wrapper {
   display: flex;
   flex-direction: row;
   align-items: top;
   justify-content: flex-start;
-  gap: 40px; 
+  gap: 40px;
   flex-wrap: wrap;
 }
 
