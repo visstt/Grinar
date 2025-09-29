@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Button from "../../../../shared/ui/components/button/Button";
 import Header from "../../../../shared/ui/components/header/Header";
@@ -14,6 +14,7 @@ export default function ProfileSettingsHeader() {
   const location = useLocation();
   const navigate = useNavigate();
   const { coverFileName } = useProfileDecorSettings();
+  const { userId } = useParams();
 
   let specializationNames = [];
   if (settings && specializations.length > 0 && settings.specializations) {
@@ -27,6 +28,10 @@ export default function ProfileSettingsHeader() {
 
   // Определяем активную страницу
   const currentPath = location.pathname;
+  const infoPath = `/user/${userId}/profile-info`;
+  const decorPath = `/user/${userId}/profile-decor`;
+  const notificationsPath = `/user/${userId}/profile-notifications`;
+  const accountPath = `/user/${userId}/profile-account`;
 
   // Формируем url для cover
   const coverUrl = coverFileName
@@ -68,42 +73,28 @@ export default function ProfileSettingsHeader() {
           </div>
           <div className={styles.btn_wrapper}>
             <Button
-              variant={
-                currentPath === "/profile/profile-info"
-                  ? "primary"
-                  : "secondary"
-              }
-              onClick={() => navigate("/profile/profile-info")}
+              variant={currentPath === infoPath ? "primary" : "secondary"}
+              onClick={() => navigate(infoPath)}
             >
               Информация
             </Button>
             <Button
-              variant={
-                currentPath === "/profile/profile-decor"
-                  ? "primary"
-                  : "secondary"
-              }
-              onClick={() => navigate("/profile/profile-decor")}
+              variant={currentPath === decorPath ? "primary" : "secondary"}
+              onClick={() => navigate(decorPath)}
             >
               Оформление
             </Button>
             <Button
               variant={
-                currentPath === "/profile/profile-notifications"
-                  ? "primary"
-                  : "secondary"
+                currentPath === notificationsPath ? "primary" : "secondary"
               }
-              onClick={() => navigate("/profile/profile-notifications")}
+              onClick={() => navigate(notificationsPath)}
             >
               Уведомления
             </Button>
             <Button
-              variant={
-                currentPath === "/profile/profile-account"
-                  ? "primary"
-                  : "secondary"
-              }
-              onClick={() => navigate("/profile/profile-account")}
+              variant={currentPath === accountPath ? "primary" : "secondary"}
+              onClick={() => navigate(accountPath)}
             >
               Аккаунт
             </Button>

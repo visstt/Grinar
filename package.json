@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -36,7 +37,6 @@
     "slate-history": "^0.113.1",
     "slate-react": "^0.117.4",
     "socket.io-client": "^4.8.1",
-    "yarn": "^1.22.22",
     "zustand": "^5.0.6"
   },
   "devDependencies": {

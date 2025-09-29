@@ -102,7 +102,7 @@ export default function ProfileTitle() {
             <div className={styles.settings}>
               <Button
                 variant="secondary"
-                onClick={() => navigate("/profile/profile-info")}
+                onClick={() => navigate(`/user/${userId}/profile-info`)}
               >
                 <img src="/icons/setting.svg" alt="settings" />
                 <p>Настройки</p>

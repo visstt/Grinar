@@ -163,6 +163,22 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "user/:userId/profile-info",
+        element: <ProfileInfo />,
+      },
+      {
+        path: "user/:userId/profile-decor",
+        element: <ProfileDecor />,
+      },
+      {
+        path: "user/:userId/profile-notifications",
+        element: <ProfileNotifications />,
+      },
+      {
+        path: "user/:userId/profile-account",
+        element: <ProfileAccount />,
+      },
     ],
   },
   {
