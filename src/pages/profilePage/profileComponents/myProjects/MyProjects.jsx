@@ -1,5 +1,6 @@
 import Card from "../../../../shared/ui/components/Card/Card";
 import EmptyState from "../../../../shared/ui/components/emptyState/EmptyState";
+import Loader from "../../../../shared/ui/components/Loader/Loader";
 import { useDeleteProject } from "../../hooks/useDeleteProject";
 import { useEditProject } from "../../hooks/useEditProject";
 import useMyProfile from "../../hooks/useMyProfile";
@@ -32,7 +33,7 @@ export default function MyProjects() {
     }
   };
 
-  if (loading) return <div>Загрузка...</div>;
+  if (loading) return <Loader />;
   if (error)
     return (
       <div style={{ color: "red" }}>

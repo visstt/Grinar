@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { useLocation } from "react-router-dom";
 
+import Loader from "../../shared/ui/components/Loader/Loader";
 import useMyProfile from "./hooks/useMyProfile";
 import Subscriptions from "./profileComponents/Subscriptions/Subscriptions";
 import MyBlogs from "./profileComponents/myBlogs/MyBlogs";
@@ -26,7 +27,7 @@ export default function ProfilePage({ tab }) {
     else setActiveTab("main");
   }, [location.pathname, tab]);
 
-  if (loading) return <div>Загрузка...</div>;
+  if (loading) return <Loader />;
   if (error)
     return (
       <div style={{ color: "red" }}>Ошибка: {error?.message || error}</div>

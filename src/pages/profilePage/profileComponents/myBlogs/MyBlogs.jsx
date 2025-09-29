@@ -1,5 +1,6 @@
 import Card from "../../../../shared/ui/components/Card/Card";
 import EmptyState from "../../../../shared/ui/components/emptyState/EmptyState";
+import Loader from "../../../../shared/ui/components/Loader/Loader";
 import { useDeleteBlog } from "../../hooks/useDeleteBlog";
 import { useEditBlog } from "../../hooks/useEditBlog";
 import useMyProfile from "../../hooks/useMyProfile";
@@ -32,7 +33,7 @@ export default function MyBlogs() {
     }
   };
 
-  if (loading) return <div>Загрузка...</div>;
+  if (loading) return <Loader />;
   if (error)
     return (
       <div style={{ color: "red" }}>

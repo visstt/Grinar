@@ -2,6 +2,7 @@ import React from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
+import Loader from "../../../../shared/ui/components/Loader/Loader";
 import Button from "../../../../shared/ui/components/button/Button";
 import Header from "../../../../shared/ui/components/header/Header";
 import {
@@ -18,7 +19,7 @@ export default function ProfileTitle() {
   const { profile, loading, error, userId } = useMyProfile();
   const { coverFileName, logoFileName } = useProfileDecorSettings();
 
-  if (loading) return <div>Загрузка...</div>;
+  if (loading) return <Loader />;
   if (error)
     return (
       <div style={{ color: "red" }}>

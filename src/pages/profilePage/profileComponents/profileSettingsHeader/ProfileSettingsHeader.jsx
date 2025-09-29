@@ -1,5 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
+import Loader from "../../../../shared/ui/components/Loader/Loader";
 import Button from "../../../../shared/ui/components/button/Button";
 import Header from "../../../../shared/ui/components/header/Header";
 import { getPhotoUrl } from "../../../../shared/utils/getProjectImageUrl";
@@ -53,7 +54,7 @@ export default function ProfileSettingsHeader() {
       <div className="container">
         <div className={styles.wrapper}>
           <div className={styles.user_info}>
-            {loading && <p>Загрузка...</p>}
+            {loading && <Loader />}
             {error && <p style={{ color: "red" }}>Ошибка загрузки</p>}
             {settings && (
               <>
@@ -62,9 +63,7 @@ export default function ProfileSettingsHeader() {
                 </h1>
                 <div className={styles.user_info__details}>
                   <p>
-                    {specLoading
-                      ? "Загрузка специализаций..."
-                      : specializationNames.join(", ")}
+                    {specLoading ? <Loader /> : specializationNames.join(", ")}
                   </p>
                   <p>{settings.city}</p>
                 </div>

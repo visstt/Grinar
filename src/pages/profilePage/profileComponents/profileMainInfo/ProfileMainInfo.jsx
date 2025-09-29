@@ -1,10 +1,11 @@
+import Loader from "../../../../shared/ui/components/Loader/Loader";
 import useMyProfile from "../../hooks/useMyProfile";
 import styles from "./ProfileMainInfo.module.css";
 
 export default function ProfileMainInfo() {
   const { profile, loading, error } = useMyProfile();
 
-  if (loading) return <div>Загрузка...</div>;
+  if (loading) return <Loader />;
   if (error)
     return (
       <div style={{ color: "red" }}>
