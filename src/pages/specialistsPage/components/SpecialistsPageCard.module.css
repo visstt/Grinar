@@ -302,7 +302,7 @@
   }
 
   .photo_card {
-    width: 100%; /* Растягиваем на всю ширину */
+    width: 100%; 
   }
   .imageWrapper {
     width: 100%;
