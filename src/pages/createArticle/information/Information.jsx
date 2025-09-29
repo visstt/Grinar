@@ -112,7 +112,19 @@ export default function Information() {
     }
 
     // Получаем строку обложки (url/base64)
-    const coverImageString = blogData.coverImage;
+    let coverImageToSend = blogData.coverImage;
+    // Если это base64, преобразуем в File
+    if (coverImageToSend && coverImageToSend.startsWith("data:image")) {
+      const arr = coverImageToSend.split(",");
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      coverImageToSend = new File([u8arr], "cover-image.png", { type: mime });
+    }
 
     // ...existing code...
 
@@ -122,7 +134,7 @@ export default function Information() {
           name: blogData.name,
           specializationId: blogData.specializationId,
           content: blogData.content,
-          coverImage: coverImageString,
+          coverImage: coverImageToSend,
         };
 
         // ...existing code...
@@ -138,7 +150,7 @@ export default function Information() {
           name: blogData.name,
           specializationId: blogData.specializationId,
           content: blogData.content,
-          coverImage: coverImageString,
+          coverImage: coverImageToSend,
         };
 
         await createBlog(blogSubmitData);

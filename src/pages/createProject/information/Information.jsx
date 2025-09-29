@@ -93,15 +93,32 @@ export default function Information() {
     }
 
     try {
+      // Получаем строку обложки (url/base64)
+      let coverImageToSend = projectData.coverImage;
+      // Если это base64, преобразуем в File
+      if (coverImageToSend && coverImageToSend.startsWith("data:image")) {
+        const arr = coverImageToSend.split(",");
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        coverImageToSend = new File([u8arr], "cover-image.png", { type: mime });
+      }
       if (isEditMode) {
-        await updateProject(editProjectId, projectData);
+        await updateProject(editProjectId, {
+          ...projectData,
+          coverImage: coverImageToSend,
+        });
         alert("Проект успешно обновлен!");
         // Очищаем store и localStorage после успешного обновления
         resetProject();
         localStorage.removeItem("editingProject");
         window.location.href = "/profile";
       } else {
-        await createProject(projectData);
+        await createProject({ ...projectData, coverImage: coverImageToSend });
         alert("Проект успешно опубликован!");
         resetProject();
       }

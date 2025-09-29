@@ -136,13 +136,13 @@
   letter-spacing: 0px;
 }
 
-/* Контейнер проектов с увеличенным расстоянием */
+
 .photo_wrapper {
   display: flex;
   flex-direction: row;
   align-items: top;
   justify-content: flex-start;
-  gap: 40px; /* Увеличенное расстояние между проектами */
+  gap: 40px; 
   flex-wrap: wrap;
 }
 
