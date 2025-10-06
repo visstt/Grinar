@@ -246,11 +246,12 @@
   }
 
   .specialist_wrapper__hero {
-    align-items: center;
+    align-items: flex-start;
+    flex-direction: column;
     gap: 10px;
   }
   .feedback {
-    width: 100px;
+    width: 200px;
   }
   .hero__info {
     gap: 10px;
@@ -311,6 +312,7 @@
   }
   .imageWrapper img {
     width: 100%;
+    max-height: 280px;
     height: auto;
   }
 }
