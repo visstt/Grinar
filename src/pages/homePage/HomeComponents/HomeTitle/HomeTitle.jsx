@@ -1,9 +1,14 @@
+import { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 
+import { useUserStore } from "../../../../shared/store/userStore";
 import Header from "../../../../shared/ui/components/header/Header";
 import styles from "./HomeTitle.module.css";
 
 export default function HomeTitle() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { handleOpenLogin } = useUserStore();
   const navigate = useNavigate();
   const today = new Date();
   const formattedDate = today.toLocaleDateString("ru-RU", {
@@ -16,10 +21,17 @@ export default function HomeTitle() {
       <Header />
       <div className="container">
         <div className={styles.wrapper}>
-          <h1>Лучшее на BENTY</h1>
+          <h1 style={{ textAlign: "center" }}>
+            Регистрируйся и получай премиум
+          </h1>
           <p>{formattedDate}</p>
-          <button onClick={() => navigate("/specialists")}>
-            Найти специалиста
+          <button
+            onClick={() => {
+              handleOpenLogin();
+              setMenuOpen(false);
+            }}
+          >
+            Зарегистрироваться
           </button>
         </div>
       </div>

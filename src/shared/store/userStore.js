@@ -23,9 +23,43 @@ export const useUserStore = create(
           }
         }
       },
+      loginOpen: false,
+      setLoginOpen: (value) => set({ loginOpen: value }),
+      registrationOpen: false,
+      setRegistrationOpen: (value) => set({ registrationOpen: value }),
+      registrationStep: 1,
+      setRegistrationStep: (step) => set({ registrationStep: step }),
+      registrationEmail: "",
+      setRegistrationEmail: (email) => set({ registrationEmail: email }),
+      handleOpenLogin: () =>
+        set((state) => ({
+          loginOpen: true,
+          registrationOpen: false,
+          registrationStep: 1,
+          registrationEmail: "",
+        })),
+      handleOpenRegistration: () =>
+        set((state) => ({
+          loginOpen: false,
+          registrationOpen: true,
+        })),
+      handleRegistrationSuccess: (email) =>
+        set((state) => ({
+          registrationEmail: email,
+          registrationStep: 2,
+        })),
+      handleCloseRegistration: () =>
+        set((state) => ({
+          registrationOpen: false,
+          registrationStep: 1,
+          registrationEmail: "",
+        })),
     }),
     {
       name: "user-storage",
+      partialize: (state) => ({
+        user: state.user, // Only persist the user state
+      }),
     },
   ),
 );
