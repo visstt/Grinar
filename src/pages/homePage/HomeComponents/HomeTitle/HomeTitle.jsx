@@ -8,7 +8,7 @@ import styles from "./HomeTitle.module.css";
 
 export default function HomeTitle() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { handleOpenLogin } = useUserStore();
+  const { handleOpenRegistration } = useUserStore();
   const navigate = useNavigate();
   const today = new Date();
   const formattedDate = today.toLocaleDateString("ru-RU", {
@@ -22,12 +22,12 @@ export default function HomeTitle() {
       <div className="container">
         <div className={styles.wrapper}>
           <h1 style={{ textAlign: "center" }}>
-            Регистрируйся и получай премиум
+            Регистрируйся — получи премиум-доступ на 3 месяца бесплатно!
           </h1>
           <p>{formattedDate}</p>
           <button
             onClick={() => {
-              handleOpenLogin();
+              handleOpenRegistration();
               setMenuOpen(false);
             }}
           >
