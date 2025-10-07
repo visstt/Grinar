@@ -116,7 +116,7 @@ export default function Information() {
         // Очищаем store и localStorage после успешного обновления
         resetProject();
         localStorage.removeItem("editingProject");
-        window.location.href = "/profile";
+        window.location.href = "/";
       } else {
         await createProject({ ...projectData, coverImage: coverImageToSend });
         alert("Проект успешно опубликован!");
