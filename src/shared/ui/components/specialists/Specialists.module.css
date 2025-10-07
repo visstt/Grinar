@@ -115,6 +115,7 @@
 }
 .imageWrapper img {
   width: 270px;
+  height: 180px;
   border-radius: 10px;
 }
 .imageWrapper {
