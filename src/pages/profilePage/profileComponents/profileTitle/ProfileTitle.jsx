@@ -17,7 +17,7 @@ export default function ProfileTitle() {
   const navigate = useNavigate();
   const location = useLocation();
   const { profile, loading, error, userId } = useMyProfile();
-  const { coverFileName, logoFileName } = useProfileDecorSettings();
+  const { coverFileName } = useProfileDecorSettings();
 
   if (loading) return <Loader />;
   if (error)
@@ -43,6 +43,9 @@ export default function ProfileTitle() {
   const coverUrl = coverFileName
     ? getPhotoUrl("cover", coverFileName)
     : undefined;
+
+  // Используем только profile.logoFileName, игнорируем декор для логотипа
+  const finalLogoFileName = profile.logoFileName;
 
   return (
     <div
@@ -80,10 +83,7 @@ export default function ProfileTitle() {
             </div>
           </div>
           <div className={styles.user_logo}>
-            <img
-              src={getUserLogoUrl(logoFileName || profile.logoFileName)}
-              alt="userLogo"
-            />
+            <img src={getUserLogoUrl(finalLogoFileName)} alt="userLogo" />
           </div>
           <div className={styles.user_stats}>
             <div className={styles.stats}>

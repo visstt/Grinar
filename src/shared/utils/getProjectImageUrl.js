@@ -3,7 +3,7 @@ import api from "../api/api";
 const API_URL = api.defaults.baseURL?.replace(/\/$/, "") || "";
 
 export function getPhotoUrl(type, filename) {
-  if (!filename) {
+  if (!filename || filename === null) {
     if (type === "avatar") return "/icons/Sample_User_Icon.png";
     if (type === "project") return "/images/cardImage.png";
     if (type === "cover") return "/images/defaultCover.png";
