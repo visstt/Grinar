@@ -14,6 +14,7 @@ export default function Registration({ onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
+  const [promocode, setPromocode] = useState("");
   const [policyChecked, setPolicyChecked] = useState(false);
   const [step, setStep] = useState(1);
   const { register, loading, error } = useRegistration();
@@ -44,6 +45,7 @@ export default function Registration({ onClose }) {
       email,
       password,
       repassword,
+      promocode,
     });
     if (res) {
       setStep(2);
@@ -154,6 +156,16 @@ export default function Registration({ onClose }) {
                 )}
               </button>
             </div>
+          </div>
+          <div className={styles.block}>
+            <label>Промокод (необязательно)</label>
+            <input
+              type="text"
+              placeholder="Введите промокод"
+              value={promocode}
+              onChange={(e) => setPromocode(e.target.value)}
+              className={error ? styles.input_error : undefined}
+            />
           </div>
         </div>
         <div className={styles.policy_block}>
