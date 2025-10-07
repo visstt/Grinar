@@ -1,7 +1,9 @@
 import { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useUserStore } from "../../../shared/store/userStore";
 import Button from "../../../shared/ui/components/button/Button";
 import Input from "../../../shared/ui/components/input/Input";
 import useMyProfile from "../../profilePage/hooks/useMyProfile";
@@ -14,6 +16,8 @@ import useChangePassword from "./hooks/useChangePassword";
 import useChangePhone from "./hooks/useChangePhone";
 
 export default function ProfileAccount() {
+  const navigate = useNavigate();
+  const { logout } = useUserStore();
   const { profile } = useMyProfile();
   const [loginInput, setLoginInput] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -184,6 +188,21 @@ export default function ProfileAccount() {
     }
   };
 
+  const handleLogout = () => {
+    // Очищаем состояние пользователя в store
+    logout();
+
+    // Очищаем localStorage (дополнительная очистка для токенов)
+    localStorage.removeItem("user-storage");
+    localStorage.removeItem("access");
+    localStorage.removeItem("refresh");
+
+    // Показываем уведомление
+    toast.success("Вы успешно вышли из системы!");
+
+    // Переходим на главную страницу
+    navigate("/");
+  };
   return (
     <div>
       <ProfileSettingsHeader />
@@ -313,6 +332,17 @@ export default function ProfileAccount() {
                 </div>
               </div>
             </form>
+
+            {/* Кнопка выхода */}
+            <div className={styles.logout_section}>
+              <Button
+                type="button"
+                className={styles.logout_btn}
+                onClick={handleLogout}
+              >
+                Выйти
+              </Button>
+            </div>
           </div>
         </div>
         <ChangeLoginModal
