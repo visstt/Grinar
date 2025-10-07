@@ -1,6 +1,6 @@
 .title {
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 140px; /* Отступ для фиксированного хедера */
   margin-bottom: 30px;
   padding: 0 15px;
   max-width: 1280px;
@@ -11,6 +11,13 @@
   line-height: 34.72px;
   letter-spacing: 0%;
   text-align: left;
+}
+
+@media (max-width: 768px) {
+  .title {
+    margin-top: 100px; /* Отступ для фиксированного хедера на мобильных */
+    font-size: 24px;
+  }
 }
 .specialist_button_wrapper {
   margin: 0 auto;

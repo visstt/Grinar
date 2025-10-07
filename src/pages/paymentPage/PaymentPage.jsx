@@ -39,7 +39,7 @@ export default function PaymentPage() {
     <div>
       <Header darkBackground={true} />
       <div className={styles.container}>
-        <div className="container">
+        <div className="container" style={{ paddingTop: 80 }}>
           <div className={styles.content_wrappper}>
             <h1>Подписка на BENTY</h1>
           </div>

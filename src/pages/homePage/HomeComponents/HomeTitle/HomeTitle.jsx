@@ -18,7 +18,7 @@ export default function HomeTitle() {
 
   return (
     <div className={styles.background}>
-      <Header />
+      <Header darkBackground={true} />
       <div className="container">
         <div className={styles.wrapper}>
           <h1 style={{ textAlign: "center" }}>

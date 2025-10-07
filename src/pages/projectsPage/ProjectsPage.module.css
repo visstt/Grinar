@@ -10,8 +10,13 @@
   font-size: 36px;
   color: #141414;
   text-align: center;
-  margin-top: 60px;
   margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 28px;
+  }
 }
 
 .filters {

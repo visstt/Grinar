@@ -59,7 +59,7 @@ export default function ProfileTitle() {
       }
     >
       <Header />
-      <div className="container">
+      <div className="container" style={{ paddingTop: 80 }} >
         <div className={styles.wrapper}>
           <div className={styles.user_info}>
             <div className={styles.name_wrapper}>

@@ -11,7 +11,7 @@ import Button from "../button/Button";
 import styles from "./Header.module.css";
 import mainLogo from "/icons/mainLogo.svg";
 
-export default function Header({ darkBackground = false }) {
+export default function Header({ darkBackground = true }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
   const [addWorkDropdownOpen, setAddWorkDropdownOpen] = useState(false);

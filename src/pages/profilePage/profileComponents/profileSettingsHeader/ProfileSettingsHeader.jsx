@@ -51,7 +51,7 @@ export default function ProfileSettingsHeader() {
       }
     >
       <Header />
-      <div className="container">
+      <div className="container" style={{ paddingTop: 80 }}>
         <div className={styles.wrapper}>
           <div className={styles.user_info}>
             {loading && <Loader />}

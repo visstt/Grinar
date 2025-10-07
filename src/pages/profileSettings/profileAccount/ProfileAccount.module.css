@@ -302,6 +302,13 @@
   width: 100%;
   background-color: rgba(20, 20, 20, 1);
   min-height: 100vh;
+  padding-top: 120px; /* Отступ для фиксированного хедера */
+}
+
+@media (max-width: 768px) {
+  .main_container {
+    padding-top: 80px; /* Отступ для фиксированного хедера на мобильных */
+  }
 }
 
 /* Стили для секции выхода */

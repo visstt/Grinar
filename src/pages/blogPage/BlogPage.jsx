@@ -43,7 +43,7 @@ export default function BlogPage() {
   return (
     <div>
       <Header darkBackground={true} />
-      <div className="container">
+      <div className="container" style={{ paddingTop: 80 }}>
         <h1 className={styles.title}>Блог</h1>
         <div className="container">
           {error && <div className={styles.errorMessage}>{error}</div>}

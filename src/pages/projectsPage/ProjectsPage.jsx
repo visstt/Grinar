@@ -47,7 +47,9 @@ export default function ProjectsPage() {
   return (
     <div className={styles.pageContainer}>
       <Header darkBackground={true} />
-      <h1 className={styles.title}>Проекты на Benty</h1>
+      <h1 className={styles.title} style={{ paddingTop: 120 }}>
+        Проекты на Benty
+      </h1>
       <div className="container">
         {error && <div className={styles.errorMessage}>{error}</div>}
         <div className={styles.filters}>
