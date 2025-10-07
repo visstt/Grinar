@@ -12,6 +12,7 @@ export function useRegistration() {
     email,
     password,
     repassword,
+    promocode,
   }) {
     setLoading(true);
     setError(null);
@@ -22,6 +23,7 @@ export function useRegistration() {
         email,
         password,
         repassword,
+        promocode,
       });
       setLoading(false);
       return response.data;
