@@ -2,6 +2,7 @@
   min-height: 100vh;
   background: #f8f9fa;
   overflow: visible;
+  padding-top: 110px; /* Отступ для фиксированного хедера (40px + 30px + 40px) */
 }
 
 .toolbarSection {
@@ -9,6 +10,7 @@
   padding: 12px 20px;
   overflow: visible;
   position: relative;
+  z-index: 999; /* Убедимся, что тулбар ниже хедера по z-index */
 }
 
 .container-xs {

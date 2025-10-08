@@ -37,7 +37,7 @@ export default function CreateArticleNav({ onPublish, isLoading, isEditMode }) {
     }
   };
   return (
-    <div className={styles.nav} style={{ paddingTop: 80 }}>
+    <div className={styles.nav}>
       <div className="containerXS">
         <div
           className={styles.backButton}
