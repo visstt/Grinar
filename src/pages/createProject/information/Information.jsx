@@ -6,6 +6,7 @@ import Header from "../../../shared/ui/components/header/Header";
 import Input from "../../../shared/ui/components/input/Input";
 import Select from "../../../shared/ui/components/input/Select";
 import Textarea from "../../../shared/ui/components/input/Textarea";
+import { getProjectPhotoUrl } from "../../../shared/utils/getProjectImageUrl";
 import CreateProjectNav from "../CreateProjectNav";
 import { useCreateProject } from "../project/hooks/useCreateProject";
 import styles from "./Information.module.css";
@@ -46,6 +47,17 @@ export default function Information() {
     };
   }, [projectData.coverImagePreview]);
 
+  // Логирование для отладки
+  useEffect(() => {
+    if (projectData.coverImage) {
+      console.log("Project cover image:", projectData.coverImage);
+      if (!projectData.coverImage.startsWith("data:")) {
+        const photoUrl = getProjectPhotoUrl(projectData.coverImage);
+        console.log("Generated project photo URL:", photoUrl);
+      }
+    }
+  }, [projectData.coverImage]);
+
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -59,7 +71,7 @@ export default function Information() {
   };
 
   const handleImageDelete = async () => {
-    await setCoverImage(null);
+    updateProjectData({ coverImage: null });
   };
 
   const handleInputChange = (id, value) => {
@@ -93,8 +105,9 @@ export default function Information() {
     }
 
     try {
-      // Получаем строку обложки (url/base64)
+      // Получаем строку обложки (url/base64/filename)
       let coverImageToSend = projectData.coverImage;
+
       // Если это base64, преобразуем в File
       if (coverImageToSend && coverImageToSend.startsWith("data:image")) {
         const arr = coverImageToSend.split(",");
@@ -106,6 +119,14 @@ export default function Information() {
           u8arr[n] = bstr.charCodeAt(n);
         }
         coverImageToSend = new File([u8arr], "cover-image.png", { type: mime });
+      } else if (
+        coverImageToSend &&
+        !coverImageToSend.startsWith("http") &&
+        !coverImageToSend.includes("/")
+      ) {
+        // Если это просто имя файла (как при редактировании), не отправляем его
+        // т.к. оно уже существует на сервере
+        coverImageToSend = null;
       }
       if (isEditMode) {
         await updateProject(editProjectId, {
@@ -155,7 +176,11 @@ export default function Information() {
               <div className={styles.img_form}>
                 {projectData.coverImage ? (
                   <img
-                    src={projectData.coverImage}
+                    src={
+                      projectData.coverImage.startsWith("data:")
+                        ? projectData.coverImage
+                        : getProjectPhotoUrl(projectData.coverImage)
+                    }
                     alt="Project Cover"
                     className={styles.coverImage}
                   />

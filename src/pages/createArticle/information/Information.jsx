@@ -9,6 +9,7 @@ import Header from "../../../shared/ui/components/header/Header";
 import Input from "../../../shared/ui/components/input/Input";
 import Select from "../../../shared/ui/components/input/Select";
 import Textarea from "../../../shared/ui/components/input/Textarea";
+import { getBlogPhotoUrl } from "../../../shared/utils/getProjectImageUrl";
 import CreateArticleNav from "../CreateArticleNav";
 import { useCreateBlog } from "../article/hooks/useCreateBlog";
 import { useCreateArticleContext } from "../context/CreateArticleContext";
@@ -46,7 +47,13 @@ export default function Information() {
 
   // coverImage теперь строка (url/base64), можно логировать для отладки
   useEffect(() => {
-    // ...existing code...
+    if (blogData.coverImage) {
+      console.log("Cover image:", blogData.coverImage);
+      if (!blogData.coverImage.startsWith("data:")) {
+        const photoUrl = getBlogPhotoUrl(blogData.coverImage);
+        console.log("Generated photo URL:", photoUrl);
+      }
+    }
   }, [blogData.coverImage]);
 
   // Очистка blob URL при размонтировании компонента
@@ -88,7 +95,7 @@ export default function Information() {
   };
 
   const handleImageDelete = async () => {
-    await setCoverImage(null);
+    updateBlogData({ coverImage: null });
   };
 
   const handleInputChange = (id, value) => {
@@ -111,8 +118,9 @@ export default function Information() {
       return;
     }
 
-    // Получаем строку обложки (url/base64)
+    // Получаем строку обложки (url/base64/filename)
     let coverImageToSend = blogData.coverImage;
+
     // Если это base64, преобразуем в File
     if (coverImageToSend && coverImageToSend.startsWith("data:image")) {
       const arr = coverImageToSend.split(",");
@@ -124,6 +132,14 @@ export default function Information() {
         u8arr[n] = bstr.charCodeAt(n);
       }
       coverImageToSend = new File([u8arr], "cover-image.png", { type: mime });
+    } else if (
+      coverImageToSend &&
+      !coverImageToSend.startsWith("http") &&
+      !coverImageToSend.includes("/")
+    ) {
+      // Если это просто имя файла (как при редактировании), не отправляем его
+      // т.к. оно уже существует на сервере
+      coverImageToSend = null;
     }
 
     // ...existing code...
@@ -202,7 +218,11 @@ export default function Information() {
               <div className={styles.img_form}>
                 {blogData.coverImage ? (
                   <img
-                    src={blogData.coverImage}
+                    src={
+                      blogData.coverImage.startsWith("data:")
+                        ? blogData.coverImage
+                        : getBlogPhotoUrl(blogData.coverImage)
+                    }
                     alt="Blog Cover"
                     className={styles.coverImage}
                   />

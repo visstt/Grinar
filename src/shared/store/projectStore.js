@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { getProjectPhotoUrl } from "../utils/getProjectImageUrl";
+
 // Отдельный стор для файлов (не персистентный)
 export const useProjectFileStore = create((set, get) => ({
   coverImageFile: null,
@@ -36,13 +38,11 @@ export const useProjectStore = create(
 
       // Установка полных данных проекта (для режима редактирования)
       setProjectData: (projectData) => {
-        // Если есть photoName, создаем url для coverImage
-        let coverImage = null;
-        if (projectData.photoName) {
-          const apiUrl =
-            import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
-          coverImage = `${apiUrl}/static/project-photos/${projectData.photoName}`;
-        }
+        // Если есть photoName, используем его как coverImage
+        // (coverImage будет содержать filename, а не URL)
+        let coverImage =
+          projectData.photoName || projectData.coverImage || null;
+
         set(() => ({
           projectData: {
             name: projectData.name || "",
