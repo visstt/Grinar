@@ -29,7 +29,7 @@ export default function BlogCard({ blog }) {
   };
 
   // Используем photoName вместо coverImage
-  const imageUrl = getBlogPhotoUrl(blog.photoName);
+  const imageUrl = getBlogPhotoUrl(blog.coverImage);
 
   return (
     <div className={styles.blog_card} onClick={handleCardClick}>
