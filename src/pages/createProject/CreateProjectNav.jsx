@@ -39,7 +39,7 @@ export default function CreateProjectNav({ onPublish, isLoading }) {
     }
   };
   return (
-    <div className={styles.nav}>
+    <div className={styles.nav} style={{ paddingTop: 80 }}>
       <div className="containerXS">
         <div
           className={styles.backButton}

@@ -28,7 +28,8 @@ export default function BlogCard({ blog }) {
     e.stopPropagation();
   };
 
-  const imageUrl = getBlogPhotoUrl(blog.coverImage);
+  // Используем photoName вместо coverImage
+  const imageUrl = getBlogPhotoUrl(blog.photoName);
 
   return (
     <div className={styles.blog_card} onClick={handleCardClick}>

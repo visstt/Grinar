@@ -61,7 +61,7 @@ export default function Card({ project, blog, type = "project" }) {
 
   const getCoverImage = () => {
     if (type === "blog") {
-      return blog?.coverImage;
+      return blog?.photoName || blog?.coverImage;
     }
     return project?.coverImage || project?.projectPhotoName;
   };

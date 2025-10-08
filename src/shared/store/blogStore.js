@@ -32,13 +32,10 @@ export const useBlogStore = create(
 
       // Полная замена данных блога (для режима редактирования)
       setBlogData: (blogData) => {
-        // Если есть photoName, создаем url для coverImage
-        let coverImage = null;
-        if (blogData.photoName) {
-          const apiUrl =
-            import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
-          coverImage = `${apiUrl}/static/project-photos/${blogData.photoName}`;
-        }
+        // Если есть photoName, используем его как coverImage
+        // (coverImage будет содержать filename, а не URL)
+        let coverImage = blogData.photoName || blogData.coverImage || null;
+
         set(() => ({
           blogData: {
             id: blogData.id || null,

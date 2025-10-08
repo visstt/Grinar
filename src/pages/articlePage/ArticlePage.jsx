@@ -231,6 +231,20 @@ export default function ArticlePage() {
         <div className={styles.articleContent}>
           <h1 className={styles.title}>{blog.name}</h1>
 
+          {/* Отображение обложки блога */}
+          {blog.photoName && (
+            <div className={styles.imageContainer}>
+              <img
+                src={getBlogPhotoUrl(blog.photoName)}
+                alt={blog.name}
+                className={styles.articleImage}
+                onError={(e) => {
+                  e.target.src = "/images/defaultCover.png";
+                }}
+              />
+            </div>
+          )}
+
           {contentArray.length > 0 ? (
             <div className={styles.content}>
               {contentArray.map((item, index) => renderContent(item, index))}
