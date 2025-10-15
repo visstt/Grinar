@@ -75,7 +75,11 @@ export default function UserProfileTitle({ userProfile }) {
 
   return (
     <div
-      className={styles.background}
+      className={`${styles.background} ${
+        !userProfile.fullName || userProfile.fullName.trim() === ""
+          ? styles.background_no_name
+          : ""
+      }`}
       style={
         coverUrl
           ? {
@@ -149,7 +153,17 @@ export default function UserProfileTitle({ userProfile }) {
               </div>
             </div>
           </div>
-          <div className={styles.btn_container}>
+          <div
+            className={`${styles.btn_container} ${
+              !userProfile.city || userProfile.city === "Город не указан"
+                ? styles.btn_container_no_city
+                : ""
+            } ${
+              !userProfile.fullName || userProfile.fullName.trim() === ""
+                ? styles.btn_container_no_name
+                : ""
+            }`}
+          >
             <Button
               variant={activeTab === "projects" ? "primary" : "default"}
               onClick={() => navigate(`/user/${userId}/projects`)}

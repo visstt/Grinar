@@ -5,12 +5,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  font-size: 14px;
   transition: 0.3s ease-in-out;
-  padding: 10px 20px;
   font-weight: 500;
-  display: flex;
-  align-items: center;
   gap: 10px;
 }
 
@@ -31,6 +27,16 @@
 .secondary:hover {
   background-color: #353535;
 }
+
+.danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.danger:hover {
+  background-color: #c82333;
+}
+
 .default {
   backdrop-filter: blur(16px);
   background: rgba(25, 94, 230, 0.05);
@@ -38,4 +44,20 @@
 }
 .default:hover {
   background-color: #d2dfff;
+}
+
+/* Размеры кнопок */
+.small {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.medium {
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.large {
+  padding: 14px 28px;
+  font-size: 16px;
 }

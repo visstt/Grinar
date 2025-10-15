@@ -1,0 +1,332 @@
+.userCard {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+.userCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.userCard.selected {
+  border-color: #667eea;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.cardHeader {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.userInfo {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+}
+
+.avatar {
+  position: relative;
+}
+
+.avatar img {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 3px solid #f8f9fa;
+}
+
+.userDetails h3 {
+  font-family: Unbounded;
+  font-weight: 700;
+  font-size: 16px;
+  color: #2c3e50;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+}
+
+.email {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin: 0 0 8px 0;
+  word-break: break-word;
+}
+
+.meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status,
+.subscription {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statusActive {
+  background: #d4edda;
+  color: #155724;
+}
+
+.statusBlocked {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.subscriptionDefault {
+  background: #e9ecef;
+  color: #495057;
+}
+
+.subscriptionPro {
+  background: #cce5ff;
+  color: #0056b3;
+}
+
+.subscriptionPremium {
+  background: linear-gradient(
+    135deg,
+    #b5c1d9 0%,
+    #858afb 38%,
+    #c472ff 65%,
+    #d3bbe3 100%
+  );
+  color: white;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #667eea;
+  cursor: pointer;
+  margin: 0;
+  opacity: 1;
+  appearance: auto;
+  outline: 1px solid #ccc;
+  outline-offset: 1px;
+}
+
+.cardBody {
+  padding: 20px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat {
+  text-align: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.statLabel {
+  display: block;
+  font-size: 12px;
+  color: #7f8c8d;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statValue {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.additionalInfo {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.additionalInfo p {
+  margin: 0 0 6px 0;
+  color: #7f8c8d;
+}
+
+.additionalInfo strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.cardActions {
+  padding: 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.primaryActions {
+  display: flex;
+  gap: 8px;
+}
+
+.primaryActions button {
+  flex: 1;
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
+.subscriptionActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subscriptionSelect {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.subscriptionSelect:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.confirmDialog {
+  text-align: center;
+}
+
+.confirmDialog p {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 8px;
+}
+
+.confirmActions button {
+  flex: 1;
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
+.blockReasonInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  margin-bottom: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.blockReasonInput:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.blockReasonInput::placeholder {
+  color: #adb5bd;
+}
+
+@media (max-width: 768px) {
+  .cardHeader {
+    padding: 16px;
+  }
+
+  .userInfo {
+    gap: 12px;
+  }
+
+  .avatar img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .userDetails h3 {
+    font-size: 14px;
+  }
+
+  .email {
+    font-size: 13px;
+  }
+
+  .cardBody {
+    padding: 16px;
+  }
+
+  .stats {
+    gap: 12px;
+  }
+
+  .stat {
+    padding: 8px;
+  }
+
+  .statValue {
+    font-size: 16px;
+  }
+
+  .cardActions {
+    padding: 16px;
+  }
+
+  .primaryActions {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .userCard {
+    border-radius: 12px;
+  }
+
+  .cardHeader {
+    padding: 12px;
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .selectBox {
+    margin-left: 0;
+    align-self: flex-end;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .additionalInfo {
+    font-size: 12px;
+  }
+}

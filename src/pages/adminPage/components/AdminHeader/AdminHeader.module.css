@@ -1,0 +1,413 @@
+.adminHeader {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  margin-bottom: 30px;
+}
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.titleSection h1 {
+  font-family: Unbounded;
+  font-weight: 800;
+  font-size: 28px;
+  color: #2c3e50;
+  margin: 0 0 8px 0;
+  background: rgba(0, 0, 0, 1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.titleSection p {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.statsSection {
+  display: flex;
+  gap: 32px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.statValue {
+  display: block;
+  font-family: Unbounded;
+  font-weight: 700;
+  font-size: 24px;
+  color: #2c3e50;
+  line-height: 1;
+}
+
+.statLabel {
+  display: block;
+  font-size: 12px;
+  color: #7f8c8d;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.headerControls {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.searchSection {
+  position: relative;
+}
+
+.searchInput {
+  position: relative;
+}
+
+.searchField {
+  width: 80%;
+  padding: 12px 16px 12px 48px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-size: 14px;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.searchField:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.searchField::placeholder {
+  color: #adb5bd;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+  pointer-events: none;
+}
+
+.filterSelect {
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-size: 14px;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.selectAllBtn {
+  white-space: nowrap;
+  font-size: 14px;
+  padding: 12px 20px;
+}
+
+.selectAllContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectAllLabel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.selectAllCheckbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #667eea;
+  cursor: pointer;
+  margin: 0;
+}
+
+.selectAllText {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.bulkActionsBar {
+  margin-top: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+  border-radius: 12px;
+  border: 1px solid #667eea20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.bulkInfo {
+  font-size: 14px;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.bulkButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.bulkActionsMenu {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.bulkActionBtn {
+  font-size: 12px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.cancelBtn {
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
+@media (max-width: 1024px) {
+  .headerTop {
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .statsSection {
+    justify-content: center;
+  }
+
+  .headerControls {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .filterSection,
+  .selectionSection {
+    justify-self: stretch;
+  }
+
+  .filterSelect,
+  .selectAllLabel {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .searchField {
+    width: 91%;
+  }
+}
+
+@media (max-width: 768px) {
+  .adminHeader {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .titleSection h1 {
+    font-size: 24px;
+  }
+
+  .titleSection p {
+    font-size: 14px;
+  }
+
+  .statsSection {
+    gap: 24px;
+  }
+
+  .statValue {
+    font-size: 20px;
+  }
+
+  .statLabel {
+    font-size: 11px;
+  }
+
+  .searchField {
+    padding: 10px 14px 10px 44px;
+    font-size: 13px;
+  }
+
+  .filterSelect {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .selectAllText {
+    font-size: 13px;
+  }
+
+  .bulkActionsBar {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .bulkButtons {
+    justify-content: center;
+  }
+
+  .bulkActionsMenu {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .adminHeader {
+    padding: 16px;
+  }
+
+  .titleSection h1 {
+    font-size: 20px;
+  }
+
+  .statsSection {
+    gap: 16px;
+  }
+
+  .statValue {
+    font-size: 18px;
+  }
+
+  .searchIcon {
+    left: 12px;
+  }
+
+  .searchField {
+    padding: 8px 12px 8px 40px;
+  }
+
+  .filterSelect {
+    padding: 8px 12px;
+  }
+
+  .selectAllText {
+    font-size: 13px;
+  }
+
+  .selectAllCheckbox {
+    width: 18px;
+    height: 18px;
+  }
+
+  .bulkActionsMenu {
+    gap: 6px;
+  }
+
+  .bulkActionBtn,
+  .cancelBtn {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}
+
+.blockDialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.blockDialogContent {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.blockDialogContent h3 {
+  font-family: Unbounded;
+  font-weight: 700;
+  font-size: 20px;
+  color: #2c3e50;
+  margin: 0 0 12px 0;
+}
+
+.blockDialogContent p {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin: 0 0 24px 0;
+}
+
+.blockReasonSection {
+  margin-bottom: 24px;
+}
+
+.blockReasonSection label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.blockReasonInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+.blockReasonInput:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.blockReasonInput::placeholder {
+  color: #adb5bd;
+}
+
+.blockDialogActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.blockDialogActions button {
+  padding: 12px 24px;
+  font-size: 14px;
+}

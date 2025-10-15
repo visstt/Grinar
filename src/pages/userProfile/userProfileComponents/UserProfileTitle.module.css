@@ -10,6 +10,10 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.background_no_name {
+  height: 705px !important;
+}
 .user_info {
   color: #fff;
   display: flex;
@@ -137,6 +141,14 @@
 
 .btn_container button {
   padding: 15px 25px;
+}
+
+.btn_container_no_city {
+  margin-top: 90px !important;
+}
+
+.btn_container_no_name {
+  margin-top: 125px !important;
 }
 
 .actionButtons {

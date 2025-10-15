@@ -1,5 +1,6 @@
 import { Outlet, createBrowserRouter, useParams } from "react-router-dom";
 
+import AdminPage from "../../pages/adminPage/AdminPage";
 import ArticlePage from "../../pages/articlePage/ArticlePage";
 import BlogPage from "../../pages/blogPage/BlogPage";
 import ChatPage from "../../pages/chatPage/ChatPage";
@@ -91,6 +92,10 @@ export const router = createBrowserRouter([
       {
         path: "specialists",
         element: <SpecialistsPage />,
+      },
+      {
+        path: "admin",
+        element: <AdminPage />,
       },
       {
         path: "user/:userId",

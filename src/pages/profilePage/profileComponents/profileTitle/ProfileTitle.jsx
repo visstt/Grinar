@@ -49,7 +49,11 @@ export default function ProfileTitle() {
 
   return (
     <div
-      className={styles.background}
+      className={`${styles.background} ${
+        !profile.fullName || profile.fullName.trim() === ""
+          ? styles.background_no_name
+          : ""
+      }`}
       style={
         coverUrl
           ? {
@@ -59,7 +63,7 @@ export default function ProfileTitle() {
       }
     >
       <Header />
-      <div className="container" style={{ paddingTop: 80 }} >
+      <div className="container" style={{ paddingTop: 80 }}>
         <div className={styles.wrapper}>
           <div className={styles.user_info}>
             <div className={styles.name_wrapper}>
@@ -114,6 +118,10 @@ export default function ProfileTitle() {
             className={`${styles.btn_container} ${
               !profile.city || profile.city === "Город не указан"
                 ? styles.btn_container_no_city
+                : ""
+            } ${
+              !profile.fullName || profile.fullName.trim() === ""
+                ? styles.btn_container_no_name
                 : ""
             }`}
           >
