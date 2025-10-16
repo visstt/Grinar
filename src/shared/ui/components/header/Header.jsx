@@ -131,6 +131,35 @@ export default function Header({ darkBackground = true }) {
   }, []);
 
   useEffect(() => {
+    // VK Pixel
+    if (window.VK) return;
+
+    (function (d) {
+      var vkPixelScript = d.createElement("script");
+      vkPixelScript.type = "text/javascript";
+      vkPixelScript.async = true;
+      vkPixelScript.src = "https://vk.com/js/api/openapi.js?169";
+      vkPixelScript.onload = function () {
+        window.VK && window.VK.Retargeting.Init("VK-RTRG-1973959-fMrav");
+        window.VK && window.VK.Retargeting.Hit();
+      };
+      var firstScript = d.getElementsByTagName("script")[0];
+      firstScript.parentNode.insertBefore(vkPixelScript, firstScript);
+    })(document);
+
+    // noscript fallback
+    const noscriptImg = document.createElement("img");
+    noscriptImg.src = "https://vk.com/rtrg?p=VK-RTRG-1973959-fMrav";
+    noscriptImg.style.cssText = "position:fixed;left:-999px;";
+    noscriptImg.alt = "";
+    const noscriptDiv = document.createElement("div");
+    noscriptDiv.appendChild(noscriptImg);
+    const noscript = document.createElement("noscript");
+    noscript.appendChild(noscriptDiv);
+    document.body.appendChild(noscript);
+  }, []);
+
+  useEffect(() => {
     if (loginOpen || registrationOpen || menuOpen) {
       const scrollY = window.scrollY;
       document.body.classList.add("no-scroll");
