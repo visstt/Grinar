@@ -17,12 +17,20 @@ export default function UserCard({
   const [showConfirm, setShowConfirm] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [blockReason, setBlockReason] = useState("");
+  const [showError, setShowError] = useState(false);
 
   const handleGoToProfile = () => {
     window.open(`/user/${user.id}`, "_blank");
   };
 
   const handleAction = async (action, callback) => {
+    // Проверка причины блокировки
+    if (action === "block" && !blockReason.trim()) {
+      setShowError(true);
+      return;
+    }
+
+    setShowError(false);
     setIsLoading(true);
     try {
       if (action === "block" && blockReason.trim()) {
@@ -144,11 +152,19 @@ export default function UserCard({
                 <textarea
                   className={styles.blockReasonInput}
                   value={blockReason}
-                  onChange={(e) => setBlockReason(e.target.value)}
+                  onChange={(e) => {
+                    setBlockReason(e.target.value);
+                    setShowError(false);
+                  }}
                   placeholder="Укажите причину блокировки..."
                   rows={3}
                   disabled={isLoading}
                 />
+                {showError && (
+                  <p className={styles.errorMessage}>
+                    Необходимо указать причину блокировки
+                  </p>
+                )}
                 <div className={styles.confirmActions}>
                   <Button
                     variant="secondary"
@@ -156,7 +172,7 @@ export default function UserCard({
                     onClick={() =>
                       handleAction(showConfirm.action, showConfirm.callback)
                     }
-                    disabled={isLoading || !blockReason.trim()}
+                    disabled={isLoading}
                   >
                     {isLoading ? "..." : "Заблокировать"}
                   </Button>
@@ -166,6 +182,7 @@ export default function UserCard({
                     onClick={() => {
                       setShowConfirm(null);
                       setBlockReason("");
+                      setShowError(false);
                     }}
                     disabled={isLoading}
                   >

@@ -94,6 +94,43 @@ export default function Header({ darkBackground = true }) {
   }, []);
 
   useEffect(() => {
+    // Top.Mail.Ru counter
+    if (window._tmr) return;
+
+    var _tmr = window._tmr || (window._tmr = []);
+    _tmr.push({ id: "3683533", type: "pageView", start: new Date().getTime() });
+
+    (function (d, w, id) {
+      if (d.getElementById(id)) return;
+      var ts = d.createElement("script");
+      ts.type = "text/javascript";
+      ts.async = true;
+      ts.id = id;
+      ts.src = "https://top-fwz1.mail.ru/js/code.js";
+      var f = function () {
+        var s = d.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(ts, s);
+      };
+      if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+      } else {
+        f();
+      }
+    })(document, window, "tmr-code");
+
+    // noscript fallback
+    const noscriptImg = document.createElement("img");
+    noscriptImg.src = "https://top-fwz1.mail.ru/counter?id=3683533;js=na";
+    noscriptImg.style.cssText = "position:absolute;left:-9999px;";
+    noscriptImg.alt = "Top.Mail.Ru";
+    const noscriptDiv = document.createElement("div");
+    noscriptDiv.appendChild(noscriptImg);
+    const noscript = document.createElement("noscript");
+    noscript.appendChild(noscriptDiv);
+    document.body.appendChild(noscript);
+  }, []);
+
+  useEffect(() => {
     if (loginOpen || registrationOpen || menuOpen) {
       const scrollY = window.scrollY;
       document.body.classList.add("no-scroll");

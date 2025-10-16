@@ -356,3 +356,14 @@
     font-size: 12px;
   }
 }
+
+.errorMessage {
+  color: #dc2626;
+  font-size: 13px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  background: #fee2e2;
+  border-radius: 6px;
+  border: 1px solid #fecaca;
+}

@@ -17,6 +17,7 @@ export default function AdminHeader({
   const [showBulkActions, setShowBulkActions] = useState(false);
   const [showBlockDialog, setShowBlockDialog] = useState(false);
   const [blockReason, setBlockReason] = useState("");
+  const [showError, setShowError] = useState(false);
 
   const filters = [
     { value: "all", label: "Все пользователи" },
@@ -45,16 +46,21 @@ export default function AdminHeader({
   };
 
   const handleBlockConfirm = () => {
-    if (blockReason.trim()) {
-      onBulkAction("block", blockReason.trim());
-      setShowBlockDialog(false);
-      setBlockReason("");
+    if (!blockReason.trim()) {
+      setShowError(true);
+      return;
     }
+
+    onBulkAction("block", blockReason.trim());
+    setShowBlockDialog(false);
+    setBlockReason("");
+    setShowError(false);
   };
 
   const handleBlockCancel = () => {
     setShowBlockDialog(false);
     setBlockReason("");
+    setShowError(false);
   };
 
   return (
@@ -192,16 +198,24 @@ export default function AdminHeader({
               <textarea
                 className={styles.blockReasonInput}
                 value={blockReason}
-                onChange={(e) => setBlockReason(e.target.value)}
+                onChange={(e) => {
+                  setBlockReason(e.target.value);
+                  setShowError(false);
+                }}
                 placeholder="Укажите причину блокировки..."
                 rows={3}
               />
+              {showError && (
+                <p className={styles.errorMessage}>
+                  Необходимо указать причину блокировки
+                </p>
+              )}
             </div>
             <div className={styles.blockDialogActions}>
               <Button
                 variant="secondary"
                 onClick={handleBlockConfirm}
-                disabled={!blockReason.trim() || actionLoading}
+                disabled={actionLoading}
               >
                 Заблокировать
               </Button>

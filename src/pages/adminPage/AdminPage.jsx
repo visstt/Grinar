@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { toast } from "react-toastify";
+
 import Loader from "../../shared/ui/components/Loader/Loader";
 import Header from "../../shared/ui/components/header/Header";
 import styles from "./AdminPage.module.css";
@@ -16,7 +18,14 @@ export default function AdminPage() {
   const [selectedUsers, setSelectedUsers] = useState(new Set());
 
   const { isAuthenticated, isLoading, login } = useAdminAuth();
-  const { users, loading, error, fetchUsers } = useAdminUsers();
+  const {
+    users,
+    loading,
+    error,
+    fetchUsers,
+    updateUserInList,
+    removeUserFromList,
+  } = useAdminUsers();
   const {
     deleteUser,
     blockUser,
@@ -62,34 +71,73 @@ export default function AdminPage() {
 
   const handleBulkAction = async (action, reason) => {
     const userIds = Array.from(selectedUsers);
+    const count = userIds.length;
+
+    // Проверка причины блокировки для массовых действий
+    if (action === "block" && !reason?.trim()) {
+      toast.error("Необходимо указать причину блокировки");
+      return;
+    }
 
     try {
       for (const userId of userIds) {
         switch (action) {
           case "delete":
             await deleteUser(userId);
+            removeUserFromList(userId);
             break;
           case "block":
-            await blockUser(userId, reason || "Массовая блокировка");
+            await blockUser(userId, reason.trim());
+            updateUserInList(userId, {
+              isBlocked: true,
+              activity: "ЗАБЛОКИРОВАН",
+            });
             break;
           case "unblock":
             await unblockUser(userId);
+            updateUserInList(userId, { isBlocked: false, activity: "АКТИВЕН" });
             break;
           case "pro":
             await updateSubscription(userId, "pro");
+            updateUserInList(userId, {
+              subscription: "pro",
+              subscriptionId: "2",
+            });
             break;
           case "premium":
             await updateSubscription(userId, "premium");
+            updateUserInList(userId, {
+              subscription: "premium",
+              subscriptionId: "3",
+            });
             break;
           case "default":
             await updateSubscription(userId, "default");
+            updateUserInList(userId, {
+              subscription: "default",
+              subscriptionId: "1",
+            });
             break;
         }
       }
       setSelectedUsers(new Set());
-      await fetchUsers(); // Обновляем список пользователей
+
+      // Дополнительное уведомление о массовом действии
+      const actionMessages = {
+        delete: `Успешно удалено пользователей: ${count}`,
+        block: `Успешно заблокировано пользователей: ${count}`,
+        unblock: `Успешно разблокировано пользователей: ${count}`,
+        pro: `Подписка PRO установлена для ${count} пользователей`,
+        premium: `Подписка PREMIUM установлена для ${count} пользователей`,
+        default: `Подписка сброшена для ${count} пользователей`,
+      };
+
+      if (count > 1) {
+        toast.success(actionMessages[action] || "Массовое действие выполнено");
+      }
     } catch (error) {
       console.error("Ошибка при выполнении массового действия:", error);
+      toast.error("Ошибка при выполнении массового действия");
     }
   };
 
@@ -158,18 +206,36 @@ export default function AdminPage() {
                   user={user}
                   isSelected={selectedUsers.has(user.id)}
                   onSelect={() => handleSelectUser(user.id)}
-                  onDelete={() => deleteUser(user.id).then(() => fetchUsers())}
-                  onBlock={(reason) =>
-                    blockUser(user.id, reason).then(() => fetchUsers())
-                  }
-                  onUnblock={() =>
-                    unblockUser(user.id).then(() => fetchUsers())
-                  }
-                  onUpdateSubscription={(subscription) =>
-                    updateSubscription(user.id, subscription).then(() =>
-                      fetchUsers(),
-                    )
-                  }
+                  onDelete={async () => {
+                    await deleteUser(user.id);
+                    removeUserFromList(user.id);
+                  }}
+                  onBlock={async (reason) => {
+                    await blockUser(user.id, reason);
+                    updateUserInList(user.id, {
+                      isBlocked: true,
+                      activity: "ЗАБЛОКИРОВАН",
+                    });
+                  }}
+                  onUnblock={async () => {
+                    await unblockUser(user.id);
+                    updateUserInList(user.id, {
+                      isBlocked: false,
+                      activity: "АКТИВЕН",
+                    });
+                  }}
+                  onUpdateSubscription={async (subscription) => {
+                    await updateSubscription(user.id, subscription);
+                    const subscriptionMap = {
+                      default: "1",
+                      pro: "2",
+                      premium: "3",
+                    };
+                    updateUserInList(user.id, {
+                      subscription: subscription,
+                      subscriptionId: subscriptionMap[subscription] || "1",
+                    });
+                  }}
                   actionLoading={actionLoading}
                 />
               ))
