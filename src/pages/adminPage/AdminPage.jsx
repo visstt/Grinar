@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Loader from "../../shared/ui/components/Loader/Loader";
 import Header from "../../shared/ui/components/header/Header";
@@ -25,9 +25,7 @@ export default function AdminPage() {
     loading: actionLoading,
   } = useAdminActions();
 
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+  // useEffect убран, так как fetchUsers теперь вызывается автоматически в хуке
 
   const filteredUsers = users.filter((user) => {
     const matchesSearch =

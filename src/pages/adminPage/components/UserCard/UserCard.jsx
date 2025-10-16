@@ -18,6 +18,10 @@ export default function UserCard({
   const [isLoading, setIsLoading] = useState(false);
   const [blockReason, setBlockReason] = useState("");
 
+  const handleGoToProfile = () => {
+    window.open(`/user/${user.id}`, "_blank");
+  };
+
   const handleAction = async (action, callback) => {
     setIsLoading(true);
     try {
@@ -33,11 +37,6 @@ export default function UserCard({
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "Не указано";
-    return new Date(dateString).toLocaleDateString("ru-RU");
   };
 
   const getSubscriptionColor = (subscription) => {
@@ -72,7 +71,7 @@ export default function UserCard({
               <span
                 className={`${styles.status} ${getStatusColor(user.isBlocked)}`}
               >
-                {user.isBlocked ? "Заблокирован" : "Активен"}
+                {user.activity || (user.isBlocked ? "Заблокирован" : "Активен")}
               </span>
               <span
                 className={`${styles.subscription} ${getSubscriptionColor(user.subscription)}`}
@@ -96,11 +95,11 @@ export default function UserCard({
         <div className={styles.stats}>
           <div className={styles.stat}>
             <span className={styles.statLabel}>Проекты</span>
-            <span className={styles.statValue}>{user.projectsCount || 0}</span>
+            <span className={styles.statValue}>{user.projectCount || 0}</span>
           </div>
           <div className={styles.stat}>
             <span className={styles.statLabel}>Статьи</span>
-            <span className={styles.statValue}>{user.articlesCount || 0}</span>
+            <span className={styles.statValue}>{user.blogsCount || 0}</span>
           </div>
           <div className={styles.stat}>
             <span className={styles.statLabel}>Подписчики</span>
@@ -120,12 +119,19 @@ export default function UserCard({
             {user.specialization || "Не указана"}
           </p>
           <p>
-            <strong>Дата регистрации:</strong> {formatDate(user.createdAt)}
+            <strong>Дата регистрации:</strong>{" "}
+            {user.registerDate || "Не указано"}
           </p>
-          <p>
-            <strong>Последняя активность:</strong>{" "}
-            {formatDate(user.lastActivity)}
-          </p>
+        </div>
+
+        <div className={styles.profileLinkSection}>
+          <button
+            className={styles.profileLink}
+            onClick={handleGoToProfile}
+            type="button"
+          >
+            Перейти в профиль →
+          </button>
         </div>
       </div>
 
