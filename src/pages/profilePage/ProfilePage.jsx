@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import Loader from "../../shared/ui/components/Loader/Loader";
+import WorkCard from "../workPage/components/WorkCard";
 import useMyProfile from "./hooks/useMyProfile";
+import ProfileWorks from "./profileComponents/ProfileWorks";
 import Subscriptions from "./profileComponents/Subscriptions/Subscriptions";
 import MyBlogs from "./profileComponents/myBlogs/MyBlogs";
 import MyProjects from "./profileComponents/myProjects/MyProjects";
@@ -47,6 +49,7 @@ export default function ProfilePage({ tab }) {
           subscriptions={profile.followings?.subscriptions || []}
         />
       )}
+      {activeTab === "works" && <ProfileWorks />}
     </>
   );
 }

@@ -239,7 +239,14 @@ export default function Header({ darkBackground = true }) {
                       Специалисты
                     </Link>
                   </li>
-                  <li style={{ opacity: 0.5, cursor: "default" }}>Работа</li>
+                  <li>
+                    <Link
+                      to="/work"
+                      style={{ color: "inherit", textDecoration: "none" }}
+                    >
+                      Работа
+                    </Link>
+                  </li>
                   <li>
                     <Link
                       to="/blog"
@@ -402,7 +409,15 @@ export default function Header({ darkBackground = true }) {
                     </Link>
                   </li>
                   <div className={styles.stripe}></div>
-                  <li style={{ opacity: 0.5, cursor: "default" }}>Работа</li>
+                  <li>
+                    <Link
+                      to="/work"
+                      style={{ color: "inherit", textDecoration: "none" }}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Работа
+                    </Link>
+                  </li>
                   <div className={styles.stripe}></div>
                   <li>
                     <Link

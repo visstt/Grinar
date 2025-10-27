@@ -20,6 +20,8 @@ import ProfileNotifications from "../../pages/profileSettings/profileNotificatio
 import ProjectsPage from "../../pages/projectsPage/ProjectsPage";
 import SpecialistsPage from "../../pages/specialistsPage/SpecialistsPage";
 import UserProfilePage from "../../pages/userProfile/UserProfile";
+import AddWork from "../../pages/workAdd/AddWork";
+import WorkPage from "../../pages/workPage/WorkPage";
 import { useUserStore } from "../../shared/store/userStore";
 import Footer from "../../shared/ui/components/footer/Footer";
 
@@ -88,6 +90,14 @@ export const router = createBrowserRouter([
       {
         path: "projects",
         element: <ProjectsPage />,
+      },
+      {
+        path: "work",
+        element: <WorkPage />,
+      },
+      {
+        path: "add-work",
+        element: <AddWork />,
       },
       {
         path: "specialists",
@@ -183,6 +193,10 @@ export const router = createBrowserRouter([
       {
         path: "user/:userId/profile-account",
         element: <ProfileAccount />,
+      },
+      {
+        path: "/profile/works",
+        element: <ProfileRouteWrapper tab="works" />,
       },
     ],
   },

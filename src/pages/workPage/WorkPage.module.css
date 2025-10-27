@@ -1,0 +1,46 @@
+.WorkPage {
+  padding-top: 120px;
+  background: #141414;
+  min-height: 80vh;
+}
+.WorkPage h1 {
+  font-weight: 800;
+  font-size: 36px;
+  color: #fff;
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-top: 34px;
+}
+.WorkPageButton {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+.WorkPageButtonActive {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  backdrop-filter: blur(16px);
+  background: #195ee6;
+  color: #fff;
+}
+.cards {
+  margin: 32px 0 32px 0;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
