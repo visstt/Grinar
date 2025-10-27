@@ -51,6 +51,7 @@ export default function ProfileWorks() {
         {error && <div>Ошибка загрузки</div>}
         {jobs.map((job) => (
           <div key={job.id} style={{ position: "relative" }}>
+            {/* Кнопка редактирования */}
             <button
               style={{
                 position: "absolute",
@@ -70,8 +71,8 @@ export default function ProfileWorks() {
                 padding: 0,
                 transition: "box-shadow 0.15s",
               }}
-              title="Добавить работу"
-              onClick={() => (window.location.href = "/add-work")}
+              title="Редактировать работу"
+              onClick={() => navigate(`/edit-work/${job.id}`)}
             >
               <svg
                 width="18"
