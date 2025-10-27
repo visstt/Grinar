@@ -1,6 +1,6 @@
 import Card from "../../../../shared/ui/components/Card/Card";
-import EmptyState from "../../../../shared/ui/components/emptyState/EmptyState";
 import Loader from "../../../../shared/ui/components/Loader/Loader";
+import EmptyState from "../../../../shared/ui/components/emptyState/EmptyState";
 import { useDeleteProject } from "../../hooks/useDeleteProject";
 import { useEditProject } from "../../hooks/useEditProject";
 import useMyProfile from "../../hooks/useMyProfile";
@@ -57,7 +57,51 @@ export default function MyProjects() {
     <div className={styles.projectsContainer}>
       <div className={styles.card_wrapper}>
         {profile.projects.map((project) => (
-          <div key={project.id} className={styles.projectCard}>
+          <div
+            key={project.id}
+            className={styles.projectCard}
+            style={{ position: "relative" }}
+          >
+            {/* Карандаш в углу */}
+            <button
+              style={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+                background: "white",
+                border: "none",
+                borderRadius: "50%",
+                padding: 4,
+                boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                cursor: "pointer",
+                zIndex: 2,
+              }}
+              title="Добавить работу"
+              onClick={() => (window.location.href = "/add-work")}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25z"
+                  stroke="#888"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M14.74 6.04a2.5 2.5 0 1 1 3.54 3.54l-1.06 1.06-3.75-3.75 1.06-1.06z"
+                  stroke="#888"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
             <Card
               project={{
                 id: project.id,

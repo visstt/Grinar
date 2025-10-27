@@ -33,6 +33,7 @@ export default function ProfileTitle() {
   else if (location.pathname.includes("/blogs")) activeTab = "blogs";
   else if (location.pathname.includes("/subscriptions"))
     activeTab = "subscriptions";
+  else if (location.pathname.includes("/works")) activeTab = "works";
   else if (
     location.pathname.includes("/main") ||
     location.pathname === `/user/${userId}`
@@ -148,6 +149,12 @@ export default function ProfileTitle() {
               onClick={() => navigate(`/user/${userId}/subscriptions`)}
             >
               Подписки
+            </Button>
+            <Button
+              variant={activeTab === "works" ? "primary" : "default"}
+              onClick={() => navigate(`/user/${userId}/works`)}
+            >
+              Объявления
             </Button>
           </div>
         </div>

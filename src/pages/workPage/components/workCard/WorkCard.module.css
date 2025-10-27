@@ -3,7 +3,7 @@
   border-radius: 20px;
   padding: 24px;
   backdrop-filter: blur(128px);
-  background: rgba(255, 255, 255, 0.05);
+  background: #202020;
   width: 340px;
   height: 230px;
   display: flex;
@@ -20,7 +20,7 @@
 .card h1 {
   font-family: Unbounded;
   font-weight: 800;
-  font-size: 18px;
+  font-size: 18px !important;
   color: #fff;
 }
 .card h2 {

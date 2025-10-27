@@ -1,0 +1,139 @@
+/* Контакты */
+.contactsList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 1.2rem;
+  color: #222;
+}
+
+.contactIcon {
+  width: 40px;
+  height: 40px;
+}
+.contactItem span {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #141414;
+}
+.modalButtonPadding {
+  padding: 14px 24px !important;
+}
+.header {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+}
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  font-family: Unbounded;
+}
+.modalContent {
+  margin-top: 32px;
+}
+.employerBlock {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background: #f3f3f3;
+}
+.employerLabel {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 2px;
+}
+.employerName {
+  font-size: 24px;
+  font-weight: 600;
+}
+.contactBtn {
+  background: #1769ff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 32px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 24px 0 8px 0;
+}
+.tabActive {
+  background: #1769ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.tab {
+  background: #f3f3f3;
+  color: #888;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.divider {
+  border: none;
+  border-top: 1px solid #ececec;
+  margin: 16px 0;
+}
+.infoRow {
+  display: flex;
+  gap: 100px;
+  margin-bottom: 32px;
+}
+.infoLabel {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+.infoValue {
+  font-weight: 800;
+  font-size: 16px;
+  color: #141414;
+  font-family: Unbounded;
+}
+.section {
+  margin-bottom: 28px;
+}
+.sectionTitle {
+  font-weight: 800;
+  font-size: 20px;
+  color: rgba(20, 20, 20, 0.4);
+  font-family: Unbounded;
+  margin-bottom: 8px;
+}
+.sectionText {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 157%;
+  color: #141414;
+}

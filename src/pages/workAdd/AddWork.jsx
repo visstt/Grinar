@@ -1,29 +1,34 @@
 import { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
+import { useUserStore } from "../../shared/store/userStore";
 import Button from "../../shared/ui/components/button/Button";
 import Header from "../../shared/ui/components/header/Header";
 import styles from "./AddWork.module.css";
+import { useCreateAdvertisement } from "./hooks/useCreateAdvertisement";
 
 export default function AddWork() {
-  const [_logoFile, setLogoFile] = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
   const [logoPreview, setLogoPreview] = useState("/icons/Sample_User_Icon.png");
-  const [uploading, _setUploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const { createAdvertisement } = useCreateAdvertisement();
+  const navigate = useNavigate();
+  const userId = useUserStore((state) => state.user?.id);
 
   // Состояние формы
   const [formData, setFormData] = useState({
     jobType: "",
     jobTitle: "",
     companyName: "",
-    companyTitle: "",
     employmentType: "",
     workFormat: "",
-    salary: "",
     responsibilities: "",
     requirements: "",
     offers: "",
     salaryFrom: "",
     salaryTo: "",
-    currency: "usd",
+    currency: "rub",
     telegram: "",
     vk: "",
     email: "",
@@ -31,9 +36,8 @@ export default function AddWork() {
 
   // Опции для селектов
   const jobTypeOptions = [
-    { value: "vacancy", label: "Вакансия" },
-    { value: "project", label: "Проект" },
-    { value: "internship", label: "Стажировка" },
+    { value: "VACANCY", label: "Вакансия" },
+    { value: "ORDER", label: "Заказ" },
   ];
 
   const employmentTypeOptions = [
@@ -84,6 +88,39 @@ export default function AddWork() {
     }
   };
 
+  const handlePublish = async (e) => {
+    e.preventDefault();
+    setUploading(true);
+    try {
+      await createAdvertisement({
+        file: logoFile,
+        type: formData.jobType,
+        name: formData.jobTitle,
+        companyName: formData.companyName,
+        employmentType: formData.employmentType,
+        jobFormat: formData.workFormat,
+        whatToDo: formData.responsibilities,
+        expectations: formData.requirements,
+        weOffer: formData.offers,
+        minWage: formData.salaryFrom,
+        maxWage: formData.salaryTo,
+        currency: formData.currency,
+        telegram: formData.telegram,
+        vk: formData.vk,
+        email: formData.email,
+      });
+      if (userId) {
+        navigate(`/user/${userId}/works`);
+      } else {
+        alert("Пользователь не найден, переадресация невозможна");
+      }
+    } catch (err) {
+      alert("Ошибка при публикации объявления");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -97,7 +134,9 @@ export default function AddWork() {
             <p>Назад</p>
           </div>
           <div className={styles.button}>
-            <button className={styles.publishButton}>Опубликовать</button>
+            <button className={styles.publishButton} onClick={handlePublish}>
+              Опубликовать
+            </button>
           </div>
 
           <div className={styles.content}>
@@ -400,7 +439,12 @@ export default function AddWork() {
                   marginTop: "24px",
                 }}
               >
-                <button className={styles.publishButton}>Опубликовать</button>
+                <button
+                  className={styles.publishButton}
+                  onClick={handlePublish}
+                >
+                  Опубликовать
+                </button>
               </div>
             </div>
           </div>

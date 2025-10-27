@@ -128,6 +128,10 @@ export const router = createBrowserRouter([
         element: <ProfileRouteWrapper tab="subscriptions" />,
       },
       {
+        path: "user/:userId/works",
+        element: <ProfileRouteWrapper tab="works" />,
+      },
+      {
         path: "blog",
         element: <BlogPage />,
       },

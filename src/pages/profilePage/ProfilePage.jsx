@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import Loader from "../../shared/ui/components/Loader/Loader";
-import WorkCard from "../workPage/components/WorkCard";
+import WorkCard from "../workPage/components/workCard/WorkCard";
 import useMyProfile from "./hooks/useMyProfile";
-import ProfileWorks from "./profileComponents/ProfileWorks";
+import ProfileAds from "./profileComponents/ProfileWorks/ProfileWorks";
+import ProfileWorks from "./profileComponents/ProfileWorks/ProfileWorks";
 import Subscriptions from "./profileComponents/Subscriptions/Subscriptions";
 import MyBlogs from "./profileComponents/myBlogs/MyBlogs";
 import MyProjects from "./profileComponents/myProjects/MyProjects";
@@ -25,6 +26,7 @@ export default function ProfilePage({ tab }) {
     else if (location.pathname.includes("/blogs")) setActiveTab("blogs");
     else if (location.pathname.includes("/subscriptions"))
       setActiveTab("subscriptions");
+    else if (location.pathname.includes("/works")) setActiveTab("works");
     else if (location.pathname.includes("/main")) setActiveTab("main");
     else setActiveTab("main");
   }, [location.pathname, tab]);
