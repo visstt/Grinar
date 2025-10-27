@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Header from "../../shared/ui/components/header/Header";
 import styles from "./WorkPage.module.css";
@@ -12,6 +12,7 @@ export default function WorkPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { jobs, loading, error } = useAllJobs();
 
   const handleAddWorkClick = () => {
@@ -21,12 +22,30 @@ export default function WorkPage() {
   const handleCardClick = (job) => {
     setSelectedJob(job);
     setModalOpen(true);
+    navigate(
+      { pathname: location.pathname, search: `?job=${job.id}` },
+      { replace: false },
+    );
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
     setSelectedJob(null);
+    navigate({ pathname: location.pathname }, { replace: false });
   };
+
+  // Открывать модалку по наличию job в url
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const jobId = params.get("job");
+    if (jobId && jobs.length) {
+      const found = jobs.find((j) => String(j.id) === String(jobId));
+      if (found) {
+        setSelectedJob(found);
+        setModalOpen(true);
+      }
+    }
+  }, [location.search, jobs]);
 
   return (
     <>

@@ -18,7 +18,7 @@ export default function WorkCard({ job, onClick }) {
       className={styles.card}
       onClick={() => {
         console.log("Card clicked", job);
-        if (onClick) onClick();
+        if (onClick) onClick(job);
       }}
       style={{ cursor: "pointer" }}
     >

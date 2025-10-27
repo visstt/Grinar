@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { useLocation, useNavigate } from "react-router-dom";
+
 import WorkCard from "../../../workPage/components/workCard/WorkCard";
 import WorkModal from "../../../workPage/components/workModal/WorkModal";
 import styles from "./ProfileWorks.module.css";
@@ -9,16 +11,38 @@ export default function ProfileWorks() {
   const { jobs, loading, error } = useMyJobs();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleCardClick = (job) => {
     setSelectedJob(job);
     setModalOpen(true);
+    console.log("handleCardClick", job.id, location.pathname);
+    navigate(
+      { pathname: location.pathname, search: `?job=${job.id}` },
+      { replace: false },
+    );
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
     setSelectedJob(null);
+    console.log("handleCloseModal", location.pathname);
+    navigate({ pathname: location.pathname }, { replace: false });
   };
+
+  // Открывать модалку по наличию job в url
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const jobId = params.get("job");
+    if (jobId && jobs.length) {
+      const found = jobs.find((j) => String(j.id) === String(jobId));
+      if (found) {
+        setSelectedJob(found);
+        setModalOpen(true);
+      }
+    }
+  }, [location.search, jobs]);
 
   return (
     <div className="container">
