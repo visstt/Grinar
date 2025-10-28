@@ -11,6 +11,7 @@ import { useAllJobs } from "./hooks/useAllJobs";
 export default function WorkPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [activeTab, setActiveTab] = useState("all"); // all | vacancy | order
   const navigate = useNavigate();
   const location = useLocation();
   const { jobs, loading, error } = useAllJobs();
@@ -47,6 +48,18 @@ export default function WorkPage() {
     }
   }, [location.search, jobs]);
 
+  // Фильтрация по типу
+  let filteredJobs = jobs;
+  if (activeTab === "vacancy") {
+    filteredJobs = jobs.filter(
+      (job) => job.type === "vacancy" || job.type === "Вакансия",
+    );
+  } else if (activeTab === "order") {
+    filteredJobs = jobs.filter(
+      (job) => job.type === "order" || job.type === "Заказ",
+    );
+  }
+
   return (
     <>
       <Header />
@@ -55,9 +68,36 @@ export default function WorkPage() {
           <h1>Работа</h1>
           <div className={styles.buttons}>
             <div className={styles.tabs}>
-              <button className={styles.WorkPageButtonActive}>Все</button>
-              <button className={styles.WorkPageButton}>Вакансии</button>
-              <button className={styles.WorkPageButton}>Заказы</button>
+              <button
+                className={
+                  activeTab === "all"
+                    ? styles.WorkPageButtonActive
+                    : styles.WorkPageButton
+                }
+                onClick={() => setActiveTab("all")}
+              >
+                Все
+              </button>
+              <button
+                className={
+                  activeTab === "vacancy"
+                    ? styles.WorkPageButtonActive
+                    : styles.WorkPageButton
+                }
+                onClick={() => setActiveTab("vacancy")}
+              >
+                Вакансии
+              </button>
+              <button
+                className={
+                  activeTab === "order"
+                    ? styles.WorkPageButtonActive
+                    : styles.WorkPageButton
+                }
+                onClick={() => setActiveTab("order")}
+              >
+                Заказы
+              </button>
             </div>
             <button
               className={styles.WorkPageButtonActive}
@@ -69,7 +109,7 @@ export default function WorkPage() {
           <div className={styles.cards}>
             {loading && <div>Загрузка...</div>}
             {error && <div>Ошибка загрузки</div>}
-            {jobs.map((job) => (
+            {filteredJobs.map((job) => (
               <WorkCard
                 key={job.id}
                 job={job}
