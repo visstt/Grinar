@@ -30,7 +30,9 @@ api.interceptors.response.use(
       retriedRequests.add(requestKey);
 
       try {
-        // Повторяем оригинальный запрос
+        // Сначала пробуем обновить токен
+        await api.post("/auth/refresh");
+        // После успешного рефреша повторяем оригинальный запрос
         const response = await api(originalRequest);
         // Если успешно, удаляем из списка повторенных запросов
         retriedRequests.delete(requestKey);
