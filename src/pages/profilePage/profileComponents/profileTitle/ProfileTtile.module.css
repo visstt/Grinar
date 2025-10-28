@@ -11,9 +11,6 @@
   background-size: cover;
 }
 
-.background_no_name {
-  height: 705px !important;
-}
 .user_info {
   color: #fff;
   display: flex;
@@ -136,19 +133,11 @@
   flex-direction: row;
   gap: 20px;
   margin-top: 70px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .btn_container button {
   padding: 15px 25px;
-}
-
-.btn_container_no_city {
-  margin-top: 90px !important;
-}
-
-.btn_container_no_name {
-  margin-top: 125px !important;
 }
 
 @media (max-width: 1024px) {
@@ -210,7 +199,7 @@
   }
   .btn_container {
     position: absolute;
-    margin-top: 50px;
+    margin-top: 40px;
   }
   .btn_container button {
     padding: 10px 15px;
