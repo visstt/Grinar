@@ -1,3 +1,135 @@
+/* Адаптив для планшетов и мобильных устройств */
+@media (max-width: 900px) {
+  .modalContent {
+    margin-top: 10px;
+    max-height: 70vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 8px;
+    padding-bottom: 16px;
+  }
+  .header {
+    gap: 40px;
+    margin-bottom: 14px;
+    margin-top: 30px;
+    align-items: stretch;
+    margin-bottom: 12px;
+    .title {
+      font-size: 22px;
+      margin-bottom: 10px;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .section {
+      margin-bottom: 8px;
+    }
+  }
+  .infoRow {
+    gap: 8px !important;
+    flex-direction: column;
+    margin-bottom: 4px;
+  }
+  .section {
+    margin-bottom: 4px;
+  }
+}
+.sectionTitle {
+  .infoRow {
+    gap: 2px;
+    margin-bottom: 2px;
+  }
+  .section {
+    margin-bottom: 2px;
+  }
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+.sectionText {
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .modalContent {
+    margin-top: 12px;
+  }
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 18px;
+    align-items: stretch;
+  }
+  .title {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .employerName {
+    font-size: 14px;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 7px;
+  }
+  .tabs {
+    gap: 4px;
+    margin: 10px 0 4px 0;
+  }
+  .infoRow {
+    gap: 16px;
+    flex-direction: column;
+    margin-bottom: 12px;
+  }
+  .sectionTitle {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .sectionText {
+    font-size: 11px;
+  }
+  .contactsList {
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .contactItem {
+    gap: 8px;
+    font-size: 0.95rem;
+  }
+  .contactIcon {
+    width: 24px;
+    height: 24px;
+  }
+  .contactItem span {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .title {
+    font-size: 13px;
+  }
+  .employerName {
+    font-size: 11px;
+  }
+  .avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+  }
+  .sectionTitle {
+    font-size: 10px;
+  }
+  .sectionText {
+    font-size: 9px;
+  }
+  .contactIcon {
+    width: 16px;
+    height: 16px;
+  }
+  .contactItem span {
+    font-size: 9px;
+  }
+}
 /* Контакты */
 .contactsList {
   display: flex;
@@ -42,6 +174,9 @@
 }
 .modalContent {
   margin-top: 32px;
+  overflow-y: auto;
+  max-height: 70vh;
+  padding-bottom: 16px;
 }
 .employerBlock {
   display: flex;
