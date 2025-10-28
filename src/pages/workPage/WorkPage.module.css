@@ -1,3 +1,77 @@
+@media (max-width: 400px) {
+  .cards > * {
+    max-width: 180px;
+    padding: 6px 4px !important;
+    font-size: 11px !important;
+    border-radius: 7px !important;
+  }
+  .WorkPage h1 {
+    font-size: 18px;
+  }
+  .tabs {
+    gap: 2px;
+  }
+}
+@media (max-width: 600px) {
+  .cards {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+  .cards > * {
+    max-width: 260px;
+    min-width: 0;
+    padding: 10px 8px !important;
+    font-size: 13px !important;
+    border-radius: 10px !important;
+  }
+  .WorkPage {
+    padding-top: 70px;
+    min-height: 65vh;
+  }
+  .buttons {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .tabs {
+    margin-top: 16px;
+    gap: 4px;
+  }
+  .WorkPage h1 {
+    font-size: 24px;
+  }
+}
+@media (max-width: 600px) {
+  .cards {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+  .cards > * {
+    max-width: 90%;
+    min-width: 0;
+    padding: 16px 12px !important;
+    font-size: 15px !important;
+    border-radius: 16px !important;
+  }
+  .WorkPage {
+    padding-top: 80px;
+    min-height: 70vh;
+  }
+  .buttons {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .tabs {
+    margin-top: 20px;
+    gap: 6px;
+  }
+  .WorkPage h1 {
+    font-size: 28px;
+  }
+}
 .WorkPage {
   padding-top: 120px;
   background: #141414;
@@ -43,4 +117,31 @@
   display: flex;
   gap: 32px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .cards {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .cards > * {
+    min-width: 0;
+  }
+  .WorkPage {
+    padding-top: 80px;
+    min-height: 70vh;
+  }
+  .buttons {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .tabs {
+    margin-top: 20px;
+    gap: 6px;
+  }
+  .WorkPage h1 {
+    font-size: 28px;
+  }
 }
