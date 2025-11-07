@@ -224,3 +224,204 @@
   display: flex;
   gap: 8px;
 }
+
+/* Адаптив для планшетов (сохраняем горизонтальное расположение) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .modal {
+    width: 767px;
+    height: 500px;
+  }
+
+  .modal::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .content {
+    padding: 24px;
+    gap: 32px;
+  }
+
+  .title h1 {
+    font-size: 24px;
+  }
+
+  .info {
+    flex-direction: row;
+    gap: 24px;
+  }
+
+  .table {
+    width: 50%;
+  }
+  .info {
+    justify-content: start;
+    gap: 32px;
+  }
+
+  .cardContainer {
+    width: 35%;
+  }
+
+  .card {
+    width: 100%;
+    height: auto;
+    min-height: 220px;
+  }
+
+  .card::before {
+    width: 200px;
+    height: 200px;
+  }
+
+  .block {
+    gap: 16px;
+    padding-bottom: 12px;
+  }
+
+  .block h3 {
+    font-size: 24px;
+  }
+
+  .block h4 {
+    font-size: 16px;
+  }
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+  .modal {
+    width: 480px;
+    height: 600px;
+  }
+
+  .modal::before {
+    width: 240px;
+    height: 240px;
+  }
+
+  .content {
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .title h1 {
+    font-size: 20px;
+  }
+
+  .title p {
+    font-size: 14px;
+  }
+
+  .info {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .table {
+    width: 100%;
+  }
+
+  .block {
+    gap: 16px;
+    padding-bottom: 12px;
+  }
+
+  .block h3 {
+    font-size: 24px;
+  }
+
+  .block h4 {
+    font-size: 16px;
+  }
+
+  .cardContainer {
+    width: 100%;
+  }
+
+  .card {
+    width: 90%;
+    height: auto;
+    min-height: 160px;
+    padding: 20px;
+    max-width: none;
+  }
+
+  .card::before {
+    width: 150px;
+    height: 150px;
+  }
+
+  .card h1 {
+    font-size: 16px !important;
+  }
+
+  .card h2 {
+    font-size: 14px;
+  }
+}
+
+/* Адаптив для очень маленьких экранов */
+@media (max-width: 520px) {
+  .modal {
+    width: calc(100vw - 40px);
+    max-width: 480px;
+    height: auto;
+    min-height: 520px;
+  }
+
+  .content {
+    padding: 24px;
+    gap: 20px;
+  }
+
+  .title h1 {
+    font-size: 18px;
+  }
+
+  .info {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .table {
+    width: 100%;
+  }
+
+  .block {
+    gap: 12px;
+    padding-bottom: 10px;
+  }
+
+  .block h3 {
+    font-size: 18px;
+  }
+
+  .block h4 {
+    font-size: 14px;
+  }
+
+  .cardContainer {
+    width: 100%;
+  }
+
+  .card {
+    width: 90%;
+    padding: 16px;
+    min-height: 140px;
+    max-width: none;
+  }
+
+  .card::before {
+    width: 120px;
+    height: 120px;
+  }
+
+  .card h1 {
+    font-size: 14px !important;
+  }
+
+  .card h2 {
+    font-size: 12px;
+  }
+}
