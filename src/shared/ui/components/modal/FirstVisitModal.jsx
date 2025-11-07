@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 
 import api from "../../../api/api";
+import { useUserStore } from "../../../store/userStore";
 import { getPhotoUrl } from "../../../utils/getProjectImageUrl";
 import Button from "../button/Button";
 import styles from "./FirstVisitModal.module.css";
@@ -12,6 +13,7 @@ export default function FirstVisitModal({ open, onClose }) {
   const modalRef = useRef(null);
   const [jobCard, setJobCard] = useState(null);
   const [originalJob, setOriginalJob] = useState(null); // Сохраняем оригинальные данные для навигации
+  const { handleOpenRegistration } = useUserStore();
 
   useClickOutside(modalRef, onClose);
 
@@ -151,7 +153,15 @@ export default function FirstVisitModal({ open, onClose }) {
               )}
             </div>
           </div>
-          <Button size="large">Зарегистрироваться и найти заказы</Button>
+          <Button
+            size="large"
+            onClick={() => {
+              handleOpenRegistration();
+              onClose();
+            }}
+          >
+            Зарегистрироваться и найти заказы
+          </Button>
         </div>
       </div>
     </div>
