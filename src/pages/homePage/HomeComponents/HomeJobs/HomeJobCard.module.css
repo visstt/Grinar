@@ -1,0 +1,86 @@
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(128px);
+  background: linear-gradient(
+    135deg,
+    rgba(25, 94, 230, 0.15),
+    rgba(0, 0, 0, 0.3)
+  );
+  width: 340px;
+  height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #000 !important;
+
+  border: 1px solid rgba(25, 94, 230, 0.05);
+  border-radius: 8px;
+  padding: 24px;
+  backdrop-filter: blur(128px);
+  background: rgba(25, 94, 230, 0.05);
+}
+
+.card p {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 150%;
+  opacity: 0.4;
+}
+
+.card h1 {
+  font-family: Unbounded;
+  font-weight: 800;
+  font-size: 18px !important;
+}
+
+.card h2 {
+  font-family: Unbounded;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.card h3 {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.card img {
+  width: 40px;
+  border-radius: 10px;
+  height: 40px;
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.salary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.salary p {
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.user p {
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.user {
+  display: flex;
+  gap: 8px;
+}

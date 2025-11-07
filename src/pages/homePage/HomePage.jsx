@@ -15,6 +15,7 @@ export default function HomePage() {
     <div>
       <HomeTitle />
       <CardsContainer />
+      
       <h2 className={styles.title}>Лучшие специалисты</h2>
       {loading && <p>Загрузка...</p>}
       {error && <p>Ошибка: {error}</p>}

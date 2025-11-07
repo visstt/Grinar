@@ -1,6 +1,9 @@
+import { Home } from "lucide-react";
+
 import Card from "../../../../shared/ui/components/Card/Card";
 import usePopularProjects from "../../hooks/usePopularProjects";
 import useProjects from "../../hooks/useProjects";
+import HomeJobs from "../HomeJobs/HomeJobs";
 import styles from "./CardsContainer.module.css";
 
 export default function CardsContainer() {
@@ -28,6 +31,7 @@ export default function CardsContainer() {
           <Card key={project.id} project={project} />
         ))}
       </div>
+      <HomeJobs />
       <h2 className={styles.title}>Популярное</h2>
       <div className={styles.cardContainer__popular}>
         {popularProjects.slice(0, 4).map((project) => (
