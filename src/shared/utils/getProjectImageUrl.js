@@ -7,6 +7,7 @@ export function getPhotoUrl(type, filename) {
     if (type === "avatar") return "/icons/Sample_User_Icon.png";
     if (type === "project") return "/images/cardImage.png";
     if (type === "cover") return "/images/defaultCover.png";
+    if (type === "advertisement") return "/icons/Sample_User_Icon.png";
     return "";
   }
   return `${API_URL}/photo/photo/${type}/${filename}`;
