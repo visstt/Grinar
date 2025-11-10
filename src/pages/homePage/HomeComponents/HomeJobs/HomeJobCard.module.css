@@ -58,6 +58,12 @@
   gap: 12px;
 }
 
+.typeAndDate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .gap {
   display: flex;
   flex-direction: column;

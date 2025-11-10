@@ -28,7 +28,10 @@ export default function HomeJobCard({ job }) {
       style={{ cursor: "pointer" }}
     >
       <div className={styles.name}>
-        <p>{job?.type || "Тип не указан"}</p>
+        <div className={styles.typeAndDate}>
+          <p>{job?.type || "Тип не указан"}</p>
+          <p>{job?.createdAt || "Дата не указана"}</p>
+        </div>
         <h1>{job?.name || "Без названия"}</h1>
       </div>
       <div className={styles.gap}>
