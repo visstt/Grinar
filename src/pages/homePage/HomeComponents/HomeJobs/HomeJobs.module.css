@@ -37,7 +37,35 @@
   margin-top: 24px;
   flex-wrap: wrap;
 }
-@media (max-width: 600px) {
+/* Адаптив для карточек - разрешение 1200px и меньше */
+@media (max-width: 1200px) {
+  .cards {
+    justify-content: flex-start;
+    gap: 40px;
+  }
+  .cards > * {
+    max-width: 260px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 1015px) {
+  .cards > * {
+    max-width: 300px;
+  }
+
+  .cards {
+    justify-content: flex-start;
+  }
+}
+
+/* Адаптив для мобильных - разрешение 480px и меньше */
+@media (max-width: 480px) {
+  .cards > * {
+    max-width: 440px;
+    width: 100%;
+  }
+
   .viewAllBtn {
     font-size: 14px;
   }
