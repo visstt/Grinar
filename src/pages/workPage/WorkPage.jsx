@@ -39,12 +39,19 @@ export default function WorkPage() {
   React.useEffect(() => {
     const params = new URLSearchParams(location.search);
     const jobId = params.get("job");
-    if (jobId && jobs.length) {
-      const found = jobs.find((j) => String(j.id) === String(jobId));
-      if (found) {
-        setSelectedJob(found);
-        setModalOpen(true);
+    if (jobId) {
+      // Сначала ищем в уже загруженных jobs
+      if (jobs.length) {
+        const found = jobs.find((j) => String(j.id) === String(jobId));
+        if (found) {
+          setSelectedJob(found);
+          setModalOpen(true);
+          return;
+        }
       }
+      // Если не найдено в jobs или jobs еще не загружены, открываем модалку с jobId
+      setSelectedJob({ id: jobId }); // Передаем объект с id для useJob
+      setModalOpen(true);
     }
   }, [location.search, jobs]);
 
@@ -123,6 +130,7 @@ export default function WorkPage() {
         open={modalOpen}
         onClose={handleCloseModal}
         job={selectedJob}
+        jobId={selectedJob?.id}
       />
     </>
   );

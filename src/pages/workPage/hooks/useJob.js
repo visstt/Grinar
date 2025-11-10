@@ -8,7 +8,11 @@ export function useJob(id) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      console.log("[useJob] No id provided:", id);
+      return;
+    }
+    console.log("[useJob] Fetching job with id:", id);
     async function fetchJob() {
       setLoading(true);
       setError(null);
@@ -16,8 +20,9 @@ export function useJob(id) {
         const response = await api.get(
           `/advertisement/get-advertisement/${id}`,
         );
-        setJob(response.data?.[0] || null);
-        console.log("[useJob] job:", response.data?.[0]);
+        console.log("[useJob] API response:", response.data);
+        setJob(response.data || null);
+        console.log("[useJob] job:", response.data);
       } catch (err) {
         setError(err);
         console.error("[useJob] error:", err);

@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { useUserStore } from "../../../../shared/store/userStore";
 import Button from "../../../../shared/ui/components/button/Button";
 import Modal from "../../../../shared/ui/components/modal/Modal";
 import { getPhotoUrl } from "../../../../shared/utils/getProjectImageUrl";
@@ -41,9 +45,27 @@ function isFullJob(job) {
 
 export default function WorkModal({ open, onClose, jobId, job: jobProp }) {
   const [activeTab, setActiveTab] = useState("announcement");
+  const navigate = useNavigate();
+  const { user } = useUserStore();
   const id = jobProp?.id || jobId;
   const { job: jobApi, loading, error } = useJob(id);
   const job = isFullJob(jobProp) ? jobProp : jobApi;
+
+  const handleContact = () => {
+    if (!user) {
+      toast.error("Зарегистрируйтесь перед тем как связаться с человеком");
+      return;
+    }
+    // Используем userId, user.id или creatorId
+    const contactUserId = job?.userId || job?.user?.id || job?.creatorId;
+    if (contactUserId) {
+      navigate(`/chat-page`, {
+        state: { contactUserId },
+      });
+    } else {
+      toast.error("Не удалось получить информацию о пользователе");
+    }
+  };
 
   if (!open) return null;
   if (!job && loading)
@@ -80,7 +102,7 @@ export default function WorkModal({ open, onClose, jobId, job: jobProp }) {
             <h2 className={styles.employerName}>{job.companyName}</h2>
           </div>
         </div>
-        <Button variant="primary" size="large">
+        <Button variant="primary" size="large" onClick={handleContact}>
           Связаться на площадке
         </Button>
       </div>
