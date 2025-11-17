@@ -2,14 +2,15 @@
 @media (max-width: 900px) {
   .modalContent {
     margin-top: 10px;
-    max-height: 70vh;
+    max-height: calc(75vh - 150px);
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
     padding-right: 8px;
-    padding-bottom: 16px;
+    padding-bottom: 40px;
     word-wrap: break-word;
     word-break: break-word;
+    box-sizing: border-box;
   }
   .header {
     gap: 40px;
@@ -179,10 +180,11 @@
   margin-top: 32px;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 70vh;
-  padding-bottom: 16px;
+  max-height: calc(80vh - 200px);
+  padding-bottom: 0px;
   word-wrap: break-word;
   word-break: break-word;
+  box-sizing: border-box;
 }
 .employerBlock {
   display: flex;
