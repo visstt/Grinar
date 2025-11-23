@@ -44,7 +44,7 @@ export default function Card({ project, blog, type = "project" }) {
     e.stopPropagation(); // Предотвращаем открытие модального окна
     const userId = getUserId();
     if (userId) {
-      navigate(`/user/${userId}`);
+      navigate(`/user/${userId}/projects`);
     }
   };
 
